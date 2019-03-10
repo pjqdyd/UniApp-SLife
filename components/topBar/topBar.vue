@@ -14,6 +14,7 @@
 <script>
 	export default {
 		name: "TopBar",
+		
 		props: {
 			//接收父组件的背景颜色值
 			bgColor: {

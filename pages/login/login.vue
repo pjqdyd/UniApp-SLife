@@ -7,6 +7,7 @@
 		<view class="icon-box">
 			<image class="slife-icon" src="../../static/login/Slife-icon.png"></image>
 			<view class="slife-text">快来登录你的生活小助手</view>
+			<view></view>
 		</view>
 
 		<!-- 登录的按钮区块 -->
