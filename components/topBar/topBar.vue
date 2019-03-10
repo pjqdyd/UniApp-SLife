@@ -1,4 +1,4 @@
-<!--自定义的顶部栏组件 -->
+<!--自定义的顶部栏组件 dev-->
 <template>
 	<view>
 		<view class="topbar" :style="'background-color:' + bgColor" :showFace="showFace">
@@ -6,7 +6,7 @@
 			<view class="iconfont back" v-if="!showFace">&#xe63f;</view> <!-- 返回 -->
 			<image class="face" v-if="showFace" src="../../static/login/noFace.png"></image> <!-- 头像 -->
 			<view class="title" :title="topTitle">{{topTitle}}</view> <!-- 标题 -->
-			
+		
 		</view>
 	</view>
 </template>
