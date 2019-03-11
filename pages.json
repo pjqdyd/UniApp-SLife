@@ -4,6 +4,10 @@
 		{
 		    "path" : "pages/login/login",
 		    "style" : {
+				"app-plus": {
+					"bounce": "none",
+					"scrollIndicator": "none"
+				},
 		        "navigationBarTitleText" : "登录",
 		        "navigationBarBackgroundColor" : "#ea5455",
 		        "navigationBarTextStyle" : "white"
@@ -20,7 +24,6 @@
         
     ],
     "globalStyle" : {
-        "navigationStyle": "custom"
       
     }
 }

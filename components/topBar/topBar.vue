@@ -1,4 +1,4 @@
-<!--自定义的顶部栏组件 dev-->
+<!--自定义的顶部栏组件 dev 已弃用-->
 <template>
 	<view>
 		<view class="topbar" :style="'background-color:' + bgColor" :showFace="showFace">
