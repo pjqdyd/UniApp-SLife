@@ -47,33 +47,59 @@
 		methods: {
 			qqLogin: function() {
 				console.log("QQ登录")
+				uni.login({
+					provider: 'qq',
+					success: function(loginRes) {
+						console.log(JSON.stringify(loginRes.authResult));
+						// 获取用户信息
+						uni.getUserInfo({
+							provider: 'qq',
+							success: function(infoRes) {
+								console.log('用户昵称为：' + infoRes.userInfo.nickName);
+							}
+						});
+					}
+				})
 			},
 			weixinLogin: function() {
 				console.log("微信登录")
+				uni.login({
+					provider: 'weixin',
+					success: function(loginRes) {
+						console.log(JSON.stringify(loginRes.authResult));
+						// 获取用户信息
+						uni.getUserInfo({
+							provider: 'weixin',
+							success: function(infoRes) {
+								console.log('用户昵称为：' + infoRes.userInfo.nickName);
+							}
+						});
+					}
+				});
 			},
-			getSystemInfo: function(){
+			getSystemInfo: function() {
 				var that = this;
-				//获取设备的基本信息
+				//获取缓存中设备的基本信息
 				uni.getStorage({
 					key: "SystemInfo",
 					success(res) {
 						//设置页面的宽度
 						that.$data.screenWidth = res.data.screenWidth,
-					    console.log(that.$data.screenWidth)	 
+							console.log(that.$data.screenWidth)
 					}
 				})
 			},
 		},
 		mounted() {
-		
+
 		}
 	}
 </script>
 
 <style lang="scss">
 	@import "../../common/style/global.scss";
-	
-	.login-page{
+
+	.login-page {
 		position: fixed;
 	}
 
