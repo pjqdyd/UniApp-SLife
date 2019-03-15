@@ -6,20 +6,23 @@
 				<view class="uni-title">抽屉式导航</view>
 			</view>
 		</uni-drawer>
-		
+
+		<!--    顶部分类栏组件   -->	
+		<switch-bar></switch-bar>
+
 		<!-- 首页内容 -->
 		<view class="content">
 			<view>
 				<text class="title">{{title}}</text>
 			</view>
 		</view>
-		
+
 	</view>
 </template>
 
 <script>
-	//导入侧边抽屉组件
-	import uniDrawer from "@/components/uni-drawer/uni-drawer.vue"
+	import uniDrawer from "./component/uni-drawer/uni-drawer.vue" //导入主页侧边抽屉组件
+	import switchBar from "./component/switch-bar/switch-bar.vue" //导入顶部分类栏组件
 
 	export default {
 		data() {
@@ -29,10 +32,11 @@
 			}
 		},
 		components: {
-			uniDrawer
+			uniDrawer,
+			switchBar
 		},
 		onLoad() {
-
+			console.log("进入页面开始刷新")
 		},
 		methods: {
 			//侧边栏的关闭事件
@@ -40,6 +44,7 @@
 				this.isShowDrawer = false
 				console.log("侧边栏关闭")
 			}
+
 		},
 		//监听导航栏的"..."的点击事件(展开/关闭侧边栏)
 		onNavigationBarButtonTap: function() {
@@ -72,4 +77,5 @@
 		font-size: 36upx;
 		color: #8f8f94;
 	}
+
 </style>
