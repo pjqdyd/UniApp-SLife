@@ -1,97 +1,99 @@
 {
-    "pages" : [
-        //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-        {
-            "path" : "pages/index/index",
-            "style" : {
-                "navigationBarTitleText" : "动态",
-                "navigationBarBackgroundColor" : "#ea5455",
-                "navigationBarTextStyle" : "white",
+	"pages": [
+		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/login/login",
+			"style": {
+				"app-plus": {
+					"scrollIndicator": "none"
+				},
+				"navigationBarTitleText": "登录",
+				"navigationBarBackgroundColor": "#ea5455",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "动态",
+				"navigationBarBackgroundColor": "#ea5455",
+				"navigationBarTextStyle": "white",
 				"app-plus": {
 					"titleNView": {
-						"buttons":[
-							{"type":"menu",
-							 "float":"left"
-							}]
+						"buttons": [{
+							"text": "\ue563",
+							"fontSrc": "/static/uni.ttf",
+							"fontSize": "25px",
+							"float":"left"
+						}]
 					}
 				}
-            }
-        },
-        {
-            "path" : "pages/local/local",
-            "style" : {
-				"navigationBarTitleText" : "附近商铺",
-				"navigationBarBackgroundColor" : "#ea5455",
-				"navigationBarTextStyle" : "white",
+			}
+		},
+		{
+			"path": "pages/local/local",
+			"style": {
+				"navigationBarTitleText": "附近商铺",
+				"navigationBarBackgroundColor": "#ea5455",
+				"navigationBarTextStyle": "white",
 				"app-plus": {
 					"titleNView": {
 						"searchInput": {
 							"placeholder": "请输入",
 							"placeholderColor": "#696969",
 							"borderRadius": "20px",
-							"backgroundColor":"rgba(255,255,255,0.8)"
+							"backgroundColor": "rgba(255,255,255,0.8)"
 						}
 					}
 				}
 			}
-        },
-        {
-            "path" : "pages/chat/chat",
-            "style" : {
-				"navigationBarTitleText" : "聊天",
-				"navigationBarBackgroundColor" : "#ea5455",
-				"navigationBarTextStyle" : "white"
-			}
-        },
-        {
-            "path" : "pages/me/me",
-            "style" : {
-				"navigationBarTitleText" : "我的信息",
-				"navigationBarBackgroundColor" : "#ea5455",
-				"navigationBarTextStyle" : "white"
-			}
-        },
+		},
 		{
-		    "path" : "pages/login/login",
-		    "style" : {
-		        "app-plus" : {
-		            "scrollIndicator" : "none"
-		        },
-		        "navigationBarTitleText" : "登录",
-		        "navigationBarBackgroundColor" : "#ea5455",
-		        "navigationBarTextStyle" : "white"
-		    }
+			"path": "pages/chat/chat",
+			"style": {
+				"navigationBarTitleText": "聊天",
+				"navigationBarBackgroundColor": "#ea5455",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/me/me",
+			"style": {
+				"navigationBarTitleText": "我的信息",
+				"navigationBarBackgroundColor": "#ea5455",
+				"navigationBarTextStyle": "white"
+			}
 		}
-    ],
-    "globalStyle" : {},
-    "tabBar" : {
-        "backgroundColor" : "#F5F5F5",
-        "selectedColor" : "#ea5455",
-        "list" : [
-            {
-                "pagePath" : "pages/index/index",
-                "text" : "首页",
-                "iconPath" : "static/tabBar/home.png",
-                "selectedIconPath" : "static/tabBar/click/home.png"
-            },
-            {
-                "pagePath" : "pages/local/local",
-                "text" : "附近",
-                "iconPath" : "static/tabBar/local.png",
-                "selectedIconPath" : "static/tabBar/click/local.png"
-            },
-            {
-                "pagePath" : "pages/chat/chat",
-                "text" : "聊天",
-                "iconPath" : "static/tabBar/chat.png",
-                "selectedIconPath" : "static/tabBar/click/chat.png"
-            },
-            {
-                "pagePath" : "pages/me/me",
-                "text" : "我的",
-                "iconPath" : "static/tabBar/me.png",
-                "selectedIconPath" : "static/tabBar/click/me.png"
-            }
-        ]
-    }
+		
+	],
+	"globalStyle": {},
+	"tabBar": {
+		"backgroundColor": "#F5F5F5",
+		"selectedColor": "#ea5455",
+		"list": [{
+				"pagePath": "pages/index/index",
+				"text": "首页",
+				"iconPath": "static/tabBar/home.png",
+				"selectedIconPath": "static/tabBar/click/home.png"
+			},
+			{
+				"pagePath": "pages/local/local",
+				"text": "附近",
+				"iconPath": "static/tabBar/local.png",
+				"selectedIconPath": "static/tabBar/click/local.png"
+			},
+			{
+				"pagePath": "pages/chat/chat",
+				"text": "聊天",
+				"iconPath": "static/tabBar/chat.png",
+				"selectedIconPath": "static/tabBar/click/chat.png"
+			},
+			{
+				"pagePath": "pages/me/me",
+				"text": "我的",
+				"iconPath": "static/tabBar/me.png",
+				"selectedIconPath": "static/tabBar/click/me.png"
+			}
+		]
+	}
 }

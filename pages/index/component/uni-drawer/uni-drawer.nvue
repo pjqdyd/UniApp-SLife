@@ -1,0 +1,38 @@
+<template>
+	<div>
+		<div class="drawer-box" @click="handClickMask">
+			侧边栏
+		</div>
+	</div>
+</template>
+
+<script>
+	export default {
+		created() {
+			getSystemInfo();
+		},
+		methods: {
+			//点击了遮罩
+			handClickMask() {
+				console.log("点击了mask")
+			},
+
+			getSystemInfo: function() {
+				
+			}
+
+		}
+	}
+</script>
+
+<style>
+	.drawer-box {
+		width: 750px;
+		height: 1200px;
+		background-color: rgba(0, 0, 0, 0.4);
+		position: fixed;
+		left: 0;
+		float: left;
+		z-index: 10001;
+	}
+</style>
