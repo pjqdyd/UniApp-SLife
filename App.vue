@@ -9,6 +9,9 @@
 					if(res.data == null || res.data == undefined || res.data == ''){
 						this.getSystemInfo()
 					}
+				},
+				fail() {
+					this.getSystemInfo()
 				}
 			})
 		},
@@ -18,7 +21,7 @@
 		onHide: function() {
 			console.log('App Hide')
 		},
-		//自定义的获取设备信息的方法
+		//自定义的获取设备并保存信息的方法
 		getSystemInfo: function(){
 			//获取设备的信息
 			uni.getSystemInfo({

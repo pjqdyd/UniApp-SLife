@@ -1,7 +1,9 @@
 <template>
 	<div>
 		<!-- 侧边栏 -->
-		<uni-drawer></uni-drawer>
+		<uni-drawer :showDrawer="isShowDrawer" @closeDrawer="handDrawerClose">
+			<text style="font-size: 30px;">侧边栏</text>
+		</uni-drawer>
 		
 		<uni-tabs @change="changeTab" :index="tabIndex">
 			<uni-tab-bar :drag="false" :tab-bars="tabBars" :tab-index="tabIndex"></uni-tab-bar>
@@ -133,7 +135,6 @@
 			//监听导航栏的"三"的点击事件(展开/关闭侧边栏)
 			uni.onNavigationBarButtonTap((e) => {
 				console.log("监听到原生标题栏按钮点击事件");
-				console.log(e);
 				if (this.isShowDrawer == false) {
 					this.isShowDrawer = true
 					console.log("展开侧边栏")
@@ -142,13 +143,12 @@
 					console.log("关闭侧边栏")
 				}
 			})
-
 		},
 		methods: {
 			//侧边栏的关闭事件函数
 			handDrawerClose: function() {
 				this.isShowDrawer = false
-				console.log("侧边栏关闭")
+				console.log("点遮罩-侧边栏关闭")
 			},
 			goDetail(e) {
 				console.log("前往详情页面")

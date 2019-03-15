@@ -1,26 +1,47 @@
 <template>
 	<div>
-		<div class="drawer-box" @click="handClickMask">
-			侧边栏
+		<!-- <div class="drawer-box" :style="{width: drawerBoxWidth + 'px'}" @click="handClickMask"> -->
+		<div v-if="showDrawer" class="drawer-box" @click="handClickMask">
+			<div class="drawer" @click="handClickDrawer">
+				<slot></slot>
+				<text class="button">关闭</text>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
 	export default {
+		props: {
+			showDrawer: {
+				type: Boolean,
+				default: false
+			}
+		},
 		created() {
-			getSystemInfo();
+			console.log("进入侧滑栏的create函数")
+			//设置侧滑栏的宽度
+			this.drawerWidth = this.drawerWidth * 0.618
+		},
+		mounted() {
+			console.log("进入侧滑栏的mounted函数")
+		},
+		data() {
+			return {
+				// showDrawer: false
+			}
 		},
 		methods: {
-			//点击了遮罩
+			//点击了遮罩,关闭侧滑栏
 			handClickMask() {
 				console.log("点击了mask")
+				this.showDrawer = false
+				this.$emit('closeDrawer')
 			},
-
-			getSystemInfo: function() {
-				
+			//点击了drager
+			handClickDrawer() {
+				console.log("点击了抽屉")
 			}
-
 		}
 	}
 </script>
@@ -33,6 +54,33 @@
 		position: fixed;
 		left: 0;
 		float: left;
+		z-index: 1001;
+		font-size: 40upx;
+		/* transition: width 2s; */
+		
+	}
+
+	.drawer {
+		width: 463.5px;
+		height: 1200px;
+		background-color: #FFFFFF;
+		left: 0;
+		float: left;
 		z-index: 10001;
+	}
+	
+	.button{
+		width: 300px;
+		height: 70px;
+		text-align: center;
+		font-size: 35px;
+		line-height: 70px;
+		color: #FFFFFF;
+		background-color: #EA5455;
+		margin: 0 70px;
+		border: 1px solid #ccc;
+		border-radius: 10px;
+		position: fixed;
+		bottom: 80px;
 	}
 </style>

@@ -83,6 +83,8 @@
 				uni.getStorage({
 					key: "SystemInfo",
 					success(res) {
+						console.log(res)
+						console.log(res.data)
 						//设置页面的宽度
 						that.$data.screenWidth = res.data.screenWidth,
 							console.log(that.$data.screenWidth)
