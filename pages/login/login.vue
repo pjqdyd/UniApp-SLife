@@ -38,7 +38,7 @@
 		},
 		data() {
 			return {
-				screenWidth: ""
+				screenWidth: "750"
 			}
 		},
 		components: {
