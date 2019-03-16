@@ -1,8 +1,15 @@
 <template>
     <div>
         <div class="list-cell" @click="bindClick">
-            <div class="media-list" v-if="data.title">
-                <div :class="[isImgRight?'media-image-right':'',isImgLeft?'media-image-left':'']">
+            <div class="media-list" v-if="itemData.newsTitle">
+				<div>{{itemData.newsId}}</div>
+				
+				
+				<div v-for="item in itemData.newsImage" >
+					<image class="image-list3" :src="item.imageUrl"></image>
+				</div>
+				
+                <!-- <div :class="[isImgRight?'media-image-right':'',isImgLeft?'media-image-left':'']">
                     <text :class="['media-title',isImgRight||isImgLeft?'media-title2':'']">{{data.title}}</text>
                     <div v-if="showImg" :class="['image-section',isImgRight?'image-section-right':'',isImgLeft?'image-section-left':'']">
                         <image :class="['image-list1',isImgRight||isImgLeft?'image-list2':'']" v-if="data.image_url"
@@ -10,8 +17,8 @@
                         <image class="image-list3" v-if="data.image_list" :src="source.url" v-for="(source, i) in data.image_list"
                             :key="i" />
                     </div>
-                </div>
-                <div class="media-foot">
+                </div> -->
+                <!-- <div class="media-foot">
                     <div class="media-info">
                         <text class="info-text">{{data.source}}</text>
                         <text class="info-text">{{data.comment_count}}条评论</text>
@@ -20,7 +27,8 @@
                     <div class="max-close-view" @click="close">
                         <div class="close-view"><text class="close">×</text></div>
                     </div>
-                </div>
+                </div> -->
+				
             </div>
         </div>
     </div>
@@ -28,14 +36,23 @@
 
 <script>
     export default {
+		//这里的data属性是接收父组件传过来的 单条动态数据对象
         props: {
-            data: {
+            itemData: {
                 type: Object,
                 default: function(e) {
                     return {}
                 }
             }
         },
+		data(){
+			return{
+	
+			}
+		},
+		created() {
+			console.log(JSON.stringify(this.itemData.newsImage[0].imageUrl))
+		},
         computed: {
             isImgRight() {
                 return this.data.article_type === 2

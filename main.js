@@ -10,3 +10,6 @@ const app = new Vue({
 	...App
 })
 app.$mount()
+
+//vue组件的全局的server地址
+Vue.prototype.server_Url = 'http://www.mockhttp.cn/mock'; 

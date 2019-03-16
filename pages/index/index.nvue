@@ -6,17 +6,23 @@
 		</uni-drawer>
 
 		<uni-tabs @change="changeTab" :index="tabIndex">
+			<!-- 顶部分类栏 -->
 			<uni-tab-bar :drag="false" :tab-bars="tabBars" :tab-index="tabIndex"></uni-tab-bar>
+
 			<uni-tab-content>
-				<list class="list" @loadmore="loadMore(index1)" loadmoreoffset="10" v-for="(tab,index1) in newsitems" :key="index1">
+				<!-- 3个内容页,tabNum表示当前分类的序号 -->
+				<list class="list" @loadmore="loadMore(tabNum)" loadmoreoffset="5" v-for="tabNum in tabNums" :key="tabNum">
+					<!-- 内容顶部下拉刷新组件 -->
 					<refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown" :display="refreshing ? 'show' : 'hide'">
-						<text class="refresh-text">{{refreshText}}</text>
+						<text class="refresh-text">{{refreshText}} {{tabNum}}</text>
 					</refresh>
-					<cell v-for="(newsitem,index2) in tab.data" :key="index2">
-						<uni-media-list :data="newsitem" @close="close(index1,index2)" @click="goDetail(newsitem)"></uni-media-list>
+					<!-- 内容列表组件, homeList[tabNum]表示当前页的动态数据列表,这里的item就是每条动态数据, index表示这条动态数据的序号-->
+					<cell v-for="(item,index) in homeList[tabNum]" :key="index">
+						<uni-media-list :itemData="item" @close="close(index)" @click="goDetail(item)"></uni-media-list>
 					</cell>
+					<!-- 底部加载更多组件 -->
 					<cell class="loadmore">
-						<text class="loadmore-text">{{tab.loadingText}}</text>
+						<text class="loadmore-text">{{loadingText}}</text>
 					</cell>
 				</list>
 			</uni-tab-content>
@@ -30,6 +36,10 @@
 	import uniTabs from './component/uni-tabs/uni-tabs.nvue'
 	import uniMediaList from './component/uni-media-list/uni-media-list.nvue'
 	import uniDrawer from './component/uni-drawer/uni-drawer.nvue'
+
+	import conf from '../../common/config.js'; //全局的一些配置信息
+	import utils from '../../common/utils.js'; //一些工具方法
+
 	const dom = weex.requireModule('dom')
 	export default {
 		components: {
@@ -44,59 +54,25 @@
 				isShowDrawer: false,
 				refreshing: false,
 				refreshText: "下拉可以刷新",
+				loadingText: "加载更多中",
+
+				tabNums: [0, 1, 2],
 				tabIndex: 1,
-				newsitems: [],
-				data0: {
-					"datetime": "40分钟前",
-					"article_type": 0,
-					"title": "uni-app行业峰会频频亮相，开发者反响热烈!",
-					"source": "DCloud",
-					"comment_count": 639
-				},
-				data1: {
-					"datetime": "一天前",
-					"article_type": 1,
-					"title": "DCloud完成B2轮融资，uni-app震撼发布!",
-					"image_url": "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/shuijiao.jpg?imageView2/3/w/200/h/100/q/90",
-					"source": "DCloud",
-					"comment_count": 11395
-				},
-				data2: {
-					"datetime": "一天前",
-					"article_type": 2,
-					"title": "中国技术界小奇迹：HBuilder开发者突破200万",
-					"image_url": "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/muwu.jpg?imageView2/3/w/200/h/100/q/90",
-					"source": "DCloud",
-					"comment_count": 11395
-				},
-				data4: {
-					"datetime": "2小时前",
-					"article_type": 4,
-					"title": "uni-app 支持原生小程序自定义组件，更开放、更自由",
-					"image_url": "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg?imageView2/3/w/200/h/100/q/90",
-					"source": "DCloud",
-					"comment_count": 69
-				},
-				data3: {
-					"article_type": 3,
-					"image_list": [{
-						"url": "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/cbd.jpg?imageView2/3/w/200/h/100/q/90",
-						"width": 563,
-						"height": 316
-					}, {
-						"url": "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/muwu.jpg?imageView2/3/w/200/h/100/q/90",
-						"width": 641,
-						"height": 360
-					}, {
-						"url": "https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/shuijiao.jpg?imageView2/3/w/200/h/100/q/90",
-						"width": 640,
-						"height": 360
-					}],
-					"datetime": "5分钟前",
-					"title": "uni-app 支持使用 npm 安装第三方包，生态更趋丰富",
-					"source": "DCloud",
-					"comment_count": 11
-				},
+
+				homeList: [], //用来存储首页的3个tab页list对象,
+
+				listA: [], //最新页的list
+				listAPage: 0, //最新页的当前Page数
+				listATotalPage: 0, //最新页的总Page数
+
+				listB: [], //推荐页的list
+				listBPage: 0, //推荐页的当前Page数
+				listBTotalPage: 0, //推荐页的总Page数
+
+				listC: [], //热门页的list
+				listCPage: 0, //热门页的当前Page数
+				listCTotalPage: 0, //热门页的总Page数
+
 				tabBars: [{
 					name: '最新',
 					id: 'tiyu'
@@ -110,9 +86,48 @@
 			}
 		},
 		created() {
-			setTimeout(() => {
-				this.newsitems = this.randomfn();
-			}, 150)
+			var url = conf.serverUrl;
+
+			// 			var array1 = [1,2,3];
+			// 			var array2 = [4,5];
+			// 			var array3 = array1.concat(array2);
+			// 			console.log(JSON.stringify(array3[4]))
+			// 			setTimeout(() => {
+			// 				//this.newsitems = this.randomfn();
+			// 			}, 150)
+
+			// 			let ary = []; //最外层数组对象,存放三个分类页的数据
+			// 			//一个aryItem对象就是一个分类页
+			// 			let aryItem = {
+			// 				loadingText: "加载更多...",
+			// 				data: []
+			// 			};
+			console.log(url)
+			var recommendList = [] //推荐页的数据
+			//请求服务端数据
+			uni.request({
+				url: url + '/index/newsdata',
+				success: (res) => {
+					console.log("请求newsdata数据成功成功..")
+					recommendList = res.data.data.newsList
+					
+					this.listB = this.listB.concat(recommendList)
+					
+					console.log(this.listB)
+					this.homeList.push(this.listB)
+					this.homeList.push(this.listB)
+					this.homeList.push(this.listB)
+				}
+			})
+
+			//把3页数据加进数组拼接好后赋给newsitems
+			//this.newsitems = this.addListData(recommendList)
+
+			// 			ary.push(aryItem1) //更新页数据
+			// 			ary.push(aryItem1) //推荐页数据
+			// 			ary.push(aryItem1) //热门页数据
+			// 			
+			// 			console.log()
 
 			//监听导航栏的"三"的点击事件(展开/关闭侧边栏)
 			uni.onNavigationBarButtonTap((e) => {
@@ -134,17 +149,18 @@
 			},
 			goDetail(e) {
 				console.log("前往详情页面")
+				console.log(JSON.stringify(e.newsId))
 			},
-			close(index1, index2) {
-				uni.showModal({
-					content: '是否删除本条信息？',
-					success: (res) => {
-						if (res.confirm) {
-							this.newsitems[index1].data.splice(index2, 1);
-						}
-					}
-				})
-			},
+			// 			close(index1, index2) {
+			// 				uni.showModal({
+			// 					content: '是否删除本条信息？',
+			// 					success: (res) => {
+			// 						if (res.confirm) {
+			// 							this.newsitems[index1].data.splice(index2, 1);
+			// 						}
+			// 					}
+			// 				})
+			// 			},
 			loadMore(e) {
 				setTimeout(() => {
 					this.addData(e);
@@ -152,13 +168,13 @@
 			},
 			addData(e) {
 				console.log("加载更多...");
-				if (this.newsitems[e].data.length > 30) {
-					this.newsitems[e].loadingText = '没有更多了';
-					return;
-				}
-				for (let i = 1; i <= 10; i++) {
-					this.newsitems[e].data.push(this['data' + Math.floor(Math.random() * 5)]);
-				}
+				// 				if (this.newsitems[e].data.length > 30) {
+				// 					this.newsitems[e].loadingText = '没有更多了';
+				// 					return;
+				// 				}
+				// 				for (let i = 1; i <= 10; i++) {
+				// 					this.newsitems[e].data.push(this['data' + Math.floor(Math.random() * 5)]);
+				// 				}
 			},
 			async changeTab(e) {
 				this.tabIndex = e.index;
@@ -170,18 +186,23 @@
 					})
 				})
 			},
-			randomfn() {
-				let ary = [];
+			//添加拼接数据的方法
+			addListData(list) {
+				//console.log(list)
+				let ary = []; //最外层数组对象,存放三个分类页的数据
 				for (let i = 0, length = this.tabBars.length; i < length; i++) {
+					//一个aryItem对象就是一个分类页
 					let aryItem = {
 						loadingText: "加载更多...",
 						data: []
 					};
-					for (let j = 1; j <= 10; j++) {
-						aryItem.data.push(this['data' + Math.floor(Math.random() * 5)]);
-					}
-					ary.push(aryItem);
+					// 					for (let j = 1; j <= 5; j++) {
+					// 						aryItem.data.push(list); //
+					// 					}
+					aryItem.data.push(list); //添加每一页的data数据
+					ary.push(aryItem); //添加该页进ary数组
 				}
+				//console.log(ary)
 				return ary;
 			},
 			onrefresh(event) {
