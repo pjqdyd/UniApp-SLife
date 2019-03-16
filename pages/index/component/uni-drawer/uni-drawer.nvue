@@ -4,7 +4,7 @@
 		<div v-if="showDrawer" class="drawer-box" @click="handClickMask">
 			<div class="drawer" @click="handClickDrawer">
 				<slot></slot>
-				<text class="button">关闭</text>
+				<text class="button" @click="handClickMask">关闭</text>
 			</div>
 		</div>
 	</div>
@@ -32,9 +32,9 @@
 			}
 		},
 		methods: {
-			//点击了遮罩,关闭侧滑栏
+			//点击了遮罩或关闭按钮,关闭侧滑栏
 			handClickMask() {
-				console.log("点击了mask")
+				console.log("点击了mask,或点击了关闭按钮")
 				this.showDrawer = false
 				this.$emit('closeDrawer')
 			},
@@ -55,7 +55,6 @@
 		left: 0;
 		float: left;
 		z-index: 1001;
-		font-size: 40upx;
 		/* transition: width 2s; */
 		
 	}
@@ -63,7 +62,7 @@
 	.drawer {
 		width: 463.5px;
 		height: 1200px;
-		background-color: #FFFFFF;
+		background-color: #F5F5F5;
 		left: 0;
 		float: left;
 		z-index: 10001;

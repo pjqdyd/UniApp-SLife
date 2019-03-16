@@ -1,130 +1,159 @@
 <template>
 	<div>
+		<!-- 顶部分类栏 可滑动 -->
 		<div v-if="drag" class="wrap tab-bar-scroll">
 			<scroller class="scroll" scrollDirection="horizontal" showScrollbar="false">
-				<div
-					class="tab-bar-item tab-bar-scroll-width"
-					v-for="(tabBar, t) in tabBars"
-					:key="t"
-					:ref="tabBar.id + t"
-					@click="change(t)"
-				>
+				<div class="tab-bar-item tab-bar-scroll-width" v-for="(tabBar, t) in tabBars" :key="t" :ref="tabBar.id + t" @click="change(t)">
 					<text class="tab-bar-title" :class="[tabIndex === t ? 'active' : '']">{{
 						tabBar.name
 					}}</text>
 				</div>
 			</scroller>
 		</div>
-		<div v-else class="wrap tab-bar">
-			<div
-				class="tab-bar-item"
-				v-for="(tabBar, t) in tabBars"
-				:key="t"
-				:ref="tabBar.id + t"
-				@click="change(t)"
-			>
+		<!-- 顶部分类栏 不可滑动-->
+		<!-- <div v-else class="wrap tab-bar">
+			<div class="tab-bar-item" v-for="(tabBar, t) in tabBars" :key="t" :ref="tabBar.id + t" @click="change(t)">
 				<text class="tab-bar-title" :class="[tabIndex === t ? 'active' : '']">{{
 					tabBar.name
 				}}</text>
+			</div>
+		</div> -->
+		<!-- 顶部分类栏 不可滑动 修改增加底部条-->
+		<div v-else class="wrap tab-bar">
+			<div class="tab-bar-item" v-for="(tabBar, t) in tabBars" :key="t" :ref="tabBar.id + t" :class="[tabIndex === t ? 'active' : '']"
+			 @click="change(t)">
+				<text class="tab-bar-title" :class="[tabIndex === t ? 'active' : '']">{{tabBar.name}}</text>			
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-const dom = weex.requireModule('dom');
+	const dom = weex.requireModule('dom');
 
-export default {
-	props: {
-		drag: {
-			type: Boolean,
-			default: true
-		},
-		tabBars: {
-			type: Array,
-			default: function(e) {
-				return [];
+	export default {
+		props: {
+			drag: {
+				type: Boolean,
+				default: true
+			},
+			tabBars: {
+				type: Array,
+				default: function(e) {
+					return [];
+				}
+			},
+			tabIndex: {
+				type: Number,
+				default: 0
 			}
 		},
-		tabIndex: {
-			type: Number,
-			default: 0
-		}
-	},
-	watch:{
-		tabIndex(newVal){
-			this.change(newVal)
-		}
-	},
-	methods: {
-		async change(index, e) {
-			let ret = {
-				index: index
-			};
-			// 			if (e.type === 'click') {
-			// 				let target = e.target;
-			// 				ret.index = target.parentNode.children.findIndex(node => node === target);
-			// 			}
-			this.$emit('_tabBarClick', ret);
-			const el = this.$refs[this.tabBars[index].id + index][0]
-			let elSize = await this.getElSize(el);
-			if (elSize.left + elSize.width > 750) {
-			    let idx = index - 4;
-			    let newEl = this.$refs[this.tabBars[idx].id + idx][0]
-			    dom.scrollToElement(newEl, {});
-			    return;
+		watch: {
+			tabIndex(newVal) {
+				this.change(newVal)
 			}
-			if (elSize.left < 0) {
-			    dom.scrollToElement(el, {});
-			}
-			
 		},
-		getElSize(el) { //得到元素的size
-		    return new Promise((res, rej) => {
-		        const result = dom.getComponentRect(el, option => {
-		            res(option.size);
-		        })
-		    })
+		methods: {
+			async change(index, e) {
+				let ret = {
+					index: index
+				};
+				// 			if (e.type === 'click') {
+				// 				let target = e.target;
+				// 				ret.index = target.parentNode.children.findIndex(node => node === target);
+				// 			}
+				this.$emit('_tabBarClick', ret);
+				const el = this.$refs[this.tabBars[index].id + index][0]
+				let elSize = await this.getElSize(el);
+				if (elSize.left + elSize.width > 750) {
+					let idx = index - 4;
+					let newEl = this.$refs[this.tabBars[idx].id + idx][0]
+					dom.scrollToElement(newEl, {});
+					return;
+				}
+				if (elSize.left < 0) {
+					dom.scrollToElement(el, {});
+				}
+
+			},
+			getElSize(el) { //得到元素的size
+				return new Promise((res, rej) => {
+					const result = dom.getComponentRect(el, option => {
+						res(option.size);
+					})
+				})
+			}
 		}
-	}
-};
+	};
 </script>
 <style>
-.wrap {
-	height: 100px;
-	width: 750px;
-	flex-direction: row;
-	border-width: 1px;
-	border-color: #c8c7cc;
-	border-style: solid;
-	font-size: 28px;
-}
-.tab-bar {
-	justify-content: space-between;
-	padding-left: 30px;
-	padding-right: 30px;
-}
-.scroll {
-	height: 100px;
-	width: 750px;
-	flex-direction: row;
-}
-.tab-bar-item {
-	height: 100px;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-}
-.tab-bar-scroll-width {
-	width: 150px;
-}
-.tab-bar-title {
-	height: 100px;
-	line-height: 100px;
-	font-size: 30px;
-	color: #555;
-}
-.active {
-	color: #007aff;
-}
+	.wrap {
+		height: 56px;
+		width: 750px;
+		flex-direction: row;
+		border-width: 1px;
+		border-color: #c8c7cc;
+		border-style: solid;
+		font-size: 28px;
+	}
+
+	.tab-bar {
+		/* justify-content: space-between;
+	       padding-left: 30px;
+	       padding-right: 30px; */
+		width: 750px;
+		height: 56px;
+		line-height: 56px;
+		background-color: whitesmoke;
+		padding-left: 100px;
+		padding-right: 100px;
+		box-sizing: border-box;
+		overflow: hidden;
+		white-space: nowrap;
+		position: relative;
+	}
+
+	.scroll {
+		height: 56px;
+		width: 750px;
+		flex-direction: row;
+	}
+
+	.tab-bar-item {
+		/* height: 75px;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center; */
+		/* margin: 0 25px; */
+		/* display: inline-block; */
+		/* flex-direction: column; */	
+		/* justify-content: center; */
+		width: 183.3px;
+		text-align: center;
+		line-height: 56px;
+		align-items: center;
+		box-sizing: border-box;		
+	}
+
+	.tab-bar-scroll-width {
+		width: 150px;
+	}
+
+	.tab-bar-title {
+		/* height: 75px;
+		line-height: 80px;
+		font-size: 30px;
+		margin: 0 15px;
+		color: #555; */
+		color: #555;
+		line-height: 56px;
+		font-size: 28px;
+	}
+
+	/* 表示tab-bar-item激活后,加入后面元素的样式-分类底部条 */
+	.active {
+		color: #ea5455;
+		border-bottom-width: 2px;
+		border-bottom-color: #ea5455;
+	}
 </style>

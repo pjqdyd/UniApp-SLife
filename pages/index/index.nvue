@@ -4,7 +4,7 @@
 		<uni-drawer :showDrawer="isShowDrawer" @closeDrawer="handDrawerClose">
 			<text style="font-size: 30px;">侧边栏</text>
 		</uni-drawer>
-		
+
 		<uni-tabs @change="changeTab" :index="tabIndex">
 			<uni-tab-bar :drag="false" :tab-bars="tabBars" :tab-index="tabIndex"></uni-tab-bar>
 			<uni-tab-content>
@@ -44,7 +44,7 @@
 				isShowDrawer: false,
 				refreshing: false,
 				refreshText: "下拉可以刷新",
-				tabIndex: 0,
+				tabIndex: 1,
 				newsitems: [],
 				data0: {
 					"datetime": "40分钟前",
@@ -98,32 +98,14 @@
 					"comment_count": 11
 				},
 				tabBars: [{
-					name: '关注',
-					id: 'guanzhu'
-				}, {
-					name: '推荐',
-					id: 'tuijian'
-				}, {
-					name: '体育',
+					name: '最新',
 					id: 'tiyu'
 				}, {
-					name: '热点',
+					name: '推荐',
 					id: 'redian'
 				}, {
-					name: '财经',
+					name: '热门',
 					id: 'caijing'
-				}, {
-					name: '娱乐',
-					id: 'yule'
-				}, {
-					name: '军事',
-					id: 'junshi'
-				}, {
-					name: '历史',
-					id: 'lishi'
-				}, {
-					name: '本地',
-					id: 'bendi'
 				}]
 			}
 		},
@@ -148,7 +130,7 @@
 			//侧边栏的关闭事件函数
 			handDrawerClose: function() {
 				this.isShowDrawer = false
-				console.log("点遮罩-侧边栏关闭")
+				console.log("点遮罩或关闭按钮-侧边栏关闭")
 			},
 			goDetail(e) {
 				console.log("前往详情页面")
