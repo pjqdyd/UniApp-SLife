@@ -11,13 +11,13 @@
 
 			<uni-tab-content>
 				<!-- 3个内容页,tabNum表示当前分类的序号 -->
-				<list class="list" @loadmore="loadMore(tabNum)" loadmoreoffset="5" v-for="tabNum in tabNums" :key="tabNum">
+				<list class="list" @loadmore="loadMore(tabNum)" show-scrollbar="false" loadmoreoffset="5" v-for="tabNum in tabNums" :key="tabNum">
 					<!-- 内容顶部下拉刷新组件 -->
 					<refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown" :display="refreshing ? 'show' : 'hide'">
 						<text class="refresh-text">{{refreshText}} {{tabNum}}</text>
 					</refresh>
 					<!-- 内容列表组件, homeList[tabNum]表示当前页的动态数据列表,这里的item就是每条动态数据, index表示这条动态数据的序号-->
-					<cell v-for="(item,index) in homeList[tabNum]" :key="index">
+					<cell v-for="(item,index) in homeList[tabNum]" :key="index" style="background-color: #eeeeee">
 						<uni-media-list :itemData="item" @close="close(index)" @click="goDetail(item)"></uni-media-list>
 					</cell>
 					<!-- 底部加载更多组件 -->
@@ -106,7 +106,7 @@
 			var recommendList = [] //推荐页的数据
 			//请求服务端数据
 			uni.request({
-				url: url + '/index/newsdata',
+				url: url + '/newsdata',
 				success: (res) => {
 					console.log("请求newsdata数据成功成功..")
 					recommendList = res.data.data.newsList
@@ -207,7 +207,7 @@
 			},
 			onrefresh(event) {
 				uni.showToast({
-					title: "refresh",
+					title: "刷新成功",
 					icon: "none"
 				});
 				this.refreshText = "正在刷新...";

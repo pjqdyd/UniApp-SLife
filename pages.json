@@ -15,7 +15,8 @@
 							"fontSize": "25px",
 							"float":"left"
 						}]
-					}
+					},
+					"scrollIndicator": "none"
 				}
 			}
 		},
