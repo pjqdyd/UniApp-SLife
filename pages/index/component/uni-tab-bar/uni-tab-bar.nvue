@@ -134,6 +134,9 @@
 		align-items: center;
 		box-sizing: border-box;		
 	}
+	.tab-bar-item:active{
+		background-color: #ccc;
+	}
 
 	.tab-bar-scroll-width {
 		width: 150px;

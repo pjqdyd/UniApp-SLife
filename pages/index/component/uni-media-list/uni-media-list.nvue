@@ -1,198 +1,291 @@
 <template>
-    <div>
-        <div class="list-cell" @click="bindClick">
-            <div class="media-list" v-if="itemData.newsTitle">
-				<div>{{itemData.newsId}}</div>
-				
-				
-				<div v-for="item in itemData.newsImage" >
-					<image class="image-list3" :src="item.imageUrl"></image>
+	<div>
+		<div class="list-cell" @click="bindClick">
+
+			<!-- 动态的顶部用户信息, 头像,昵称,性别,动态标题 -->
+			<div class="info-box">
+				<div class="userInfo-box">
+					<image class="face" :src="itemData.userInfo.faceUrl"></image> <!-- 用户头像 -->
+
+					<!-- 用户昵称,性别, 身份 -->
+					<div class="nickname-sex-idStatus-box">
+						<text class="nickname">{{itemData.userInfo.nickname}}</text> <!-- 用户昵称 -->
+						<!-- 性别 -->
+						<image class="sex" v-if="isBoy == 1" src="../../static/sex/boy.png"></image>
+						<image class="sex" v-if="isBoy == 2" src="../../static/sex/girl.png"></image>
+						<!-- 身份 -->
+						<text class="id-status">-{{isIdStatus}}</text>
+					</div>
+					<!-- 动态分类 -->
+					<text class="news-category">/{{itemData.newsCategory}}</text>
 				</div>
-				
-                <!-- <div :class="[isImgRight?'media-image-right':'',isImgLeft?'media-image-left':'']">
-                    <text :class="['media-title',isImgRight||isImgLeft?'media-title2':'']">{{data.title}}</text>
-                    <div v-if="showImg" :class="['image-section',isImgRight?'image-section-right':'',isImgLeft?'image-section-left':'']">
-                        <image :class="['image-list1',isImgRight||isImgLeft?'image-list2':'']" v-if="data.image_url"
-                            :src="data.image_url"></image>
-                        <image class="image-list3" v-if="data.image_list" :src="source.url" v-for="(source, i) in data.image_list"
-                            :key="i" />
-                    </div>
-                </div> -->
-                <!-- <div class="media-foot">
-                    <div class="media-info">
-                        <text class="info-text">{{data.source}}</text>
-                        <text class="info-text">{{data.comment_count}}条评论</text>
-                        <text class="info-text">{{data.datetime}}</text>
-                    </div>
-                    <div class="max-close-view" @click="close">
-                        <div class="close-view"><text class="close">×</text></div>
-                    </div>
-                </div> -->
-				
-            </div>
-        </div>
-    </div>
+				<!-- 动态描述标题 -->
+				<div class="text-box">
+					<text class="text">{{itemData.newsTitle}}</text>
+				</div>
+			</div>
+
+			<!-- 动态的图片 -->
+			<image class="image-1" v-if="imgListSize == 1" resize="cover" :src="imageList[0].imageUrl"></image>
+
+			<div class="image-2-box" v-if="imgListSize == 2">
+				<image class="image-2" resize="cover" :src="imageList[0].imageUrl"></image>
+				<image class="image-2" resize="cover" :src="imageList[1].imageUrl"></image>
+			</div>
+
+			<div class="image-3-box" v-if="imgListSize == 3">
+				<image class="image-3-0" resize="cover" :src="imageList[0].imageUrl"></image>
+				<image class="image-3-1" resize="cover" :src="imageList[1].imageUrl"></image>
+				<image class="image-3-2" resize="cover" :src="imageList[2].imageUrl"></image>
+			</div>
+
+			<div class="image-4-box" v-if="imgListSize == 4">
+				<image class="image-1" resize="cover" :src="imageList[0].imageUrl"></image>
+				<div class="image4">
+					<image v-for="(i, index) in [1,2,3]" class="image-4" resize="cover" :src="imageList[i].imageUrl" :key="index"></image>
+				</div>
+			</div>
+
+			<!-- 底部的点赞,评论,举报图标和时间 -->
+			<div class="icon-box">
+				<image class="icon" src="../../static/news/like.png"></image>
+				<image class="icon" src="../../static/news/comment.png"></image>
+				<image class="icon" src="../../static/news/more.png"></image>
+				<text class="date">{{itemData.dateTime}}</text>
+			</div>
+
+		</div>
+	</div>
 </template>
 
 <script>
-    export default {
+	export default {
 		//这里的data属性是接收父组件传过来的 单条动态数据对象
-        props: {
-            itemData: {
-                type: Object,
-                default: function(e) {
-                    return {}
-                }
-            }
-        },
-		data(){
-			return{
-	
+		props: {
+			itemData: {
+				type: Object,
+				default: function(e) {
+					return {}
+				}
+			}
+		},
+		data() {
+			return {
+				imageList: [] //主页动态的图片列表
 			}
 		},
 		created() {
 			console.log(JSON.stringify(this.itemData.newsImage[0].imageUrl))
+			this.imageList = this.itemData.newsImage; //主页动态的图片列表
 		},
-        computed: {
-            isImgRight() {
-                return this.data.article_type === 2
-            },
-            isImgLeft() {
-                return this.data.article_type === 1
-            },
-            showImg() {
-                return this.data.image_list || this.data.image_url
-            }
-        },
-        methods: {
-            close(e) {
-                this.$emit('close');
-                e.stopPropagation();
-            },
-            bindClick() {
-                this.$emit('click');
-            }
-        }
-    }
+		computed: {
+			isImgRight() {
+				return this.data.article_type === 2
+			},
+			isImgLeft() {
+				return this.data.article_type === 1
+			},
+			showImg() {
+				return this.data.image_list || this.data.image_url
+			},
+			isBoy() {
+				return this.itemData.userInfo.sex;
+			},
+			isIdStatus() {
+				var idStatus = this.itemData.userInfo.idStatus;
+				if (idStatus == 1) {
+					return "顾客"
+				} else if (idStatus == 0) {
+					return "店主"
+				} else {
+					return ''
+				}
+			},
+			imgListSize() {
+				return this.imageList.length;
+			}
+		},
+		methods: {
+			close(e) {
+				this.$emit('close');
+				e.stopPropagation();
+			},
+			bindClick() {
+				this.$emit('click');
+			}
+		}
+	}
 </script>
 
 <style>
-    .list-cell {
-        width: 750px;
-        padding: 0 30px;
-    }
+	.list-cell {
+		width: 750px;
+		margin-top: 15px;
+		background-color: #F5F5F5;
+	}
 
-    .list-cell:active {
-        background-color: #eeeeee;
-    }
+	.list-cell:active {
+		background-color: #eeeeee;
+	}
 
-    .media-list {
-        flex: 1;
-        flex-direction: column;
-        border-bottom-width: 1px;
-        border-bottom-style: solid;
-        border-bottom-color: #c8c7cc;
-        padding: 20px 0;
-    }
+	.info-box {
+		width: 750px;
+		border-top-left-radius: 10px;
+		border-top-right-radius: 10px;
+	}
 
-    .media-image-right {
-        flex-direction: row;
-    }
+	.userInfo-box {
+		width: 750px;
+		height: 110px;
+		padding: 5px;
+		background-color: #fff;
+		display: flex;
+		flex-direction: row;
+	}
+	.userInfo-box:active{
+		background-color: #eeeeee;
+	}
 
-    .media-image-left {
-        flex-direction: row-reverse;
-    }
+	.face {
+		width: 100px;
+		height: 100px;
+		margin-right: 10px;
+		border-radius: 50%;
+	}
 
-    .media-title {
-        flex: 1;
-    }
+	.nickname-sex-idStatus-box {
+		width: 450px;
+		height: 100px;
+	}
 
-    .media-title {
-        lines: 3;
-        text-overflow: ellipsis;
-        font-size: 32px;
-        color: #555555;
-    }
+	.nickname {
+		font-size: 35px;
+		line-height: 60px;
+	}
 
-    .media-title2 {
-        flex: 1;
-        margin-top: 6px;
-        line-height: 40px;
-    }
+	.sex {
+		width: 28px;
+		height: 28px;
+		margin: 0 10px;
+	}
 
-    .image-section {
-        margin-top: 20px;
-        flex-direction: row;
-        justify-content: space-between;
-    }
+	.id-status {
+		position: absolute;
+		bottom: 10px;
+		left: 40px;
+		color: #707070;
+		font-size: 28px;
 
-    .image-section-right {
-        margin-top: 0px;
-        margin-left: 10px;
-        width: 225px;
-        height: 146px;
-    }
+	}
 
-    .image-section-left {
-        margin-top: 0px;
-        margin-right: 10px;
-        width: 225px;
-        height: 146px;
-    }
+	.news-category {
+		width: 150px;
+		height: 100px;
+		line-height: 100px;
+		text-align: center;
+		font-size: 30px;
+		color: #707070;
+	}
 
-    .image-list1 {
-        width: 690px;
-        height: 481px;
-    }
+	.text-box {
+		width: 750px;
+		padding: 10px;
+		background-color: #fff;
+	}
 
-    .image-list2 {
-        width: 225px;
-        height: 146px;
-    }
+	.text {
+		font-size: 28px;
+		color: #555555;
+	}
 
-    .image-list3 {
-        width: 225px;
-        height: 146px;
-    }
+	.icon-box {
+		width: 750px;
+		height: 80px;
+		margin-top: 5px;
+		background-color: #fff;
+		display: flex;
+		flex-direction: row;
+		padding: 10px 0;
+	}
+	.icon-box:active{
+		background-color: #eeeeee;
+	}
+	
+	.icon{
+		width: 60px;
+		height: 60px;
+		margin-left: 45px;
+	}
+	.date{
+		font-size: 30px;
+		color: #999999;
+		position: absolute;
+		right: 30px;
+		line-height: 80px;
+	}
 
-    .media-info {
-        flex-direction: row;
-    }
+	.image-1 {
+		width: 750px;
+		height: 400px;
+		margin-bottom: 3px;
+	}
 
-    .info-text {
-        margin-right: 20px;
-        color: #999999;
-        font-size: 24px;
-    }
+	.image-2-box {
+		width: 750px;
+		height: 340px;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
 
-    .media-foot {
-        margin-top: 20px;
-        flex-direction: row;
-        justify-content: space-between;
-    }
+	.image-2 {
+		/* flex: 1; */
+		width: 373px;
+		height: 340px;
+	}
 
-    .max-close-view {
-        align-items: center;
-        justify-content: flex-end;
-        flex-direction: row;
-        height: 40px;
-        width: 80px;
-    }
+	.image-3-box {
+		width: 750px;
+		height: 500px;
+	}
 
-    .close-view {
-        border-style: solid;
-        border-width: 1px;
-        border-color: #999999;
-        border-radius: 10px;
-        justify-content: center;
-        height: 30px;
-        width: 40px;
-        line-height: 30px;
-    }
+	.image-3-0 {
+		width: 500px;
+		height: 500px;
+		position: absolute;
+		left: 0;
+	}
 
-    .close {
-        text-align: center;
-        color: #999999;
-        font-size: 28px;
-    }
+	.image-3-1 {
+		width: 248px;
+		height: 248px;
+		position: absolute;
+		right: 0;
+	}
+
+	.image-3-2 {
+		width: 247px;
+		height: 248px;
+		position: absolute;
+		right: 0;
+		bottom: 0;
+	}
+
+	.image-4-box {
+		width: 750px;
+		height: 640px;
+	}
+
+	.image4 {
+		width: 750px;
+		height: 240;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+
+	.image-4 {
+		width: 248px;
+		height: 240;
+	}
 </style>
