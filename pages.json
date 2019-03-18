@@ -69,7 +69,7 @@
 	],
 	"globalStyle": {},
 	"tabBar": {
-		"backgroundColor": "#F5F5F5",
+		"backgroundColor": "#FFFFFF",
 		"selectedColor": "#ea5455",
 		"list": [{
 				"pagePath": "pages/index/index",

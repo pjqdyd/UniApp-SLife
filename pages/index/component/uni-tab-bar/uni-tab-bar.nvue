@@ -10,14 +10,6 @@
 				</div>
 			</scroller>
 		</div>
-		<!-- 顶部分类栏 不可滑动-->
-		<!-- <div v-else class="wrap tab-bar">
-			<div class="tab-bar-item" v-for="(tabBar, t) in tabBars" :key="t" :ref="tabBar.id + t" @click="change(t)">
-				<text class="tab-bar-title" :class="[tabIndex === t ? 'active' : '']">{{
-					tabBar.name
-				}}</text>
-			</div>
-		</div> -->
 		<!-- 顶部分类栏 不可滑动 修改增加底部条-->
 		<div v-else class="wrap tab-bar">
 			<div class="tab-bar-item" v-for="(tabBar, t) in tabBars" :key="t" :ref="tabBar.id + t" :class="[tabIndex === t ? 'active' : '']"
@@ -98,13 +90,10 @@
 	}
 
 	.tab-bar {
-		/* justify-content: space-between;
-	       padding-left: 30px;
-	       padding-right: 30px; */
 		width: 750px;
 		height: 56px;
 		line-height: 56px;
-		background-color: whitesmoke;
+		background-color: #fff;
 		padding-left: 100px;
 		padding-right: 100px;
 		box-sizing: border-box;
@@ -120,14 +109,6 @@
 	}
 
 	.tab-bar-item {
-		/* height: 75px;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center; */
-		/* margin: 0 25px; */
-		/* display: inline-block; */
-		/* flex-direction: column; */	
-		/* justify-content: center; */
 		width: 183.3px;
 		text-align: center;
 		line-height: 56px;
@@ -143,11 +124,6 @@
 	}
 
 	.tab-bar-title {
-		/* height: 75px;
-		line-height: 80px;
-		font-size: 30px;
-		margin: 0 15px;
-		color: #555; */
 		color: #555;
 		line-height: 56px;
 		font-size: 28px;

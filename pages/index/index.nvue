@@ -120,14 +120,6 @@
 				}
 			})
 
-			//把3页数据加进数组拼接好后赋给newsitems
-			//this.newsitems = this.addListData(recommendList)
-
-			// 			ary.push(aryItem1) //更新页数据
-			// 			ary.push(aryItem1) //推荐页数据
-			// 			ary.push(aryItem1) //热门页数据
-			// 			
-			// 			console.log()
 
 			//监听导航栏的"三"的点击事件(展开/关闭侧边栏)
 			uni.onNavigationBarButtonTap((e) => {
