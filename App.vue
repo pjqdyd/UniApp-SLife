@@ -6,12 +6,40 @@
 			uni.getStorage({
 				key: 'SystemInfo',
 				success(res) {
-					if(res.data == null || res.data == undefined || res.data == ''){
-						this.getSystemInfo()
+					if (res.data == null || res.data == undefined || res.data == '') {
+						//this.getSystemInfo()
+						//获取设备的信息
+						uni.getSystemInfo({
+							success(res) {
+								console.log(res)
+								//保存设备信息
+								uni.setStorage({
+									key: 'SystemInfo',
+									data: res,
+									success: function() {
+										console.log('保存设备信息成功');
+									}
+								})
+							}
+						})
 					}
 				},
 				fail() {
-					this.getSystemInfo()
+					//this.getSystemInfo()
+					//获取设备的信息
+					uni.getSystemInfo({
+						success(res) {
+							console.log(res)
+							//保存设备信息
+							uni.setStorage({
+								key: 'SystemInfo',
+								data: res,
+								success: function() {
+									console.log('保存设备信息成功');
+								}
+							})
+						}
+					})
 				}
 			})
 		},
@@ -22,22 +50,9 @@
 			console.log('App Hide')
 		},
 		//自定义的获取设备并保存信息的方法
-		getSystemInfo: function(){
-			//获取设备的信息
-			uni.getSystemInfo({
-				success(res) {
-					console.log(res)
-					//保存设备信息
-					uni.setStorage({
-						key: 'SystemInfo',
-						data: res,
-						success: function() {
-							console.log('保存设备信息成功');
-						}
-					})
-				}
-			})
-		}
+		// 		getSystemInfo: function(){
+		// 			
+		// 		}
 	}
 </script>
 
