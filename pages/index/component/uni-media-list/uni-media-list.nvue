@@ -48,8 +48,13 @@
 
 			<!-- 底部的点赞,评论,举报图标和时间 -->
 			<div class="icon-box">
-				<image class="icon" src="../../static/news/like.png"></image>
-				<image class="icon" src="../../static/news/comment.png"></image>
+				<image class="icon" @click="clickLike" :src="isLike? '../../static/news/like.png': '../../static/news/click/like1.png' ">
+					<text class="count">{{likeCount}}</text>
+				</image>
+				<image class="icon" @click="clickComment" src="../../static/news/comment.png">
+					<text class="count">{{commentCount}}</text>
+				</image>
+
 				<image class="icon" src="../../static/news/more.png"></image>
 				<text class="date">{{itemData.dateTime}}</text>
 			</div>
@@ -71,28 +76,26 @@
 		},
 		data() {
 			return {
-				imageList: [] //主页动态的图片列表
+				imageList: [], //主页动态的图片列表
+				isLike: '', //是否点赞
+				likeCount: 0 ,//点赞数
+				commentCount: 0 //评论数
 			}
 		},
 		created() {
+			var data = this.itemData;
 			console.log(JSON.stringify(this.itemData.newsImage[0].imageUrl))
-			this.imageList = this.itemData.newsImage; //主页动态的图片列表
+			this.imageList = data.newsImage; //主页动态的图片列表
+			this.isLike = data.isLike;
+			this.likeCount = data.likeCount;
+			this.commentCount = data.commentCount;
 		},
 		computed: {
-			isImgRight() {
-				return this.data.article_type === 2
-			},
-			isImgLeft() {
-				return this.data.article_type === 1
-			},
-			showImg() {
-				return this.data.image_list || this.data.image_url
-			},
 			isBoy() {
 				return this.itemData.userInfo.sex;
 			},
 			isIdStatus() {
-				var idStatus = this.itemData.userInfo.idStatus;
+				let idStatus = this.itemData.userInfo.idStatus;
 				if (idStatus == 1) {
 					return "顾客"
 				} else if (idStatus == 0) {
@@ -112,6 +115,22 @@
 			},
 			bindClick() {
 				this.$emit('click');
+			},
+			//点击了点赞/取消点赞
+			clickLike() {
+				if (this.isLike == 0) {
+					//TODO
+					this.isLike = 1
+					this.likeCount++;				
+				} else {
+					//TODO	
+					this.isLike = 0
+					this.likeCount--;
+				}
+			},
+			//点击了评论按钮
+			clickComment() {
+				console.log("评论")
 			}
 		}
 	}
@@ -142,7 +161,8 @@
 		display: flex;
 		flex-direction: row;
 	}
-	.userInfo-box:active{
+
+	.userInfo-box:active {
 		background-color: #eeeeee;
 	}
 
@@ -205,18 +225,29 @@
 		background-color: #fff;
 		display: flex;
 		flex-direction: row;
-		padding: 10px 0;
 	}
-	.icon-box:active{
+
+	.icon-box:active {
 		background-color: #eeeeee;
 	}
-	
-	.icon{
-		width: 60px;
-		height: 60px;
-		margin-left: 45px;
+
+	.icon {
+		width: 80px;
+		height: 80px;
+		border-width: 10px;
+		border-color: #FFFFFF;
+		margin-left: 25px;
 	}
-	.date{
+
+	.icon:active {
+		background-color: #eeeeee;
+	}
+	.count{
+		font-size: 22px;
+		color: #707070;
+		margin-top: 40px;
+	}
+	.date {
 		font-size: 30px;
 		color: #999999;
 		position: absolute;
@@ -239,7 +270,6 @@
 	}
 
 	.image-2 {
-		/* flex: 1; */
 		width: 373px;
 		height: 340px;
 	}

@@ -87,21 +87,6 @@
 		},
 		created() {
 			var url = conf.serverUrl;
-
-			// 			var array1 = [1,2,3];
-			// 			var array2 = [4,5];
-			// 			var array3 = array1.concat(array2);
-			// 			console.log(JSON.stringify(array3[4]))
-			// 			setTimeout(() => {
-			// 				//this.newsitems = this.randomfn();
-			// 			}, 150)
-
-			// 			let ary = []; //最外层数组对象,存放三个分类页的数据
-			// 			//一个aryItem对象就是一个分类页
-			// 			let aryItem = {
-			// 				loadingText: "加载更多...",
-			// 				data: []
-			// 			};
 			console.log(url)
 			var recommendList = [] //推荐页的数据
 			//请求服务端数据
@@ -143,16 +128,6 @@
 				console.log("前往详情页面")
 				console.log(JSON.stringify(e.newsId))
 			},
-			// 			close(index1, index2) {
-			// 				uni.showModal({
-			// 					content: '是否删除本条信息？',
-			// 					success: (res) => {
-			// 						if (res.confirm) {
-			// 							this.newsitems[index1].data.splice(index2, 1);
-			// 						}
-			// 					}
-			// 				})
-			// 			},
 			loadMore(e) {
 				setTimeout(() => {
 					this.addData(e);
@@ -160,13 +135,6 @@
 			},
 			addData(e) {
 				console.log("加载更多...");
-				// 				if (this.newsitems[e].data.length > 30) {
-				// 					this.newsitems[e].loadingText = '没有更多了';
-				// 					return;
-				// 				}
-				// 				for (let i = 1; i <= 10; i++) {
-				// 					this.newsitems[e].data.push(this['data' + Math.floor(Math.random() * 5)]);
-				// 				}
 			},
 			async changeTab(e) {
 				this.tabIndex = e.index;
@@ -188,13 +156,9 @@
 						loadingText: "加载更多...",
 						data: []
 					};
-					// 					for (let j = 1; j <= 5; j++) {
-					// 						aryItem.data.push(list); //
-					// 					}
 					aryItem.data.push(list); //添加每一页的data数据
 					ary.push(aryItem); //添加该页进ary数组
 				}
-				//console.log(ary)
 				return ary;
 			},
 			onrefresh(event) {
