@@ -53,7 +53,9 @@
 			"style": {
 				"navigationBarTitleText": "聊天",
 				"navigationBarBackgroundColor": "#ea5455",
-				"navigationBarTextStyle": "white"
+				"navigationBarTextStyle": "white",
+				"app-plus": {
+				}
 			}
 		},
 		{

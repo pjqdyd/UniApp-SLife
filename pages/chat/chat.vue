@@ -16,11 +16,13 @@
 				focus: false,
 				isShowView: true,
 				options: [{
+					tag: 1,
 					text: '置顶',
 					style: {
 						backgroundColor: '#C7C6CD'
 					}
 				}, {
+					tag: 0,
 					text: '删除',
 					style: {
 						backgroundColor: '#dd524d'

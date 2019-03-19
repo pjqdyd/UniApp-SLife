@@ -4,9 +4,9 @@
 			<view class="uni-swipe-action">
 				<view class="uni-swipe-action__container" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd"
 				 @touchcancel="touchEnd" :style="{'transform':messageIndex == i ? transformX : 'translateX(0px)','-webkit-transform':messageIndex == i ? transformX : 'translateX(0px)'}"
-				 :data-index="i" :data-disabled="it.disabled">
+				 :data-index="i" :data-disabled="it.disabled + 1">
 					<view class="uni-swipe-action__content " @click="toMessageDetail(i)">
-						<view class="item" :class="it.stick  ? 'stick' : ''">
+						<view class="item" :class=" i==0  ? 'stick' : ''">
 							<view class="item-left">
 								<image :src="it.url" class="image" />
 							</view>
@@ -46,7 +46,7 @@
 			return {
 				elId: elId,
 				transformX: 'translateX(0px)',
-				messageIndex: -1,
+				messageIndex: -1
 			}
 		},
 		created() {
@@ -76,23 +76,30 @@
 					this.btnGroupWidth = ret[0].width;
 				});
 			},
+			//删除或置顶的按钮点击事件
 			bindClickBtn(item, index) {
+				if (item.tag == 1) {
+					this.messagesList.unshift(this.messagesList[index]) //向数组顶部添加元素
+					this.messagesList.splice(index + 1, 1) //删除原来位置的元素
+				}
+				if (item.tag == 0) {
+					this.messagesList.splice(index, 1)
+				}
 				this.messageIndex = -1;
 				console.log(item.text + 'message第' + index + '项');
-
 			},
 			touchStart(event) {
 				if (event.currentTarget.dataset.disabled === true) {
 					return;
 				}
+				this.touchStatus = true;
 				this.startX = event.touches[0].pageX;
 				this.startY = event.touches[0].pageY;
 				this.startCilentY = event.touches[0].clientY; //单条消息组件开始距离窗口顶部的高度
 			},
 			touchMove(event) {
-				var endCilentY = event.touches[0].clientY; //单条消息组件滑动距离窗口顶部的高度
-				var moveClientY = endCilentY - this.startCilentY; //单条消息组件在屏幕的y轴上移动的距离
-				console.log(moveClientY)
+				let endCilentY = event.touches[0].clientY; //单条消息组件滑动距离窗口顶部的高度
+				let moveClientY = endCilentY - this.startCilentY; //单条消息组件在屏幕的y轴上移动的距离
 				//如果在y轴上移动距离过大,(比如大于20),说明用户在下拉或上推,取消左右滑动
 				if (this.direction === 'Y' || Math.abs(moveClientY) > 20 || event.currentTarget.dataset.disabled === true) {
 					this.direction = '';
@@ -100,15 +107,10 @@
 				}
 				var moveY = event.touches[0].pageY - this.startY,
 					moveX = event.touches[0].pageX - this.startX;
-
-				if (!this.isMoving && (Math.abs(moveY)) > (Math.abs(moveX))) { //纵向滑动
-					this.direction = 'Y';
-					return;
-				}
-
 				this.direction = moveX > 0 ? 'right' : 'left';
 				this.messageIndex = moveX < 0 ? event.currentTarget.dataset.index : -1;
 				this.isMoving = true;
+
 			},
 			touchEnd(event) {
 				this.isMoving = false;
@@ -172,6 +174,10 @@
 			flex-direction: row;
 			align-items: center;
 		}
+	}
+
+	.item:active {
+		background-color: #eeeeee;
 	}
 
 	.item {
