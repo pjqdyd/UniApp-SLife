@@ -2,7 +2,7 @@
 	<div>
 		<div class="list-cell" @click="bindClick">
 
-			<!-- 动态的顶部用户信息, 头像,昵称,性别,动态标题 -->
+			<!-- 动态的顶部用户信息, 头像,昵称,性别,动态标题  280upx-->
 			<div class="info-box">
 				<div class="userInfo-box">
 					<image class="face" :src="itemData.userInfo.faceUrl"></image> <!-- 用户头像 -->
@@ -25,8 +25,8 @@
 				</div>
 			</div>
 
-			<!-- 动态的图片 -->
-			<image class="image-1" v-if="imgListSize == 1" resize="cover" :src="imageList[0].imageUrl"></image>
+			<!-- 动态的图片 盒子高度分别为 400 340 500 660 upx-->
+			<image  class="image-1" v-if="imgListSize == 1" resize="cover" :src="imageList[0].imageUrl"></image>
 
 			<div class="image-2-box" v-if="imgListSize == 2">
 				<image class="image-2" resize="cover" :src="imageList[0].imageUrl"></image>
@@ -84,7 +84,7 @@
 		},
 		created() {
 			var data = this.itemData;
-			console.log(JSON.stringify(this.itemData.newsImage[0].imageUrl))
+			//console.log(JSON.stringify(this.itemData.newsImage[0].imageUrl))
 			this.imageList = data.newsImage; //主页动态的图片列表
 			this.isLike = data.isLike;
 			this.likeCount = data.likeCount;
@@ -138,8 +138,9 @@
 
 <style>
 	.list-cell {
-		width: 750px;
-		margin-top: 15px;
+		width: 750upx;
+		height: 100%;
+		margin-top: 20upx;
 		background-color: #F5F5F5;
 	}
 
@@ -148,18 +149,19 @@
 	}
 
 	.info-box {
-		width: 750px;
-		border-top-left-radius: 10px;
-		border-top-right-radius: 10px;
+		width: 750upx;
+		border-top-left-radius: 10upx;
+		border-top-right-radius: 10upx;
 	}
 
 	.userInfo-box {
-		width: 750px;
-		height: 110px;
-		padding: 5px;
+		width: 750upx;
+		height: 110upx;
+		padding: 5upx;
 		background-color: #fff;
 		display: flex;
 		flex-direction: row;
+		position: relative;
 	}
 
 	.userInfo-box:active {
@@ -167,61 +169,62 @@
 	}
 
 	.face {
-		width: 100px;
-		height: 100px;
-		margin-right: 10px;
+		width: 100upx;
+		height: 100upx;
+		margin-right: 10upx;
 		border-radius: 50%;
 	}
 
 	.nickname-sex-idStatus-box {
-		width: 450px;
-		height: 100px;
+		width: 450upx;
+		height: 100upx;
+		position: relative;
 	}
 
 	.nickname {
-		font-size: 35px;
-		line-height: 60px;
+		font-size: 35upx;
+		line-height: 60upx;
 	}
 
 	.sex {
-		width: 28px;
-		height: 28px;
-		margin: 0 10px;
+		width: 28upx;
+		height: 28upx;
+		margin: 0 10upx;
 	}
 
 	.id-status {
 		position: absolute;
-		bottom: 10px;
-		left: 40px;
+		bottom: 10upx;
+		left: 40upx;
 		color: #707070;
-		font-size: 28px;
+		font-size: 28upx;
 
 	}
 
 	.news-category {
-		width: 150px;
-		height: 100px;
-		line-height: 100px;
+		width: 150upx;
+		height: 100upx;
+		line-height: 100upx;
 		text-align: center;
-		font-size: 30px;
+		font-size: 30upx;
 		color: #707070;
 	}
 
 	.text-box {
-		width: 750px;
-		padding: 10px;
+		width: 750upx;
+		padding: 10upx;
 		background-color: #fff;
 	}
 
 	.text {
-		font-size: 28px;
+		font-size: 28upx;
 		color: #555555;
 	}
 
 	.icon-box {
-		width: 750px;
-		height: 80px;
-		margin-top: 5px;
+		width: 750upx;
+		height: 80upx;
+		margin-top: 5upx;
 		background-color: #fff;
 		display: flex;
 		flex-direction: row;
@@ -232,90 +235,92 @@
 	}
 
 	.icon {
-		width: 80px;
-		height: 80px;
-		border-width: 10px;
+		width: 80upx;
+		height: 80upx;
+		border-width: 10upx;
 		border-color: #FFFFFF;
-		margin-left: 25px;
+		margin-left: 25upx;
 	}
 
 	.icon:active {
 		background-color: #eeeeee;
 	}
 	.count{
-		font-size: 22px;
+		font-size: 22upx;
 		color: #707070;
-		margin-top: 40px;
+		margin-top: 40upx;
 	}
 	.date {
-		font-size: 30px;
+		font-size: 30upx;
 		color: #999999;
 		position: absolute;
-		right: 30px;
-		line-height: 80px;
+		right: 30upx;
+		line-height: 80upx;
 	}
 
 	.image-1 {
-		width: 750px;
-		height: 400px;
-		margin-bottom: 3px;
+		width: 750upx;
+		height: 400upx;
+		margin-bottom: 3upx;
 	}
 
 	.image-2-box {
-		width: 750px;
-		height: 340px;
+		width: 750upx;
+		height: 340upx;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
 	}
 
 	.image-2 {
-		width: 373px;
-		height: 340px;
+		width: 373upx;
+		height: 340upx;
 	}
 
 	.image-3-box {
-		width: 750px;
-		height: 500px;
+		position: relative;
+		width: 750upx;
+		height: 500upx;
 	}
 
 	.image-3-0 {
-		width: 500px;
-		height: 500px;
+		width: 500upx;
+		height: 500upx;
 		position: absolute;
 		left: 0;
 	}
 
 	.image-3-1 {
-		width: 248px;
-		height: 248px;
+		width: 248upx;
+		height: 248upx;
 		position: absolute;
 		right: 0;
 	}
 
 	.image-3-2 {
-		width: 247px;
-		height: 248px;
+		width: 247upx;
+		height: 248upx;
 		position: absolute;
 		right: 0;
 		bottom: 0;
 	}
 
 	.image-4-box {
-		width: 750px;
-		height: 640px;
+		position: relative;
+		width: 750upx;
+		height: 660upx;
 	}
 
 	.image4 {
-		width: 750px;
-		height: 240px;
+		width: 750upx;
+		height: 240upx;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
 	}
 
 	.image-4 {
-		width: 248px;
-		height: 240px;
+		width: 248upx;
+		height: 240upx;
 	}
 </style>
