@@ -1,0 +1,160 @@
+<template>
+	<view>
+		<view class="list-item">
+			<!-- 商店图片 -->
+			<view class="image-box">
+				<image class="image-box" :src="shopItem.imageUrl"></image>
+			</view>
+			<!-- 商店信息 -->
+			<view class="info-box">
+				<!-- 商店名称 -->
+				<view class="name-box">{{shopItem.shopName}}</view>
+				<!-- 星星评分/商店类目 -->
+				<view class="rate-cate-box">
+					<view class="rate-box">
+						<!-- 星星评分 -->
+						<uni-rate size="18" :value="shopItem.rate"></uni-rate>
+						<view class="rate-text">{{shopItem.rate}}</view>
+					</view>
+					<view class="cate-box">
+						<!-- 所属类目标签 -->
+						<uni-badge type="warning" :text="shopItem.category"></uni-badge>
+					</view>
+				</view>
+				<!-- 地址距离信息 -->
+				<view class="local-addr-box">
+					<view class="local-box">
+						<text class="iconfont text">&#xe611; {{shopItem.localAddr}} </text>
+					</view>
+					<view class="distance-box">距离: {{shopItem.distance}}</view>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import uniRate from "./rate/uni-rate.vue";
+	import uniBadge from "@/components/uni-badge/uni-badge.vue";
+	export default {
+		props: {
+			shopItem: {
+				type: Object,
+				default: function(e) {
+					return {}
+				}
+			}
+		},
+		components: {
+			uniRate,
+			uniBadge
+		},
+		created() {},
+		mounted() {}
+	}
+</script>
+
+<style lang="scss">
+	.list-item {
+		width: 750upx;
+		height: 170upx;
+		background-color: #fff;
+		margin-top: 2px;
+		padding: 5upx;
+		box-sizing: border-box;
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.image-box {
+		width: 160upx;
+		height: 160upx;
+		border-radius: 10upx;
+	}
+
+	.info-box {
+		width: 580upx;
+		height: 160upx;
+		padding: 10upx;
+		box-sizing: border-box;
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
+
+	.name-box {
+		width: 560upx;
+		height: 60upx;
+		font-size: 34upx;
+		line-height: 60upx;
+	}
+
+	.rate-cate-box {
+		width: 560upx;
+		height: 46upx;
+		padding-bottom: 10upx;
+		box-sizing: border-box;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+
+	.rate-box {
+		width: 380upx;
+		height: 36upx;
+		line-height: 36upx;
+		position: relative;
+	}
+
+	.rate-text {
+		width: 180upx;
+		height: 31upx;
+		color: #707070;
+		font-size: 26upx;
+		line-height: 31upx;
+		position: absolute;
+		top: 5upx;
+		right: 0;
+	}
+
+	.cate-box {
+		width: 150upx;
+		height: 40upx;
+		position: absolute;
+		right: 0;
+		top: 60upx;
+	}
+
+	.local-addr-box {
+		width: 560upx;
+		height: 45upx;
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.local-box {
+ 		display: flex;
+		flex-wrap: wrap;
+		flex-direction: row;
+		width: 370upx;
+		height: 45upx;
+		overflow: hidden;
+	}
+	.text {
+		line-height: 45upx;
+		font-size: 25upx;
+		color: #707070;
+		width: 100%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;	
+	}
+	.distance-box{
+		width: 190upx;
+		height: 45upx;
+		line-height: 45upx;
+		font-size: 26upx;
+		text-align: right;
+	}
+</style>
