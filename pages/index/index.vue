@@ -91,13 +91,13 @@
 				}
 			})
 		},
+		mounted() {
+			setTimeout(()=>{
+				this.getListHeight(); //获取并设置列表的高度信息(延迟是防止微信小程序节点还未挂载)
+			},200);	
+		},
 		updated() {
-			var that = this;
-			//获取所有列表的高度,设置给swiper,以免无法左右滑动
-			var query = uni.createSelectorQuery();
-			query.select("#swiperList").boundingClientRect(function(res) {
-				that.listHeight = res.height + 60 //默认的底部上拉加载框的高度60px
-			}).exec();			
+			this.getListHeight(); //重新获取并设置列表的高度信息
 		},
 		methods: {
 			//侧边栏的关闭事件
@@ -124,6 +124,15 @@
 			//跳转到详情页
 			goDetail(e) {
 				console.log(e)
+			},
+			//获取列表的高度信息,设置给swiper,以免无法左右滑动
+			getListHeight(){
+				var that = this;
+				//获取所有列表的高度
+				var query = uni.createSelectorQuery();
+				query.select("#swiperList").boundingClientRect(function(res) {
+					that.listHeight = res.height + 60 //默认的底部上拉加载框的高度60px
+				}).exec();
 			}
 		},
 		//监听导航栏的"..."的点击事件(展开/关闭侧边栏)
