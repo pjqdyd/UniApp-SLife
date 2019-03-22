@@ -49,11 +49,12 @@
 			<!-- 底部的点赞,评论,举报图标和时间 -->
 			<div class="icon-box">
 				<image class="icon" @click="clickLike" :src="isLike? '../../static/news/like.png': '../../static/news/click/like1.png' ">
-					<text class="count">{{likeCount}}</text>
 				</image>
+				<text class="count">{{likeCount}}</text>
+				
 				<image class="icon" @click="clickComment" src="../../static/news/comment.png">
-					<text class="count">{{commentCount}}</text>
 				</image>
+				<text class="count">{{commentCount}}</text>
 
 				<image class="icon" src="../../static/news/more.png"></image>
 				<text class="date">{{itemData.dateTime}}</text>
