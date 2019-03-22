@@ -99,6 +99,19 @@
 					}
 				});
 			}
+		},
+		//监听导航栏的"<"或"O"的点击事件
+		onNavigationBarButtonTap(e) {
+			console.log(e.index)
+			if (e.index == 1) {
+				uni.switchTab({
+					url: '/pages/index/index'
+				});
+			} else if (e.index == 0) {
+				console.log("点击了重新定位")
+			} else {
+				return;
+			}
 		}
 	}
 </script>

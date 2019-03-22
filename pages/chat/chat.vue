@@ -133,7 +133,13 @@
 			};
 		},
 		onLoad() {},
-		methods: {}
+		methods: {},
+		//监听导航栏的"<"的点击事件
+		onNavigationBarButtonTap(e) {
+			uni.switchTab({
+				url: '/pages/index/index'
+			});
+		}
 	};
 </script>
 

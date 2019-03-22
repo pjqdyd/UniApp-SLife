@@ -72,6 +72,13 @@
 				"navigationBarBackgroundColor": "#ea5455",
 				"navigationBarTextStyle": "white",
 				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"type":"back",
+							"fontSize": "25px",
+							"float":"left"
+						}]
+					}
 				}
 			}
 		},
