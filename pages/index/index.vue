@@ -92,9 +92,9 @@
 			})
 		},
 		mounted() {
-			setTimeout(()=>{
+			setTimeout(() => {
 				this.getListHeight(); //获取并设置列表的高度信息(延迟是防止微信小程序节点还未挂载)
-			},200);	
+			}, 200);
 		},
 		updated() {
 			this.getListHeight(); //重新获取并设置列表的高度信息
@@ -126,7 +126,7 @@
 				console.log(e)
 			},
 			//获取列表的高度信息,设置给swiper,以免无法左右滑动
-			getListHeight(){
+			getListHeight() {
 				var that = this;
 				//获取所有列表的高度
 				var query = uni.createSelectorQuery();
@@ -135,16 +135,22 @@
 				}).exec();
 			}
 		},
-		//监听导航栏的"..."的点击事件(展开/关闭侧边栏)
-		onNavigationBarButtonTap() {
-			if (this.isShowDrawer == false) {
-				this.isShowDrawer = true
-				console.log("展开侧边栏")
+		//监听导航栏的"三"或"O"的点击事件(展开/关闭侧边栏)
+		onNavigationBarButtonTap(e) {
+			console.log(e.index)
+			if (e.index == 0) {
+				if (this.isShowDrawer == false) {
+					this.isShowDrawer = true
+					console.log("展开侧边栏")
+				} else {
+					this.isShowDrawer = false
+					console.log("关闭侧边栏")
+				}
+			} else if (e.index == 1) {
+				console.log("点击了重新定位")
 			} else {
-				this.isShowDrawer = false
-				console.log("关闭侧边栏")
+				return;
 			}
-
 		}
 	}
 </script>

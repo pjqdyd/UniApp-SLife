@@ -14,6 +14,12 @@
 							"fontSrc": "/static/uni.ttf",
 							"fontSize": "25px",
 							"float": "left"
+						},{
+							"text": "\ue333",
+							"fontSrc": "/static/uni.ttf",
+							"fontSize": "25px",
+							"float":"right",
+							"width": "35px"
 						}]
 					},
 					"scrollIndicator": "none"
@@ -40,11 +46,21 @@
 				"app-plus": {
 					"titleNView": {
 						"searchInput": {
-							"placeholder": "请输入",
+							"placeholder": "请输入附近商铺",
 							"placeholderColor": "#696969",
 							"borderRadius": "20px",
 							"backgroundColor": "rgba(255,255,255,0.8)"
-						}
+						},
+						"buttons": [{
+							"text": "\ue333",
+							"fontSrc": "/static/uni.ttf",
+							"fontSize": "25px",
+							"float":"right"
+						},{
+							"type":"back",
+							"fontSize": "25px",
+							"float":"left"
+						}]
 					}
 				}
 			}

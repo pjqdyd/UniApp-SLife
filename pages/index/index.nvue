@@ -11,7 +11,8 @@
 
 			<uni-tab-content>
 				<!-- 3个内容页,tabNum表示当前分类的序号 -->
-				<list class="list" @loadmore="loadMore(tabNum)" show-scrollbar="false" loadmoreoffset="5" v-for="tabNum in tabNums" :key="tabNum">
+				<list class="list" @loadmore="loadMore(tabNum)" show-scrollbar="false" loadmoreoffset="5" v-for="tabNum in tabNums"
+				 :key="tabNum">
 					<!-- 内容顶部下拉刷新组件 -->
 					<refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown" :display="refreshing ? 'show' : 'hide'">
 						<text class="refresh-text">{{refreshText}} {{tabNum}}</text>
@@ -95,9 +96,9 @@
 				success: (res) => {
 					console.log("请求newsdata数据成功成功..")
 					recommendList = res.data.data.newsList
-					
+
 					this.listB = this.listB.concat(recommendList)
-					
+
 					console.log(this.listB)
 					this.homeList.push(this.listB)
 					this.homeList.push(this.listB)
@@ -106,16 +107,23 @@
 			})
 
 
-			//监听导航栏的"三"的点击事件(展开/关闭侧边栏)
+			//监听导航栏的"三"或"O"的点击事件(展开/关闭侧边栏)
 			uni.onNavigationBarButtonTap((e) => {
 				console.log("监听到原生标题栏按钮点击事件");
-				if (this.isShowDrawer == false) {
-					this.isShowDrawer = true
-					console.log("展开侧边栏")
+				if (e.index == 0) {
+					if (this.isShowDrawer == false) {
+						this.isShowDrawer = true
+						console.log("展开侧边栏")
+					} else {
+						this.isShowDrawer = false
+						console.log("关闭侧边栏")
+					}
+				} else if (e.index == 1) {
+					console.log("点击重新定位按钮")
 				} else {
-					this.isShowDrawer = false
-					console.log("关闭侧边栏")
+					return;
 				}
+
 			})
 		},
 		methods: {
