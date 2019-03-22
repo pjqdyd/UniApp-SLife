@@ -19,8 +19,10 @@
 
 			<!-- 分别对应3个分类页 -->
 			<swiper-item v-for="i in [0,1,2]" :key="i">
-				<view v-for="(item,index1) in homeList[i]" :key="index1" style="background-color: #eeeeee">
-					<uni-media-list :itemData="item" @close="close(index)" @click="goDetail(item)"></uni-media-list>
+				<view id="swiperList" style="background-color: #eeeeee; overflow: hidden;">
+					<view v-for="(item,index1) in homeList[i]" :key="index1">
+						<uni-media-list :itemData="item" @close="close(index)" @click="goDetail(item)"></uni-media-list>
+					</view>
 				</view>
 				<uni-load-more :loadingType="1"></uni-load-more>
 			</swiper-item>
@@ -86,10 +88,16 @@
 					this.homeList.push(this.listB)
 					this.homeList.push(this.listB)
 					this.homeList.push(this.listB)
-					this.getListHeight(this.listB);
 				}
 			})
-
+		},
+		updated() {
+			var that = this;
+			//获取所有列表的高度,设置给swiper,以免无法左右滑动
+			var query = uni.createSelectorQuery();
+			query.select("#swiperList").boundingClientRect(function(res) {
+				that.listHeight = res.height + 60 //默认的底部上拉加载框的高度60px
+			}).exec();			
 		},
 		methods: {
 			//侧边栏的关闭事件
@@ -107,8 +115,6 @@
 				} else {
 					this.currentItem = itemNum
 				}
-				this.listHeight = 0
-				this.getListHeight(this.homeList[itemNum]); //重新计算list的高度
 			},
 			//左右滑动更改当前页currentItem
 			switchPage: function(e) {
@@ -118,25 +124,6 @@
 			//跳转到详情页
 			goDetail(e) {
 				console.log(e)
-			},
-			//计算List高度的方法
-			getListHeight: function(list) {
-				for (var i = 0; i < list.length; i++) {
-					let imgListLength = list[i].newsImage.length;
-					if (imgListLength == 1) {
-						this.listHeight = 440;
-					} else if (imgListLength == 2) {
-						this.listHeight += 380;
-					} else if (imgListLength == 3) {
-						this.listHeight += 540;
-					} else if (imgListLength == 4) {
-						this.listHeight += 700;
-					} else {
-						return;
-					}
-				}
-				this.listHeight += 40 //最后加上底部loadmore的高度
-				console.log(this.listHeight)
 			}
 		},
 		//监听导航栏的"..."的点击事件(展开/关闭侧边栏)
@@ -178,7 +165,7 @@
 		font-size: 14px;
 		white-space: nowrap;
 		position: relative;
-		
+
 	}
 
 	.category-item {
