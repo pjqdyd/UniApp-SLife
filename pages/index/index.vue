@@ -81,7 +81,7 @@
 				url: url + '/newsdata',
 				success: (res) => {
 					console.log("请求newsdata数据成功成功..")
-					recommendList = res.data.data.newsList
+					recommendList = res.data.newsList
 
 					this.listB = this.listB.concat(recommendList)
 
@@ -147,7 +147,7 @@
 					console.log("关闭侧边栏")
 				}
 			} else if (e.index == 1) {
-				console.log("点击了重新定位")
+				console.log("点击了发布按钮")
 			} else {
 				return;
 			}

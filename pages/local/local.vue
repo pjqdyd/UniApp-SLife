@@ -53,9 +53,8 @@
 				url: url + '/locallist',
 				success: (res) => {
 					console.log("请求locallist数据成功成功..")
-					let list = res.data.data.localList
+					let list = res.data.localList
 					this.localList = this.localList.concat(list);
-					console.log(this.localList)
 				}
 			});
 

@@ -15,11 +15,11 @@
 							"fontSize": "25px",
 							"float": "left"
 						},{
-							"text": "\ue333",
+							"text": "\ue409",
 							"fontSrc": "/static/uni.ttf",
 							"fontSize": "25px",
 							"float":"right",
-							"width": "35px"
+							"width": "45px"
 						}]
 					},
 					"scrollIndicator": "none"
@@ -87,7 +87,16 @@
 			"style": {
 				"navigationBarTitleText": "我的信息",
 				"navigationBarBackgroundColor": "#ea5455",
-				"navigationBarTextStyle": "white"
+				"navigationBarTextStyle": "white",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"type":"back",
+							"fontSize": "25px",
+							"float":"left"
+						}]
+					}
+				}
 			}
 		}
 

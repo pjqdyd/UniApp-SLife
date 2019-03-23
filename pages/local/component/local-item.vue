@@ -65,6 +65,9 @@
 		display: flex;
 		justify-content: space-between;
 	}
+	.list-item:active{
+		background-color: #eeeeee;
+	}
 
 	.image-box {
 		width: 160upx;
