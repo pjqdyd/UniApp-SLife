@@ -21,7 +21,7 @@
 				</div>
 				<!-- 动态描述标题 -->
 				<div class="text-box">
-					<text class="text">{{itemData.newsTitle}}</text>
+					<div class="text">{{itemData.newsTitle}}</div>
 				</div>
 			</div>
 
@@ -142,6 +142,7 @@
 		width: 750upx;
 		height: 100%;
 		margin-top: 20upx;
+		box-sizing: border-box;
 		background-color: #F5F5F5;
 	}
 
@@ -159,6 +160,7 @@
 		width: 750upx;
 		height: 110upx;
 		padding: 5upx;
+		box-sizing: border-box;
 		background-color: #fff;
 		display: flex;
 		flex-direction: row;
@@ -214,10 +216,14 @@
 	.text-box {
 		width: 750upx;
 		padding: 10upx;
+		overflow: hidden;
+		box-sizing: border-box;
 		background-color: #fff;
 	}
 
 	.text {
+		box-sizing: border-box;
+		overflow: hidden;
 		font-size: 28upx;
 		color: #555555;
 	}
@@ -228,6 +234,7 @@
 		margin-top: 5upx;
 		background-color: #fff;
 		display: flex;
+		box-sizing: border-box;
 		flex-direction: row;
 	}
 
