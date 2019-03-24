@@ -5,6 +5,7 @@
 
 		<!-- 分段选项卡 -->
 		<uni-segmented-control :current="current" :values="items" @clickItem="onClickItem" style-type="text" active-color="#ea5455"></uni-segmented-control>
+
 		<!-- 对应的内容 -->
 		<view class="content">
 			<view v-show="current === 0">
@@ -12,15 +13,23 @@
 				<view v-for="(item, index) in followLocalList" :key="index">
 					<local-item :shopItem="item"></local-item>
 				</view>
+				<uni-load-more :loadingType="1"></uni-load-more>
 			</view>
+			
 			<view v-show="current === 1" class="like-news-box">
 				<!-- 点赞的动态的列表 -->
-				<view v-for="(item,index1) in likeNewslist" :key="index1">
+				<view v-for="(item,index1) in likeNewsList" :key="index1">
 					<uni-media-list :itemData="item" @close="close(index)" @click="goDetail(item)"></uni-media-list>
 				</view>
+				<uni-load-more :loadingType="1"></uni-load-more>
 			</view>
+			
 			<view v-show="current === 2">
-				选项卡3的内容
+				<!-- 发布的动态的列表 -->
+				<view v-for="(item,index1) in createNewsList" :key="index1">
+					<uni-media-list :itemData="item" @close="close(index)" @click="goDetail(item)"></uni-media-list>
+				</view>
+				<uni-load-more :loadingType="1"></uni-load-more>
 			</view>
 		</view>
 
@@ -35,13 +44,15 @@
 	import uniSegmentedControl from "./component/segmented/uni-segmented-control.vue"; //分段器组件
 	import localItem from "../local/component/local-item.vue"; //附近的商铺组件
 	import uniMediaList from "../index/component/uni-media-list/uni-media-list.vue"; //动态组件
+	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"; //加载更多组件
 
 	export default {
 		components: {
 			userInfo,
 			uniSegmentedControl,
 			localItem,
-			uniMediaList
+			uniMediaList,
+			uniLoadMore
 		},
 		data() {
 			return {
@@ -54,9 +65,13 @@
 				followLocalPage: 0,
 				followLocalTotal: 0,
 
-				likeNewslist: [], //点赞的动态列表
+				likeNewsList: [], //点赞的动态列表
 				likeNewsPage: 0,
-				likeNewsTotal: 0
+				likeNewsTotal: 0,
+
+				createNewsList: [], //发布的动态列表
+				createNewsPage: 0,
+				createNewsTotal: 0
 
 			};
 		},
@@ -73,11 +88,18 @@
 					this.userInfo = res.data.userInfo
 				}
 			});
-			
-			if(this.likeNewsPage == 0){
+
+			if (this.likeNewsPage == 0) {
 				this.getLikeNewsData();
 				this.likeNewsPage = 1 //先设置当前页为1
 			}
+
+			uni.getStorage({
+				key: "SystemInfo",
+				success: function(res) {
+					console.log(res)
+				}
+			})
 		},
 		updated() {},
 		watch: {},
@@ -91,8 +113,9 @@
 						this.followLocalPage = 1 //先设置当前页为1
 					} else if (index == 1 && this.likeNewsPage == 0) {
 						this.getLikeNewsData();
-					} else if (index == 2) {
-						console.log("2")
+					} else if (index == 2 && this.createNewsPage == 0) {
+						this.getCreateNewsData();
+						this.createNewsPage = 1 //先设置当前页为1
 					} else {
 						return
 					}
@@ -124,12 +147,27 @@
 					url: url + '/newsdata',
 					success: (res) => {
 						console.log("请求newsdata数据成功成功..")
-						list = res.data.newsList			
-						this.likeNewslist = this.likeNewslist.concat(list)	
+						list = res.data.newsList
+						this.likeNewsList = this.likeNewsList.concat(list)
 					}
 				})
 			},
-			
+
+			getCreateNewsData() {
+				console.log("获取发布的动态")
+				var url = conf.serverUrl;
+				var list = [] //动态数据
+				//请求服务端数据
+				uni.request({
+					url: url + '/newsdata',
+					success: (res) => {
+						console.log("请求newsdata数据成功成功..")
+						list = res.data.newsList
+						this.createNewsList = this.createNewsList.concat(list)
+					}
+				})
+			},
+
 			//动态详情
 			goDetail(item) {}
 		},
@@ -139,16 +177,21 @@
 			uni.switchTab({
 				url: '/pages/index/index'
 			});
-		}
+		},
+		//页面上拉触底
+		onReachBottom() {
+			console.log('refresh-触底');
+		},
 	}
 </script>
 
 <style lang="scss">
-	.content{
+	.content {
 		width: 750upx;
 		height: 100%;
 	}
-	.like-news-box{
+
+	.like-news-box {
 		width: 750upx;
 		overflow: hidden;
 	}

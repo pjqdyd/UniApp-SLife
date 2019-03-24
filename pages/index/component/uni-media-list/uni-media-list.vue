@@ -11,10 +11,10 @@
 					<div class="nickname-sex-idStatus-box">
 						<text class="nickname">{{itemData.userInfo.nickname}}</text> <!-- 用户昵称 -->
 						<!-- 性别 -->
-						<image class="sex" v-if="isBoy == 1" src="../../static/sex/boy.png"></image>
-						<image class="sex" v-if="isBoy == 2" src="../../static/sex/girl.png"></image>
+						<image class="sex-box" v-if="isBoy == 1" src="../../static/sex/boy.png"></image>
+						<image class="sex-box" v-if="isBoy == 2" src="../../static/sex/girl.png"></image>
 						<!-- 身份 -->
-						<text class="id-status">-{{isIdStatus}}</text>
+						<text class="id-status-text">-{{isIdStatus}}</text>
 					</div>
 					<!-- 动态分类 -->
 					<text class="news-category">/{{itemData.newsCategory}}</text>
@@ -141,8 +141,7 @@
 	.list-cell {
 		width: 750upx;
 		height: 100%;
-		margin-top: 20upx;
-		box-sizing: border-box;
+		border-bottom: 10upx solid #eeeeee;
 		background-color: #F5F5F5;
 	}
 
@@ -154,13 +153,13 @@
 		width: 750upx;
 		border-top-left-radius: 10upx;
 		border-top-right-radius: 10upx;
+		background-color: #fff;
 	}
 
 	.userInfo-box {
 		width: 750upx;
 		height: 110upx;
 		padding: 5upx;
-		box-sizing: border-box;
 		background-color: #fff;
 		display: flex;
 		flex-direction: row;
@@ -186,22 +185,24 @@
 
 	.nickname {
 		font-size: 35upx;
+		height: 60upx;
 		line-height: 60upx;
 	}
 
-	.sex {
+	.sex-box {
 		width: 28upx;
 		height: 28upx;
 		margin: 0 10upx;
 	}
 
-	.id-status {
+	.id-status-text {
 		position: absolute;
+		height: 40upx;
+		width: 100%;
 		bottom: 10upx;
 		left: 40upx;
 		color: #707070;
 		font-size: 28upx;
-
 	}
 
 	.news-category {

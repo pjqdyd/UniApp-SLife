@@ -59,7 +59,7 @@
 		width: 750upx;
 		height: 170upx;
 		background-color: #fff;
-		margin-top: 2px;
+		border-top: 4upx solid #eeeeee;
 		padding: 5upx;
 		box-sizing: border-box;
 		display: flex;

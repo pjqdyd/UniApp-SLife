@@ -26,20 +26,20 @@
 			</div>
 
 			<!-- 动态的图片 -->
-			<image class="image-1" v-if="imgListSize == 1" resize="cover" :src="imageList[0].imageUrl"></image>
+			<image class="image-1 image-act" v-if="imgListSize == 1" resize="cover" :src="imageList[0].imageUrl"></image>
 
-			<div class="image-2-box" v-if="imgListSize == 2">
+			<div class="image-2-box image-act" v-if="imgListSize == 2">
 				<image class="image-2" resize="cover" :src="imageList[0].imageUrl"></image>
 				<image class="image-2" resize="cover" :src="imageList[1].imageUrl"></image>
 			</div>
 
-			<div class="image-3-box" v-if="imgListSize == 3">
+			<div class="image-3-box image-act" v-if="imgListSize == 3">
 				<image class="image-3-0" resize="cover" :src="imageList[0].imageUrl"></image>
 				<image class="image-3-1" resize="cover" :src="imageList[1].imageUrl"></image>
 				<image class="image-3-2" resize="cover" :src="imageList[2].imageUrl"></image>
 			</div>
 
-			<div class="image-4-box" v-if="imgListSize == 4">
+			<div class="image-4-box image-act" v-if="imgListSize == 4">
 				<image class="image-1" resize="cover" :src="imageList[0].imageUrl"></image>
 				<div class="image4">
 					<image v-for="(i, index) in [1,2,3]" class="image-4" resize="cover" :src="imageList[i].imageUrl" :key="index"></image>
@@ -142,6 +142,10 @@
 		margin-top: 15px;
 		background-color: #F5F5F5;
 	}
+	
+	.image-act:active{
+		opacity: 0.7;
+	}
 
 	.list-cell:active {
 		background-color: #eeeeee;
@@ -227,10 +231,6 @@
 		flex-direction: row;
 	}
 
-	.icon-box:active {
-		background-color: #eeeeee;
-	}
-
 	.icon {
 		width: 80px;
 		height: 80px;
@@ -259,6 +259,7 @@
 		width: 750px;
 		height: 400px;
 		margin-bottom: 3px;
+		opacity: 1;
 	}
 
 	.image-2-box {
@@ -267,6 +268,7 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
+		opacity: 1;
 	}
 
 	.image-2 {
@@ -277,6 +279,7 @@
 	.image-3-box {
 		width: 750px;
 		height: 500px;
+		opacity: 1;
 	}
 
 	.image-3-0 {
