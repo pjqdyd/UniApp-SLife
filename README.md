@@ -1,10 +1,11 @@
 # _![app](https://github.com/pjqdyd/UniApp-SLife/blob/dev/appInfo/appIcon/icon40.png)_ UniApp-SLife  生活街(Street Life App)
 
 ### 简介: 
->生活街(Street Life)是一款O2O(online to offline)模式的,以附近线上实体商店预览交互,线下交易选购的生活服务类APP .<br>[简介详情](df)
+>生活街(Street Life)是一款O2O(online to offline)模式的,以附近线上实体商店预览交互,线下交易选购的生活服务类APP .<br>[简介详情](https://github.com/pjqdyd/UniApp-SLife/blob/master/appInfo/introduction/slife.md)
 
 #### 项目目录:
 ```
+ ├─appInfo               应用的一些介绍信息,演示,截图等
  ├─components            公用组件目录
  ├─common                存放全局的一些js变量配置, /style下存放icon字体图标样式
  ├─pages                 业务页面文件存放的目录
