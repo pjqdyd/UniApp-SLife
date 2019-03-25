@@ -12,4 +12,5 @@ const app = new Vue({
 app.$mount()
 
 //vue组件的全局的server地址
-Vue.prototype.server_Url = 'http://www.mockhttp.cn/mock'; 
+//Vue.prototype.server_Url = 'http://www.mockhttp.cn/mock'; 
+//因为 Vue 上挂载属性，不能在 .nvue 中使用。所以弃用

@@ -1,12 +1,15 @@
 <template>
-	<view class="content">
+	<view class="content" @click="handCilck">
 		<uni-swipe-action :options="options" :messagesList="messages">
 		</uni-swipe-action>
 	</view>
 </template>
 
 <script>
-	import uniSwipeAction from "./component/uni-swipe-action.vue"
+	import uniSwipeAction from "./component/uni-swipe-action.vue";
+	
+	import utils from '../../common/utils.js'; //一些工具方法
+	
 	export default {
 		components: {
 			uniSwipeAction
@@ -133,7 +136,18 @@
 			};
 		},
 		onLoad() {},
-		methods: {},
+		created() {},
+		onShow() {
+			//隐藏红点
+			uni.hideTabBarRedDot({
+				index: 2
+			})
+		},
+		methods: {
+			handCilck(){
+				console.log("点击")
+			}
+		},
 		//监听导航栏的"<"的点击事件
 		onNavigationBarButtonTap(e) {
 			uni.switchTab({
