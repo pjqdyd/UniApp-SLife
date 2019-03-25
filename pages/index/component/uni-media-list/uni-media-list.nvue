@@ -48,7 +48,7 @@
 
 			<!-- 底部的点赞,评论,举报图标和时间 -->
 			<div class="icon-box">
-				<image class="icon" @click="clickLike" :src="isLike? '../../static/news/like.png': '../../static/news/click/like1.png' ">
+				<image class="icon" @click="clickLike" :src="isLike? '../../static/news/click/like1.png': '../../static/news/like.png' ">
 					<text class="count">{{likeCount}}</text>
 				</image>
 				<image class="icon" @click="clickComment" src="../../static/news/comment.png">
@@ -77,7 +77,7 @@
 		data() {
 			return {
 				imageList: [], //主页动态的图片列表
-				isLike: '', //是否点赞
+				isLike: '', //是否点赞,1表示点赞了, 0表示未点赞
 				likeCount: 0 ,//点赞数
 				commentCount: 0 //评论数
 			}
@@ -122,11 +122,11 @@
 					//TODO
 					this.isLike = 1
 					this.likeCount++;				
-				} else {
+				} else if(this.isLike == 1){
 					//TODO	
 					this.isLike = 0
 					this.likeCount--;
-				}
+				}else{return}
 			},
 			//点击了评论按钮
 			clickComment() {

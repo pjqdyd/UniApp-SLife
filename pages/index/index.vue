@@ -123,7 +123,7 @@
 			},
 			//跳转到详情页
 			goDetail(e) {
-				console.log(e)
+				console.log("跳转到详情页")
 			},
 			//获取列表的高度信息,设置给swiper,以免无法左右滑动
 			getListHeight() {
