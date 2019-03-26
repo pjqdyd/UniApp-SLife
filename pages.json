@@ -85,7 +85,7 @@
 		{
 			"path": "pages/me/me",
 			"style": {
-				"navigationBarTitleText": "我的信息",
+				"navigationBarTitleText": "个人信息",
 				"navigationBarBackgroundColor": "#ea5455",
 				"navigationBarTextStyle": "white",
 				"app-plus": {

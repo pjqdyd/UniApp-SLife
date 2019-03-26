@@ -7,16 +7,19 @@
 
 		<uni-tabs @change="changeTab" :index="tabIndex">
 			<!-- 顶部分类栏 -->
-			<uni-tab-bar :drag="false" :tab-bars="tabBars" :tab-index="tabIndex"></uni-tab-bar>
+			<uni-tab-bar :drag="false" :tab-bars="tabBars" :tab-index="tabIndex" v-if="isShowTab"></uni-tab-bar>
 
 			<uni-tab-content>
 				<!-- 3个内容页,tabNum表示当前分类的序号 -->
 				<list class="list" @loadmore="loadMore(tabNum)" show-scrollbar="false" loadmoreoffset="5" v-for="tabNum in tabNums"
-				 :key="tabNum">
+				 :key="tabNum" @scroll="handScroll" offset-accuracy="50">	
 					<!-- 内容顶部下拉刷新组件 -->
 					<refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown" :display="refreshing ? 'show' : 'hide'">
-						<text class="refresh-text">{{refreshText}} {{tabNum}}</text>
+						<!-- <text class="refresh-text">{{refreshText}}</text> -->
 					</refresh>
+					<!-- 顶部占位盒子,并显示刷新信息 -->
+					<cell class="top-box"><text class="refresh-text">{{refreshText}}</text></cell>
+					
 					<!-- 内容列表组件, homeList[tabNum]表示当前页的动态数据列表,这里的item就是每条动态数据, index表示这条动态数据的序号-->
 					<cell v-for="(item,index) in homeList[tabNum]" :key="index" style="background-color: #eeeeee">
 						<uni-media-list :itemData="item" @close="close(index)" @click="goDetail(item)"></uni-media-list>
@@ -56,6 +59,8 @@
 				refreshing: false,
 				refreshText: "下拉可以刷新",
 				loadingText: "加载更多中",
+				isShowTab: true,
+				scrollY: 0,
 
 				tabNums: [0, 1, 2],
 				tabIndex: 1,
@@ -124,22 +129,21 @@
 				}
 
 			})
-				
+
 		},
-		mounted() {
-		},
+		mounted() {},
 		updated() {
-				this.setTabbarReddot();
+			this.setTabbarReddot();
 		},
 		methods: {
 			//设置红点
 			setTabbarReddot() {
 				//延时获取uni的api,防止调用不到,设置红点
-				setTimeout(()=>{
+				setTimeout(() => {
 					uni.showTabBarRedDot({
 						index: 2,
 					})
-				},200)
+				}, 200)
 			},
 
 			//侧边栏的关闭事件函数
@@ -185,10 +189,6 @@
 				return ary;
 			},
 			onrefresh(event) {
-				uni.showToast({
-					title: "刷新成功",
-					icon: "none"
-				});
 				this.refreshText = "正在刷新...";
 				this.refreshing = true;
 				setTimeout(() => {
@@ -205,12 +205,29 @@
 				} else {
 					this.refreshText = "下拉可以刷新";
 				}
+			},
+			//监听页面的滚动,判断滑动的位移差,如果是上滑,就隐藏分类栏
+			handScroll(event) {
+				let y = Math.abs(event.contentOffset.y);
+				if ((y - this.scrollY) > 0) {
+					this.isShowTab = false //隐藏分类栏
+					this.scrollY = y
+				} else {
+					this.isShowTab = true //显示分类栏
+					this.scrollY = y
+					return
+				}
+
 			}
 		}
 	}
 </script>
 
 <style>
+	.top-box{
+		width: 750px;
+		height: 45px;
+	}
 	.tab-bar-item {
 		width: 150px;
 		height: 100px;

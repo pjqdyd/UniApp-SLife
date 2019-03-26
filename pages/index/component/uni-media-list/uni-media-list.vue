@@ -98,9 +98,9 @@
 			isIdStatus() {
 				let idStatus = this.itemData.userInfo.idStatus;
 				if (idStatus == 1) {
-					return "顾客"
-				} else if (idStatus == 0) {
 					return "店主"
+				} else if (idStatus == 0) {
+					return "顾客"
 				} else {
 					return ''
 				}

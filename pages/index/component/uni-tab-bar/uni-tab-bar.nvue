@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div style="position: fixed;">
 		<!-- 顶部分类栏 可滑动 -->
 		<div v-if="drag" class="wrap tab-bar-scroll">
 			<scroller class="scroll" scrollDirection="horizontal" showScrollbar="false">
