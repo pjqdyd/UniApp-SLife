@@ -1,23 +1,61 @@
 <template>
-	<view class="content" @click="handCilck">
-		<uni-swipe-action :options="options" :messagesList="messages">
-		</uni-swipe-action>
+	<view>
+		<!-- 折叠面板 -->
+		<uni-collapse>
+
+			<!--消息分类 -->
+			<block v-for="(item, index) in msgCategory" :key="index">
+				<uni-collapse-item :title="item.name" :open="false" :icon="item.icon" :key="index">
+					<view>{{index}}</view>
+				</uni-collapse-item>
+				<view class="list"></view>
+			</block>
+			
+			<!-- 好友消息, name值用于标识这个是好友消息 -->
+			<uni-collapse-item title="好友消息" open="true" icon="../../static/chat/firend.png" name="5">
+				<!-- 好友消息列表 -->
+				<view class="content" @click="handCilck">
+					<uni-swipe-action :options="options" :messagesList="messages">
+					</uni-swipe-action>
+				</view>
+			</uni-collapse-item>
+			
+		</uni-collapse>
+		
 	</view>
 </template>
 
 <script>
-	import uniSwipeAction from "./component/uni-swipe-action.vue";
-	
+	import uniCollapse from './component/collapse/uni-collapse.vue'; //折叠面板组件
+	import uniCollapseItem from './component/collapse/uni-collapse-item.vue';
+
+	import uniSwipeAction from "./component/uni-swipe-action.vue"; //好友消息组件
+
 	import utils from '../../common/utils.js'; //一些工具方法
-	
+
 	export default {
 		components: {
-			uniSwipeAction
+			uniSwipeAction,
+			uniCollapse,
+			uniCollapseItem
 		},
 		data() {
 			return {
 				focus: false,
 				isShowView: true,
+				msgCategory: [{
+					icon: "../../static/chat/report.png",
+					name: "回复我的",
+				}, {
+					icon: "../../static/chat/like.png",
+					name: "点赞我的",
+				}, {
+					icon: "../../static/chat/follow.png",
+					name: "关注我的",
+				}, {
+					icon: "../../static/chat/notify.png",
+					name: "系统通知",
+				}],
 				options: [{
 					tag: 1,
 					text: '置顶',
@@ -144,7 +182,7 @@
 			})
 		},
 		methods: {
-			handCilck(){
+			handCilck() {
 				console.log("点击")
 			}
 		},
@@ -157,6 +195,16 @@
 	};
 </script>
 
-<style>
+<style lang="scss">
 	.content {}
+
+	.list:active {
+		background-color: #eeeeee;
+	}
+
+	.list {
+		width: 100%;
+		border-bottom: 8upx solid #f1f1f1;
+		background: #fff;	
+		}
 </style>

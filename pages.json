@@ -68,7 +68,7 @@
 		{
 			"path": "pages/chat/chat",
 			"style": {
-				"navigationBarTitleText": "聊天",
+				"navigationBarTitleText": "消息",
 				"navigationBarBackgroundColor": "#ea5455",
 				"navigationBarTextStyle": "white",
 				"app-plus": {
@@ -119,7 +119,7 @@
 			},
 			{
 				"pagePath": "pages/chat/chat",
-				"text": "聊天",
+				"text": "消息",
 				"iconPath": "static/tabBar/chat.png",
 				"selectedIconPath": "static/tabBar/click/chat.png"
 			},

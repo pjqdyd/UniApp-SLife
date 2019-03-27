@@ -169,12 +169,6 @@
 				width: 100%;
 				color: #666;
 			}
-
-			.to {
-				flex-shrink: 0;
-				width: 40upx;
-				height: 40upx;
-			}
 		}
 	}
 </style>
