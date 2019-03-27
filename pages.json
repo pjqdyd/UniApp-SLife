@@ -1,5 +1,6 @@
 {
 	"pages": [
+		
 		{
 			"path": "pages/index/index",
 			"style": {
@@ -15,7 +16,7 @@
 							"fontSize": "25px",
 							"float": "left"
 						},{
-							"text": "\ue409",
+							"text": "\ue333",
 							"fontSrc": "/static/uni.ttf",
 							"fontSize": "25px",
 							"float":"right",
@@ -95,6 +96,18 @@
 							"fontSize": "25px",
 							"float":"left"
 						}]
+					}
+				}
+			}
+		},{
+			"path": "pages/create/create",
+			"style": {
+				"navigationBarTitleText": "发布动态",
+				"navigationBarBackgroundColor": "#ea5455",
+				"navigationBarTextStyle": "white",
+				"app-plus": {
+					"titleNView": {
+						"buttons": []
 					}
 				}
 			}

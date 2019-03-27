@@ -307,6 +307,7 @@
 	.image-4-box {
 		width: 750px;
 		height: 640px;
+		opacity: 1;
 	}
 
 	.image4 {

@@ -49,10 +49,6 @@
 		onHide: function() {
 			console.log('App Hide')
 		},
-		//自定义的获取设备并保存信息的方法
-		// 		getSystemInfo: function(){
-		// 			
-		// 		}
 	}
 </script>
 

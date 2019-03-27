@@ -12,14 +12,14 @@
 			<uni-tab-content>
 				<!-- 3个内容页,tabNum表示当前分类的序号 -->
 				<list class="list" @loadmore="loadMore(tabNum)" show-scrollbar="false" loadmoreoffset="5" v-for="tabNum in tabNums"
-				 :key="tabNum" @scroll="handScroll" offset-accuracy="50">	
+				 :key="tabNum" @scroll="handScroll" offset-accuracy="50">
 					<!-- 内容顶部下拉刷新组件 -->
 					<refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown" :display="refreshing ? 'show' : 'hide'">
 						<!-- <text class="refresh-text">{{refreshText}}</text> -->
 					</refresh>
 					<!-- 顶部占位盒子,并显示刷新信息 -->
 					<cell class="top-box"><text class="refresh-text">{{refreshText}}</text></cell>
-					
+
 					<!-- 内容列表组件, homeList[tabNum]表示当前页的动态数据列表,这里的item就是每条动态数据, index表示这条动态数据的序号-->
 					<cell v-for="(item,index) in homeList[tabNum]" :key="index" style="background-color: #eeeeee">
 						<uni-media-list :itemData="item" @close="close(index)" @click="goDetail(item)"></uni-media-list>
@@ -31,6 +31,12 @@
 				</list>
 			</uni-tab-content>
 		</uni-tabs>
+
+		<!-- 悬浮的发布按钮 -->
+		<div v-if="isShowButt">
+			<image class="create-icon" src="../../static/news/create.png" @click="handCreateCilck"></image>
+		</div>
+
 	</div>
 </template>
 
@@ -60,6 +66,7 @@
 				refreshText: "下拉可以刷新",
 				loadingText: "加载更多中",
 				isShowTab: true,
+				isShowButt: true,
 				scrollY: 0,
 
 				tabNums: [0, 1, 2],
@@ -123,7 +130,7 @@
 						console.log("关闭侧边栏")
 					}
 				} else if (e.index == 1) {
-					console.log("点击发布按钮")
+					console.log("点击了重新定位按钮")
 				} else {
 					return;
 				}
@@ -150,6 +157,12 @@
 			handDrawerClose: function() {
 				this.isShowDrawer = false
 				console.log("点遮罩或关闭按钮-侧边栏关闭")
+			},
+			//点击了发布按钮
+			handCreateCilck() {
+				uni.navigateTo({
+					url: '../create/create'
+				});
 			},
 			goDetail(e) {
 				console.log("前往详情页面")
@@ -208,13 +221,19 @@
 			},
 			//监听页面的滚动,判断滑动的位移差,如果是上滑,就隐藏分类栏
 			handScroll(event) {
-				let y = Math.abs(event.contentOffset.y);
-				if ((y - this.scrollY) > 0) {
-					this.isShowTab = false //隐藏分类栏
+				let y = Math.abs(event.contentOffset.y); //获取当前滑动了多高
+				let d = y - this.scrollY; //计算当前滑动与上次的位移差
+				if (d > 0) {
+					this.isShowTab = false //上滑隐藏分类栏
 					this.scrollY = y
 				} else {
-					this.isShowTab = true //显示分类栏
+					this.isShowTab = true //下拉显示分类栏
 					this.scrollY = y
+				}
+				if(y > 500){
+					this.isShowButt = false //隐藏按钮
+				}else{
+					this.isShowButt = true //显示按钮
 					return
 				}
 
@@ -224,10 +243,11 @@
 </script>
 
 <style>
-	.top-box{
+	.top-box {
 		width: 750px;
 		height: 45px;
 	}
+
 	.tab-bar-item {
 		width: 150px;
 		height: 100px;
@@ -272,5 +292,18 @@
 		text-align: center;
 		font-size: 28px;
 		color: #999999;
+	}
+
+	.create-icon {
+		width: 100px;
+		height: 100px;
+		background-color: #FFFFFF;
+		border-radius: 50px;
+		padding: 25px;
+		box-sizing: border-box;
+		position: fixed;
+		bottom: 60px;
+		right: 60px;
+		box-shadow: 0 3px 4px 0 #707070;
 	}
 </style>

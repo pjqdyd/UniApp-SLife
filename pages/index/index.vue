@@ -28,6 +28,11 @@
 			</swiper-item>
 
 		</swiper>
+		
+		<!-- 悬浮的发布按钮 -->
+		<div>
+			<image class="create-icon" src="../../static/news/create.png" @click="handCreateCilck"></image>
+		</div>
 	</view>
 </template>
 
@@ -121,6 +126,12 @@
 				console.log("切换页面")
 				this.currentItem = e.detail.current
 			},
+			//点击了发布按钮
+			handCreateCilck() {
+				uni.navigateTo({
+					url: '../create/create'
+				});
+			},
 			//跳转到详情页
 			goDetail(e) {
 				console.log("跳转到详情页")
@@ -135,7 +146,7 @@
 				}).exec();
 			}
 		},
-		//监听导航栏的"三"或"O"的点击事件(展开/关闭侧边栏)
+		//监听导航栏的"三"或"O"的点击事件(展开/关闭侧边栏)(手动定位)
 		onNavigationBarButtonTap(e) {
 			console.log(e.index)
 			if (e.index == 0) {
@@ -147,7 +158,7 @@
 					console.log("关闭侧边栏")
 				}
 			} else if (e.index == 1) {
-				console.log("点击了发布按钮")
+				console.log("点击了手动定位按钮")
 			} else {
 				return;
 			}
@@ -205,5 +216,19 @@
 		position: absolute;
 		bottom: 0;
 		border-radius: 16rpx;
+	}
+	
+	.create-icon {
+		width: 110upx;
+		height: 110upx;
+		background-color: #FFFFFF;
+		border-radius: 50upx;
+		padding: 25upx;
+		box-sizing: border-box;
+		position: fixed;
+		bottom: 160upx;
+		right: 70upx;
+		opacity: .9;
+		box-shadow: 0 5upx 7upx 0 #707070;
 	}
 </style>
