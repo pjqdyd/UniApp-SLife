@@ -38,6 +38,10 @@
             <!-- <input class="news-input" v-model="sendDate.contact" placeholder="(选填,方便动态展示 )" /> -->
 			<view class="news-shop" @click="choseShop">请选择店铺<text class="iconfont icon-next">&#xe6ee;</text></view>
         </view>
+		
+		<!-- 选中的商铺 -->
+		<local-item :shopItem="chooseShop"></local-item>
+		
         <view class='news-title news-star-view' v-show="isShowStar">
             <text>店铺评分</text>
             <view class="news-star-view">
@@ -52,7 +56,13 @@
 </template>
 
 <script>
+	
+	import localItem from '@/components/local/local-item.vue';
+	
     export default {
+		components:{
+			localItem
+		},
         data() {
             return {
                 msgContents: ["这家店铺商品质量很好", "这家店铺的服务太好了", "这家店的商品很实惠", "很不错"],
@@ -63,25 +73,33 @@
                     score: 0,
                     content: "",
                     contact: ""
-                }
+                },
+				chooseShop: {} //选中的对象信息
             }
         },
-        onLoad() {
-			setTimeout(()=>{
-				let deviceInfo = {
-				    appid: plus.runtime.appid,
-				    imei: plus.device.imei, //设备标识
-				    p: plus.os.name === "Android" ? "a" : "i", //平台类型，i表示iOS平台，a表示Android平台。
-				    md: plus.device.model, //设备型号
-				    app_version: plus.runtime.version,
-				    plus_version: plus.runtime.innerVersion, //基座版本号
-				    os: plus.os.version,
-				    net: "" + plus.networkinfo.getCurrentType()
+		//params为上个页面跳转过来的参数
+        onLoad(params) {
+			var that = this;
+			//获取在选择商铺页缓存的选中的商铺信息
+			uni.getStorage({
+				key: 'chooseShop',
+				success: function (res) {
+					that.chooseShop = res.data;
+					//获取数据后清除缓存
+					uni.removeStorage({
+						key: 'chooseShop',
+						success: function (res) {
+							console.log('清除缓存chooseShop成功');
+						}
+				    });
 				}
-				this.sendDate = Object.assign(deviceInfo, this.sendDate);
-			},200)
-            
+			});
         },
+		created() {	    
+		},
+		mounted() {
+			console.log(this.chooseShop)
+		},
         methods: {
             close(e){
                 this.imageList.splice(e,1);

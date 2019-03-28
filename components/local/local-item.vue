@@ -91,6 +91,9 @@
 		height: 60upx;
 		font-size: 34upx;
 		line-height: 60upx;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	.rate-cate-box {
@@ -122,7 +125,7 @@
 	}
 
 	.cate-box {
-		width: 150upx;
+		width: 170upx;
 		height: 40upx;
 		position: absolute;
 		right: 0;
@@ -154,10 +157,10 @@
 		white-space: nowrap;	
 	}
 	.distance-box{
-		width: 180upx;
+		width: 160upx;
 		height: 45upx;
 		line-height: 45upx;
 		font-size: 26upx;
-		text-align: right;
+		text-align: left;
 	}
 </style>
