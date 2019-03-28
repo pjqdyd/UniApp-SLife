@@ -111,6 +111,29 @@
 					}
 				}
 			}
+		},{
+			"path": "pages/chooseShop/chooseShop",
+			"style": {
+				"navigationBarTitleText": "选择店铺",
+				"navigationBarBackgroundColor": "#ea5455",
+				"navigationBarTextStyle": "white",
+				"app-plus": {
+					"titleNView": {
+						"searchInput": {
+							"placeholder": "请输入附近商铺",
+							"placeholderColor": "#696969",
+							"borderRadius": "20px",
+							"backgroundColor": "rgba(255,255,255,0.8)"
+						},
+						"buttons": [{
+							"text": "选择店铺",
+							"fontSize": "16px",
+							"width": "75px",
+							"float":"right"
+						}]
+					}
+				}
+			}
 		}
 
 	],

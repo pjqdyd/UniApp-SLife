@@ -26,8 +26,8 @@
 </template>
 
 <script>
-	import uniCollapse from './component/collapse/uni-collapse.vue'; //折叠面板组件
-	import uniCollapseItem from './component/collapse/uni-collapse-item.vue';
+	import uniCollapse from '@/components/collapse/uni-collapse.vue'; //折叠面板组件
+	import uniCollapseItem from '@/components/collapse/uni-collapse-item.vue';
 
 	import uniSwipeAction from "./component/uni-swipe-action.vue"; //好友消息组件
 

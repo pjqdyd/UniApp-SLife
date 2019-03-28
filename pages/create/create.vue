@@ -1,16 +1,16 @@
 <template>
 	<view class="page">
-		<view class='feedback-title'>
+		<view class='news-title'>
 			<text>动态描述</text>
-			<text class="feedback-quick" @tap="chooseMsg">快速键入</text>
+			<text class="news-quick" @tap="chooseMsg">快速键入</text>
 		</view>
-		<view class="feedback-body">
-			<textarea placeholder="这里描述你的动态信息..." v-model="sendDate.content" class="feedback-textare" />
+		<view class="news-body">
+			<textarea placeholder="这里描述你的动态信息..." v-model="sendDate.content" maxlength="70" class="news-textare" />
 			</view>
-        <view class='feedback-title'>
+        <view class='news-title'>
             <text>动态图片(至少1张,4张总大小10M以下)</text>
         </view>
-        <view class="feedback-body feedback-uploader">
+        <view class="news-body news-uploader">
             <view class="uni-uploader">
                 <view class="uni-uploader-head">
                     <view class="uni-uploader-title">点击预览图片</view>
@@ -31,20 +31,21 @@
                 </view>
             </view>
         </view>
-        <view class='feedback-title'>
+        <view class='news-title'>
             <text>动态有关的店铺</text>
         </view>
-        <view class="feedback-body">
-            <input class="feedback-input" v-model="sendDate.contact" placeholder="(选填,方便动态展示 )" />
+        <view class="news-body">
+            <!-- <input class="news-input" v-model="sendDate.contact" placeholder="(选填,方便动态展示 )" /> -->
+			<view class="news-shop" @click="choseShop">请选择店铺<text class="iconfont icon-next">&#xe6ee;</text></view>
         </view>
-        <view class='feedback-title feedback-star-view'>
+        <view class='news-title news-star-view' v-show="isShowStar">
             <text>店铺评分</text>
-            <view class="feedback-star-view">
-                <text class="feedback-star" v-for="(value,key) in stars" :key="key" :class="key < sendDate.score ? 'active' : ''" @tap="chooseStar(value)"></text>
+            <view class="news-star-view">
+                <text class="news-star" v-for="(value,key) in stars" :key="key" :class="key < sendDate.score ? 'active' : ''" @tap="chooseStar(value)"></text>
             </view>
         </view>
-        <button type="" class="feedback-submit" @tap="send">发布</button>
-        <view class='feedback-title'>
+        <button type="" class="news-submit" @tap="send">发布</button>
+        <view class='news-title'>
             <text>小提示: 已发布的动态可在个人信息页的"发布的动态"中查看</text>
         </view>
     </view>
@@ -56,6 +57,7 @@
             return {
                 msgContents: ["这家店铺商品质量很好", "这家店铺的服务太好了", "这家店的商品很实惠", "很不错"],
                 stars: [1, 2, 3, 4, 5],
+				isShowStar: false,
                 imageList: [],
                 sendDate: {
                     score: 0,
@@ -102,6 +104,12 @@
                     }
                 })
             },
+			choseShop(){ //选择店铺
+				console.log("选择店铺")
+				uni.navigateTo({
+					url: '../chooseShop/chooseShop'
+				});
+			},
             chooseStar(e) { //点击评星
                 this.sendDate.score = e;
             },
@@ -119,7 +127,7 @@
                     }
                 })
                 uni.uploadFile({
-                    url: "https://service.dcloud.net.cn/feedback",
+                    url: "https://service.dcloud.net.cn/news",
                     files: imgs,
                     formData: this.sendDate,
                     success: (res) => {
@@ -189,20 +197,20 @@
     	flex-wrap: wrap;
     }
     .uni-uploader__file {
-    	margin: 10upx;
-    	width: 210upx;
-    	height: 210upx;
+    	margin: 5upx;
+    	width: 170upx;
+    	height: 170upx;
     }
     .uni-uploader__img {
     	display: block;
-    	width: 210upx;
-    	height: 210upx;
+    	width: 170upx;
+    	height: 170upx;
     }
     .uni-uploader__input-box {
     	position: relative;
     	margin:10upx;
-    	width: 208upx;
-    	height: 208upx;
+    	width: 170upx;
+    	height: 170upx;
     	border: 2upx solid #D9D9D9;
     }
     .uni-uploader__input-box:before,
@@ -241,7 +249,7 @@
     }
     
     /*问题反馈*/
-    .feedback-title {
+    .news-title {
     	display: flex;
     	flex-direction: row;
     	justify-content: space-between;
@@ -250,15 +258,15 @@
     	color: #8f8f94;
     	font-size: 28upx;
     }
-    .feedback-star-view.feedback-title {
+    .news-star-view.news-title {
     	justify-content: flex-start;
     	margin: 0;
     }
-    .feedback-quick {
+    .news-quick {
     	position: relative;
     	padding-right: 40upx;
     }
-    .feedback-quick:after {
+    .news-quick:after {
     	font-family: uniicons;
     	font-size: 40upx;
     	content: '\e581';
@@ -269,45 +277,52 @@
     	-webkit-transform: translateY(-50%);
     	transform: translateY(-50%);
     }
-    .feedback-body {
+    .news-body {
     	background: #fff;
     }
-    .feedback-textare {
-    	height: 200upx;
+	.news-body:active{
+		background-color: #eeeeee;
+	}
+    .news-textare {
+    	height: 120upx;
     	font-size: 34upx;
     	line-height: 50upx;
     	width: 100%;
     	box-sizing: border-box;
-    	padding: 20upx 30upx 0;
+    	padding: 15upx 30upx 0;
     }
-    .feedback-input {
+    .news-shop {
     	font-size: 34upx;
+		color: #707070;
     	height: 50upx;
     	min-height: 50upx;
-    	padding: 15upx 20upx;
+    	padding: 15upx 30upx;
     	line-height: 50upx;
     }
-    .feedback-uploader {
-    	padding: 22upx 20upx;
+	.icon-next{
+		float: right;
+	}
+    .news-uploader {
+    	padding: 10upx 20upx;
     }
-    .feedback-star {
+    .news-star {
     	font-family: uniicons;
     	font-size: 40upx;
     	margin-left: 6upx;
     }
-    .feedback-star-view {
+    .news-star-view {
     	margin-left: 20upx;
     }
-    .feedback-star:after {
+    .news-star:after {
     	content: '\e408';
     }
-    .feedback-star.active {
+    .news-star.active {
     	color: #FFB400;
     }
-    .feedback-star.active:after {
+    .news-star.active:after {
     	content: '\e438';
     }
-    .feedback-submit {
+    .news-submit {
     	background: #ea5455;
     	color: #FFFFFF;
     	margin: 20upx;
