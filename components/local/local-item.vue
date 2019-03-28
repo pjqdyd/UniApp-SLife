@@ -34,7 +34,7 @@
 </template>
 
 <script>
-	import uniRate from "./rate/uni-rate.vue";
+	import uniRate from "../rate/uni-rate.vue";
 	import uniBadge from "@/components/uni-badge/uni-badge.vue";
 	export default {
 		props: {
@@ -59,8 +59,8 @@
 		width: 750upx;
 		height: 170upx;
 		background-color: #fff;
-		border-top: 4upx solid #eeeeee;
-		padding: 5upx;
+		border-bottom: 4upx solid #eeeeee;
+		padding: 5upx 10upx 5upx 10upx;
 		box-sizing: border-box;
 		display: flex;
 		justify-content: space-between;
@@ -154,7 +154,7 @@
 		white-space: nowrap;	
 	}
 	.distance-box{
-		width: 190upx;
+		width: 180upx;
 		height: 45upx;
 		line-height: 45upx;
 		font-size: 26upx;

@@ -1,30 +1,21 @@
 <template>
 	<view class="local-page">
-		
-		<view class="category-box"><text class="iconfont category-icon">&#xe614;</text>推荐店铺</view>
 
-		<!-- 3d轮播图 -->
-		<local-swiper></local-swiper>
+		<!-- <uni-collapse @change="change"> -->
+		<!-- 折叠面板 -->
+		<uni-collapse>
 
-		<!-- 分类图标icon的滑动区块 -->
-		<swiper class="swiper">
-			<swiper-item v-for="(page,index1) of Pages" :key="index1">
+			<!-- 分类 open是是否展开分类-->
+			<uni-collapse-item title="分类" :open="isShowCate" name="2" :currentName="currentCateName" @onIsOpen="handIsOpen">
 
-				<view class="icon-cate-box" v-for="item of page" :key="item.id" @click="changeCategory(item.id)">
-					<view class="icon-image">
-						<image class="icon-image-content" :src="item.icon"></image>
-						<text class="icon-desc">{{item.cateName}}</text>
-					</view>
+				<view class="category-box" v-for="(item, index) in categroyList" :key="index" @click="changeCategory(index)">
+					<view class="iconfont category-icon" v-html="item.icon"></view>
+					<view>{{item.cateName}}</view>
 				</view>
 
-			</swiper-item>
-		</swiper>
-		
-		<view class="category-box">
-			<text class="iconfont category-icon">&#xe610;</text>
-			分类店铺
-			<text class="current-cate">当前分类: {{currentCateName}}</text>
-		</view>
+			</uni-collapse-item>
+
+		</uni-collapse>
 
 		<!-- 附近商铺列表 -->
 		<view v-for="(item, index) in localList" :key="index">
@@ -38,14 +29,17 @@
 	import conf from '../../common/config.js'; //全局的一些配置信息
 	import utils from '../../common/utils.js'; //一些工具方法
 	import amap from '../../common/amap-wx.js'; //地图工具
-
-	import localSwiper from "./component/local-swiper.vue";
-	import localItem from '@/components/local/local-item.vue';
+	
+	import uniCollapse from '@/components/collapse/uni-collapse.vue';
+	import uniCollapseItem from '@/components/collapse/uni-collapse-item.vue';
+	
+	 import localItem from '@/components/local/local-item.vue';
 
 
 	export default {
 		components: {
-			localSwiper,
+			uniCollapse,
+			uniCollapseItem,
 			localItem
 		},
 		data() {
@@ -54,55 +48,56 @@
 				key: '2c4146676963fc2442e9aeaf6dea6c97',
 
 				localList: [],
-
+				
 				addressName: '',
 				weather: {
 					hasData: false,
 					data: []
 				},
+				isShowCate: false, //是否显示分类
 				currentCateName: '默认', //当前分类的名字
 
 				categroyList: [{
 					id: "0",
 					cateName: "超市",
-					icon: "../../static/local/shop.png"
+					icon: "&#xe607;"
 				}, {
 					id: "1",
-					cateName: "文具",
-					icon: "../../static/local/pencil.png"
+					cateName: "餐馆",
+					icon: "&#xe6be;"	
 				}, {
 					id: "2",
-					cateName: "餐馆",
-					icon: "../../static/local/eat.png"
+					cateName: "文具",
+					icon: "&#xe663;"	
 				}, {
 					id: "3",
 					cateName: "诊所",
-					icon: "../../static/local/clinic.png"
+					icon: "&#xe732;"
 				}, {
 					id: "4",
 					cateName: "水果店",
-					icon: "../../static/local/fruit.png"
+					icon: "&#xe608;"
 				}, {
 					id: "5",
 					cateName: "奶茶店",
-					icon: "../../static/local/drink.png",
+					icon: "&#xe665;",
 					color: ""
 				}, {
 					id: "6",
 					cateName: "电影院",
-					icon: "../../static/local/movie.png"
+					icon: "&#xe789;"
 				}, {
 					id: "7",
 					cateName: "理发店",
-					icon: "../../static/local/hair.png"
+					icon: "&#xe620;"
 				}, {
 					id: "8",
 					cateName: "KTV",
-					icon: "../../static/local/ktv.png"
+					icon: "&#xe65d;"
 				}, {
 					id: "9",
 					cateName: "电子产品",
-					icon: "../../static/local/mobil.png"
+					icon: "&#xe767;"
 				}]
 			}
 		},
@@ -140,20 +135,6 @@
 		mounted() {
 			this.getRegeo()
 		},
-		computed: {
-			//计算icon在轮播图的分页
-			Pages() {
-				const pages = []
-				this.categroyList.forEach((item, index) => {
-					const page = Math.floor(index / 8)
-					if (!pages[page]) {
-						pages[page] = []
-					}
-					pages[page].push(item)
-				})
-				return pages
-			}
-		},
 		methods: {
 			//点击了分类
 			changeCategory(index) {
@@ -161,7 +142,7 @@
 				this.isShowCate = false //点击后收起分类栏
 			},
 			//监听子组件的点击展开收起事件(设置当前组件的isShowCate值,保证isShowCate的值与子组件的isOpen一致)
-			handIsOpen(isopen) {
+			handIsOpen(isopen){
 				this.isShowCate = isopen
 			},
 			//获取位置信息
@@ -213,78 +194,21 @@
 	}
 
 	.category-box {
-		width: 100%;
-		height: 50upx;
-		line-height: 50upx;
+		padding: 8upx 0 8upx 0;
+		border-left: 30upx solid #fff;
+		border-right: 30upx solid #fff;
 		box-sizing: border-box;
-		padding-right: 20upx;
-		padding-left: 10upx;
-		border-bottom: 1upx solid #eeeeee;
-		font-size: 30upx;
-		background-color: #fff;
+		border-bottom: #eeeeee solid 1upx;
 	}
 
-	.category-icon {
-		height: 50upx;
-		font-size: 42upx;
-		line-height: 50upx;
-		float: left;
-		margin-right: 10upx;
-		color: #ea5455;
-	}
-
-	.current-cate {
-		float: right;
-		font-size: 26upx;
-		line-height: 50upx;
-		color: #707070;
-	}
-
-	.swiper {
-		border-top: 5upx solid #eeeeee;
-		border-bottom: 5upx solid #eeeeee;
-		background-color: #fff;
-	}
-
-	.icon-cate-box {
-		position: relative;
-		overflow: hidden;
-		float: left;
-		width: 25%;
-		height: 50%;
-	}
-	.icon-cate-box:active{
+	.category-box:active {
 		background-color: #eeeeee;
 	}
 
-	.icon-image {
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 40upx;
-		box-sizing: border-box;
-		padding: 10upx;
-	}
-
-	.icon-image-content {
-		display: block;
-		margin: 0 auto;
-		width: 100upx;
-		height: 100upx;
-	}
-
-	.icon-desc {
-		position: absolute;
-		left: 0;
-		right: 0;
-		height: 40upx;
-		font-size: 30upx;
-		color: #333;
-		line-height: 40upx;
-		text-align: center;
-		overflow: hidden;
-		white-space: nowrap;
-		text-overflow: ellipsis;
+	.category-icon {
+		font-size: 36upx;
+		float: left;
+		margin-right: 10upx;
+		color: #ea5455;
 	}
 </style>

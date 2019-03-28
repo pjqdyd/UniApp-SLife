@@ -6,24 +6,14 @@
 			</view> -->
 			<view class="iconfont uni-collapse-cell__title-inner">
 
-				<view class="uni-collapse-cell__title-text" v-if="name == 1">
-					<text class="iconfont icon-cate">&#xe603;</text>
+				<view class="uni-collapse-cell__title-text">
+					<image class="icon" :src="icon"></image>
 					{{title}}
 				</view>
-				
-				<view class="iconfont uni-collapse-cell__title-text" v-if="name == 2">
-					<text class="iconfont icon-cate">&#xe60b;</text>
-					<text>{{title}}</text>
-					<view class="current-cate">当前分类: {{currentName}}</view>
-				</view>
-
-				<view class="uni-collapse-cell__title-text" v-if="name == 0">
-					{{title}}
-				</view>
-
+	
 			</view>
 			<view class="uni-collapse-cell__title-arrow" :class="setActive">
-				<uni-icon color="#ea5455" size="20" type="arrowdown"></uni-icon>
+				<uni-icon color="#666" size="20" type="arrowright"></uni-icon>
 			</view>
 		</view>
 		<view class="uni-collapse-cell__content" :class="animation==='outer' ? 'uni-collapse-cell--animation' : ''" :style="{height:isOpen==='true' || isOpen=== true ? height + 'px' : '0px'}">
@@ -107,8 +97,9 @@
 				type: [Boolean, String],
 				default: false
 			},
-			thumb: String, //缩略图
-			currentName: String //当前分类的名字
+			icon: String, //图标
+			
+			thumb: String //缩略图
 		},
 		created() {
 			let parent = this.$parent || this.$root
@@ -179,17 +170,15 @@
 
 	$collapse-title-pd:$uni-spacing-col-lg $uni-spacing-row-lg;
 
-	.icon-cate {
-		color: #ea5455;
-		margin-right: 10upx;
-	}
-
-	.current-cate {
-		width: 210upx;
-		font-size: 25upx;
-		float: right;
-		color: #707070;
-		line-height: 200%;
+	.icon {
+		flex-shrink: 0;
+		width: 50upx;
+		height: 50upx;
+		margin-right: 15upx;
+		image {
+			width: 50upx;
+			height: 50upx;
+		}
 	}
 
 	.uni-collapse-cell {
@@ -225,7 +214,8 @@
 		}
 
 		&__title {
-			padding: 10upx 20upx 10upx 20upx;
+			padding: 10upx 35upx 10upx 30upx;
+			height: 90upx;
 			width: 100%;
 			box-sizing: border-box;
 			flex: 1;
@@ -249,14 +239,14 @@
 			}
 
 			&-arrow {
-				width: 15px;
-				height: 15px;
+				width: 40upx;
+				height: 30px;
 				transform: rotate(0deg);
 				transform-origin: center center;
 				transition: transform 0.3s;
 
 				&.uni-active {
-					transform: rotate(-180deg);
+					transform: rotate(90deg);
 				}
 			}
 
@@ -268,12 +258,13 @@
 			}
 
 			&-text {
-				font-size: $uni-font-size-lg;
+				font-size: 37upx;
 				text-overflow: ellipsis;
 				white-space: nowrap;
-				color: inherit;
+				color: #666;
 				line-height: 1.5;
 				overflow: hidden;
+				display: flex;
 			}
 		}
 
