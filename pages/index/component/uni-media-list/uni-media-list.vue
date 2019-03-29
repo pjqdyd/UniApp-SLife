@@ -5,7 +5,7 @@
 			<!-- 动态的顶部用户信息, 头像,昵称,性别,动态标题  280upx-->
 			<div class="info-box">
 				<div class="userInfo-box">
-					<image class="face" :src="itemData.userInfo.faceUrl"></image> <!-- 用户头像 -->
+					<image class="face" :src="itemData.userInfo.faceUrl" @click.stop="goUserInfo"></image> <!-- 用户头像 -->
 
 					<!-- 用户昵称,性别, 身份 -->
 					<div class="nickname-sex-idStatus-box">
@@ -56,7 +56,7 @@
 				</image>
 				<text class="count">{{commentCount}}</text>
 
-				<image class="icon" src="../../static/news/more.png"></image>
+				<image class="icon" @click.stop="clickMore" src="../../static/news/more.png"></image>
 				<text class="date">{{itemData.dateTime}}</text>
 			</div>
 
@@ -116,7 +116,10 @@
 			},
 			bindClick() {
 				console.log("点击进入详情")
-				//this.$emit('click');
+				this.$emit('click');
+			},
+			goUserInfo(){
+				console.log("进入用户详情")
 			},
 			//点击了点赞/取消点赞
 			clickLike() {
@@ -133,6 +136,10 @@
 			//点击了评论按钮
 			clickComment() {
 				console.log("评论")
+			},
+			//点击了更多
+			clickMore(){
+				console.log("更多")
 			}
 		}
 	}
@@ -238,10 +245,6 @@
 		display: flex;
 		box-sizing: border-box;
 		flex-direction: row;
-	}
-
-	.icon-box:active {
-		background-color: #eeeeee;
 	}
 
 	.icon {

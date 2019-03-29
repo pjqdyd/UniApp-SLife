@@ -13,12 +13,17 @@
 				<!-- 3个内容页,tabNum表示当前分类的序号 -->
 				<list class="list" @loadmore="loadMore(tabNum)" show-scrollbar="false" loadmoreoffset="5" v-for="tabNum in tabNums"
 				 :key="tabNum" @scroll="handScroll" offset-accuracy="50">
+
 					<!-- 内容顶部下拉刷新组件 -->
 					<refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown" :display="refreshing ? 'show' : 'hide'">
 						<!-- <text class="refresh-text">{{refreshText}}</text> -->
+						<loading-indicator class="indicator"></loading-indicator>
 					</refresh>
+
 					<!-- 顶部占位盒子,并显示刷新信息 -->
-					<cell class="top-box"><text class="refresh-text">{{refreshText}}</text></cell>
+					<cell class="top-box">
+						<text class="refresh-text">{{refreshText}}</text>
+					</cell>
 
 					<!-- 内容列表组件, homeList[tabNum]表示当前页的动态数据列表,这里的item就是每条动态数据, index表示这条动态数据的序号-->
 					<cell v-for="(item,index) in homeList[tabNum]" :key="index" style="background-color: #eeeeee">
@@ -131,6 +136,9 @@
 					}
 				} else if (e.index == 1) {
 					console.log("点击了重新定位按钮")
+					uni.navigateTo({
+						url: '../newsDetail/newsDetail'
+					});
 				} else {
 					return;
 				}
@@ -167,6 +175,9 @@
 			goDetail(e) {
 				console.log("前往详情页面")
 				console.log(JSON.stringify(e.newsId))
+				uni.navigateTo({
+					url: '../newsDetail/newsDetail'
+				});
 			},
 			loadMore(e) {
 				setTimeout(() => {
@@ -207,7 +218,7 @@
 				setTimeout(() => {
 					console.log("刷新结束")
 					this.refreshing = false
-				}, 2000)
+				}, 1000)
 			},
 			onpullingdown(event) {
 				if (this.refreshing) {
@@ -230,9 +241,9 @@
 					this.isShowTab = true //下拉显示分类栏
 					this.scrollY = y
 				}
-				if(y > 500){
+				if (y > 500) {
 					this.isShowButt = false //隐藏按钮
-				}else{
+				} else {
 					this.isShowButt = true //显示按钮
 					return
 				}
@@ -243,9 +254,17 @@
 </script>
 
 <style>
+	.list {
+		border: 0;
+		border-color: #eeeeee;
+		background-color: #eeeeee;
+	}
+
 	.top-box {
 		width: 750px;
 		height: 45px;
+		background-color: #eeeeee;
+		padding-top: 7px;
 	}
 
 	.tab-bar-item {
@@ -282,16 +301,27 @@
 
 	.refresh {
 		width: 750px;
-		height: 70px;
+		height: 90px;
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
+		background-color: #eeeeee;
 	}
 
 	.refresh-text {
 		text-align: center;
 		font-size: 28px;
 		color: #999999;
+	}
+
+	.indicator {
+		margin-top: 12px;
+		height: 50px;
+		width: 50px;
+		color: #ea5455;
+		position: absolute;
+		bottom: 0px;
+		z-index: 999;
 	}
 
 	.create-icon {

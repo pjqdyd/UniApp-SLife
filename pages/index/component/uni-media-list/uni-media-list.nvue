@@ -3,13 +3,13 @@
 		<div class="list-cell" @click="bindClick">
 
 			<!-- 动态的顶部用户信息, 头像,昵称,性别,动态标题 -->
-			<div class="info-box">
+			<div class="info-box" @click="bindClick">
 				<div class="userInfo-box">
-					<image class="face" :src="itemData.userInfo.faceUrl"></image> <!-- 用户头像 -->
+					<image class="face" :src="itemData.userInfo.faceUrl" @click="goUserInfo"></image> <!-- 用户头像 -->
 
 					<!-- 用户昵称,性别, 身份 -->
-					<div class="nickname-sex-idStatus-box">
-						<text class="nickname">{{itemData.userInfo.nickname}}</text> <!-- 用户昵称 -->
+					<div class="nickname-sex-idStatus-box" @click="bindClick">
+						<text class="nickname" >{{itemData.userInfo.nickname}}</text> <!-- 用户昵称 -->
 						<!-- 性别 -->
 						<image class="sex" v-if="isBoy == 1" src="../../static/sex/boy.png"></image>
 						<image class="sex" v-if="isBoy == 2" src="../../static/sex/girl.png"></image>
@@ -26,20 +26,21 @@
 			</div>
 
 			<!-- 动态的图片 -->
-			<image class="image-1 image-act" v-if="imgListSize == 1" resize="cover" :src="imageList[0].imageUrl"></image>
 
-			<div class="image-2-box image-act" v-if="imgListSize == 2">
+			<image class="image-1" v-if="imgListSize == 1" resize="cover" :src="imageList[0].imageUrl" @click="bindClick"></image>
+
+			<div class="image-2-box" v-if="imgListSize == 2" @click="bindClick">
 				<image class="image-2" resize="cover" :src="imageList[0].imageUrl"></image>
 				<image class="image-2" resize="cover" :src="imageList[1].imageUrl"></image>
 			</div>
 
-			<div class="image-3-box image-act" v-if="imgListSize == 3">
+			<div class="image-3-box" v-if="imgListSize == 3" @click="bindClick">
 				<image class="image-3-0" resize="cover" :src="imageList[0].imageUrl"></image>
 				<image class="image-3-1" resize="cover" :src="imageList[1].imageUrl"></image>
 				<image class="image-3-2" resize="cover" :src="imageList[2].imageUrl"></image>
 			</div>
 
-			<div class="image-4-box image-act" v-if="imgListSize == 4">
+			<div class="image-4-box" v-if="imgListSize == 4" @click="bindClick">
 				<image class="image-1" resize="cover" :src="imageList[0].imageUrl"></image>
 				<div class="image4">
 					<image v-for="(i, index) in [1,2,3]" class="image-4" resize="cover" :src="imageList[i].imageUrl" :key="index"></image>
@@ -78,7 +79,7 @@
 			return {
 				imageList: [], //主页动态的图片列表
 				isLike: '', //是否点赞,1表示点赞了, 0表示未点赞
-				likeCount: 0 ,//点赞数
+				likeCount: 0, //点赞数
 				commentCount: 0 //评论数
 			}
 		},
@@ -113,20 +114,25 @@
 				this.$emit('close');
 				e.stopPropagation();
 			},
+			goUserInfo() {
+				console.log("跳转到用户详情页")
+			},
 			bindClick() {
-				this.$emit('click');
+				this.$emit('click'); //向外触发点击动态事件
 			},
 			//点击了点赞/取消点赞
 			clickLike() {
 				if (this.isLike == 0) {
 					//TODO
 					this.isLike = 1
-					this.likeCount++;				
-				} else if(this.isLike == 1){
+					this.likeCount++;
+				} else if (this.isLike == 1) {
 					//TODO	
 					this.isLike = 0
 					this.likeCount--;
-				}else{return}
+				} else {
+					return
+				}
 			},
 			//点击了评论按钮
 			clickComment() {
@@ -141,10 +147,6 @@
 		width: 750px;
 		margin-top: 10px;
 		background-color: #F5F5F5;
-	}
-	
-	.image-act:active{
-		opacity: 0.7;
 	}
 
 	.list-cell:active {
@@ -242,11 +244,13 @@
 	.icon:active {
 		background-color: #eeeeee;
 	}
-	.count{
+
+	.count {
 		font-size: 22px;
 		color: #707070;
 		margin-top: 40px;
 	}
+
 	.date {
 		font-size: 30px;
 		color: #999999;

@@ -2,7 +2,7 @@
 	<view class="page">
 		<view class='news-title'>
 			<text>动态描述</text>
-			<text class="news-quick" @tap="chooseMsg">快速键入</text>
+			<text class="news-quick" @tap="chooseMsg">{{sendDate.newsCategory == '生活街' ? '请选择动态分类' : sendDate.newsCategory}}</text>
 		</view>
 		<view class="news-body">
 			<textarea placeholder="这里描述你的动态信息..." v-model="sendDate.content" maxlength="70" class="news-textare" />
@@ -68,13 +68,14 @@
 		},
         data() {
             return {
-                msgContents: ["这家店铺商品质量很好", "这家店铺的服务太好了", "这家店的商品很实惠", "很不错"],
+                msgContents: ["超市购物", "美食饮品", "日常生活", "书店文具" , "电子产品", "其他"],
                 stars: [1, 2, 3, 4, 5],
 				isShowShop: false,
                 imageList: [],
                 sendDate: {
                     score: 0,
                     content: "",
+					newsCategory: "生活街", //动态分类,默认是生活街
                     publisherId: "" //发布者id
                 },
 				chooseShop: {} //选中的对象信息
@@ -113,11 +114,11 @@
             close(e){
                 this.imageList.splice(e,1);
             },
-            chooseMsg() { //快速输入
+            chooseMsg() { //分类选择
                 uni.showActionSheet({
                     itemList: this.msgContents,
                     success: (res) => {
-                        this.sendDate.content = this.msgContents[res.tapIndex];
+                        this.sendDate.newsCategory = this.msgContents[res.tapIndex];
                     }
                 })
             },
@@ -166,6 +167,7 @@
                             this.sendDate = {
                                 score: 0,
                                 content: "",
+								newsCategory: "",
                                 publisherId: ""
                             }
                         }

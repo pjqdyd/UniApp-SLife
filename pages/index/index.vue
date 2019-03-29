@@ -135,6 +135,9 @@
 			//跳转到详情页
 			goDetail(e) {
 				console.log("跳转到详情页")
+				uni.navigateTo({
+					url: '../newsDetail/newsDetail'
+				});
 			},
 			//获取列表的高度信息,设置给swiper,以免无法左右滑动
 			getListHeight() {
@@ -159,6 +162,9 @@
 				}
 			} else if (e.index == 1) {
 				console.log("点击了手动定位按钮")
+				uni.navigateTo({
+					url: '../newsDetail/newsDetail'
+				});
 			} else {
 				return;
 			}
