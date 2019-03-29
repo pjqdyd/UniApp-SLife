@@ -18,7 +18,7 @@
 		<radio-group @change="changeRadio">
 			<!-- 附近商铺列表选框 -->
 			<view v-for="(item, index) in localList" :key="index">
-				
+
 				<!-- 单个选框 -->
 				<view class="local-shop-box">
 					<image class="shop-image" :src="item.imageUrl"></image>
@@ -35,9 +35,9 @@
 					</view>
 					<view class="shop-radio">
 						<radio :value=" index + '' "></radio>
-					</view>	
+					</view>
 				</view>
-					
+
 			</view>
 
 		</radio-group>
@@ -177,9 +177,9 @@
 							console.log('保存选中的商铺对象成功');
 						}
 					});
-					uni.redirectTo({
-						url: "../create/create"
-					})
+					uni.navigateBack({
+						delta: 1
+					});
 				}
 			},
 			//获取选框的值,设置选中的对象
@@ -265,8 +265,8 @@
 		margin-right: 10upx;
 		color: #ea5455;
 	}
-	
-	.local-shop-box{
+
+	.local-shop-box {
 		width: 750upx;
 		height: 160upx;
 		padding: 10upx 20upx 10upx 20upx;
@@ -276,18 +276,20 @@
 		justify-content: space-between;
 		border-bottom: 1upx solid #eeeeee;
 	}
-	
-	.shop-image{
+
+	.shop-image {
 		border-radius: 10upx;
 		width: 140upx;
 		height: 140upx;
 	}
-	.shop-info{
+
+	.shop-info {
 		width: 400upx;
 		height: 100%;
 		box-sizing: border-box;
 		padding: 10upx 0 10upx 10upx;
 	}
+
 	.name-box {
 		width: 400upx;
 		height: 60upx;
@@ -297,8 +299,8 @@
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
-	
-	.shop-radio{
+
+	.shop-radio {
 		text-align: center;
 		width: 130upx;
 		height: 100%;
@@ -333,13 +335,14 @@
 		background-color: #ea5455;
 		line-height: 80upx;
 	}
+
 	.local-addr-box {
 		width: 400upx;
 		height: 45upx;
 		display: flex;
 		justify-content: space-between;
 	}
-	
+
 	.local-box {
 		display: flex;
 		flex-wrap: wrap;
@@ -348,6 +351,7 @@
 		height: 40upx;
 		overflow: hidden;
 	}
+
 	.text {
 		line-height: 50upx;
 		font-size: 26upx;
@@ -355,9 +359,10 @@
 		width: 100%;
 		overflow: hidden;
 		text-overflow: ellipsis;
-		white-space: nowrap;	
+		white-space: nowrap;
 	}
-	.distance-box{
+
+	.distance-box {
 		width: 150upx;
 		height: 45upx;
 		line-height: 45upx;

@@ -34,7 +34,7 @@
 </template>
 
 <script>
-	import uniRate from "../rate/uni-rate.vue";
+	import uniRate from "@/components/rate/uni-rate.vue";
 	import uniBadge from "@/components/uni-badge/uni-badge.vue";
 	export default {
 		props: {

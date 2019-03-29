@@ -40,9 +40,12 @@
         </view>
 		
 		<!-- 选中的商铺 -->
-		<local-item :shopItem="chooseShop"></local-item>
-		
-        <view class='news-title news-star-view' v-show="isShowStar">
+		<view v-if="isShowShop">
+			<view class="shop-box" @click="handShopTap"></view> <!-- 覆盖在商铺上,阻止商铺的点击事件 -->
+			<local-item :shopItem="chooseShop"></local-item> <!-- 商铺 -->
+		</view>
+			
+        <view class='news-title news-star-view' v-show="isShowShop">
             <text>店铺评分</text>
             <view class="news-star-view">
                 <text class="news-star" v-for="(value,key) in stars" :key="key" :class="key < sendDate.score ? 'active' : ''" @tap="chooseStar(value)"></text>
@@ -67,24 +70,28 @@
             return {
                 msgContents: ["这家店铺商品质量很好", "这家店铺的服务太好了", "这家店的商品很实惠", "很不错"],
                 stars: [1, 2, 3, 4, 5],
-				isShowStar: false,
+				isShowShop: false,
                 imageList: [],
                 sendDate: {
                     score: 0,
                     content: "",
-                    contact: ""
+                    publisherId: "" //发布者id
                 },
 				chooseShop: {} //选中的对象信息
             }
         },
 		//params为上个页面跳转过来的参数
         onLoad(params) {
+			
+        },
+		onShow() {
 			var that = this;
 			//获取在选择商铺页缓存的选中的商铺信息
 			uni.getStorage({
 				key: 'chooseShop',
 				success: function (res) {
 					that.chooseShop = res.data;
+					that.isShowShop = true;
 					//获取数据后清除缓存
 					uni.removeStorage({
 						key: 'chooseShop',
@@ -94,13 +101,15 @@
 				    });
 				}
 			});
-        },
+		},
 		created() {	    
 		},
 		mounted() {
 			console.log(this.chooseShop)
 		},
         methods: {
+			handShopTap(){ //商铺盒子的点击事件
+			},
             close(e){
                 this.imageList.splice(e,1);
             },
@@ -115,7 +124,7 @@
             chooseImg() { //选择图片
                 uni.chooseImage({
                     sourceType: ["camera", "album"],
-                    sizeType: "compressed",
+                    //sizeType: "compressed",
                     count: 4 - this.imageList.length,
                     success: (res) => {
                         this.imageList = this.imageList.concat(res.tempFilePaths);
@@ -145,19 +154,19 @@
                     }
                 })
                 uni.uploadFile({
-                    url: "https://service.dcloud.net.cn/news",
+                    url: "https://service.dcloud.net.cn/new",
                     files: imgs,
                     formData: this.sendDate,
                     success: (res) => {
                         if (res.statusCode === 200) {
                             uni.showToast({
-                                title: "反馈成功!"
+                                title: "发布成功!"
                             });
                             this.imageList = [];
                             this.sendDate = {
                                 score: 0,
                                 content: "",
-                                contact: ""
+                                publisherId: ""
                             }
                         }
                     },
@@ -174,12 +183,12 @@
     }
 </script>
 
-<style>
+<style lang="scss">
     @font-face {
     	font-family: uniicons;
     	font-weight: normal;
     	font-style: normal;
-    	src: url('https://img-cdn-qiniu.dcloud.net.cn/fonts/uni.ttf') format('truetype');
+    	src: url('../../static/uni.ttf') format('truetype');
     }
     page {
         background-color: #EFEFF4;
@@ -316,7 +325,14 @@
     	min-height: 50upx;
     	padding: 15upx 30upx;
     	line-height: 50upx;
+		border-bottom: 1upx solid #eeeeee;
     }
+	.shop-box{
+		width: 100%;
+		height: 180upx;
+		position: absolute;
+		z-index: 99;
+	}
 	.icon-next{
 		float: right;
 	}
