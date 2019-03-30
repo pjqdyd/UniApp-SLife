@@ -170,16 +170,15 @@
 				});
 			},
 			goDetail(e) {
-				//这里的e是,单条动态数据对象, 我们在跳转前保存e进缓存,方便在详情页获取
-				console.log(e)
+				//由于在APP端,getStorage取不到在nvue页面设置的js对象data,所以就转换为json保存
+				var item = JSON.stringify(e)
 				uni.setStorage({
 					key: 'newsItem',
-					data: e,
+					data: item,
 					success: function() {
-						console.log('保存当前点击的动态对象成功');
-						console.log("前往详情页面")
+						console.log('保存单条动态信息成功');
 						uni.navigateTo({
-							url: '../newsDetail/newsDetail'
+							url: '/pages/newsDetail/newsDetail'
 						});
 					}
 				});

@@ -87,8 +87,7 @@
             }
         },
 		//params为上个页面跳转过来的参数
-        onLoad(params) {
-			
+        onLoad(params) {		
         },
 		onShow() {
 			var that = this;
