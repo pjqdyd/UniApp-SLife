@@ -86,7 +86,6 @@
 				url: url + '/newsdata',
 				success: (res) => {
 					console.log("请求newsdata数据成功成功..")
-					console.log(res)
 					recommendList = res.data.newsList
 					
 					this.listB = this.listB.concat(recommendList)
@@ -135,9 +134,18 @@
 			},
 			//跳转到详情页
 			goDetail(e) {
-				console.log("跳转到详情页")
-				uni.navigateTo({
-					url: '../newsDetail/newsDetail'
+				//这里的e是,单条动态数据对象, 我们在跳转前保存e进缓存,方便在详情页获取
+				console.log(e)
+				uni.setStorage({
+					key: 'newsItem',
+					data: e,
+					success: function() {
+						console.log('保存当前点击的动态对象成功');
+						console.log("跳转到详情页")
+						uni.navigateTo({
+							url: '../newsDetail/newsDetail'
+						});
+					}
 				});
 			},
 			//获取列表的高度信息,设置给swiper,以免无法左右滑动

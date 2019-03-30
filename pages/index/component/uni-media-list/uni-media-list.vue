@@ -66,7 +66,7 @@
 
 <script>
 	export default {
-		//这里的data属性是接收父组件传过来的 单条动态数据对象
+		//这里的itemData属性是接收父组件传过来的 单条动态数据对象
 		props: {
 			itemData: {
 				type: Object,
@@ -78,7 +78,7 @@
 		data() {
 			return {
 				imageList: [], //主页动态的图片列表
-				isLike: '', //是否点赞 1表示点赞了,0表示未点赞
+				isLike: 0, //是否点赞 1表示点赞了,0表示未点赞
 				likeCount: 0 ,//点赞数
 				commentCount: 0 //评论数
 			}

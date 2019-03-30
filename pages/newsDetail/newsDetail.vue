@@ -3,48 +3,47 @@
 		<view class="page-box">
 			<!-- 动态的顶部用户信息, 头像,昵称,动态标题  280upx-->
 			<view class="userInfo-box">
-				<image class="face" src="https://upload-images.jianshu.io/upload_images/14511997-f98df143a7bb5a83.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"
-				 @click.stop="goUserInfo"></image> <!-- 用户头像 -->
+				<image class="face" :src="newsItem.userInfo.faceUrl" @click.stop="goUserInfo"></image> <!-- 用户头像 -->
 
 				<!-- 用户昵称,性别, 身份 -->
 				<view class="nickname-sex-idStatus-box">
-					<text class="nickname">刺猬的拥抱</text> <!-- 用户昵称 -->
+					<text class="nickname">{{newsItem.userInfo.nickname}}</text> <!-- 用户昵称 -->
 					<!-- 身份 -->
-					<text class="id-status-text">-顾客-</text>
+					<text class="id-status-text">-{{isIdStatus}}-</text>
 				</view>
 				<!-- 动态分类 -->
-				<text class="news-category">/超市</text>
+				<text class="news-category">/{{newsItem.newsCategory}}</text>
 			</view>
 
 			<!-- 动态有关的店铺的信息 -->
 			<view class="shop-info">
 				<image class="shop-icon" src="../../static/news/shop.png"></image>
 				<view class="shop-name-local">
-					<view class="shop-name">[生活街店铺]</view>
-					<view class="iconfont shop-local"><text style="color: #EA5455;">&#xe611;</text>位置风飞沙收到的s的东方航空沙发撒范德萨发送是后端数呼呼大睡设计方法</view>
+					<view class="shop-name">{{'[' + newsItem.newsShopName + ']'}}</view>
+					<view class="iconfont shop-local"><text style="color: #EA5455;">&#xe611;</text>{{newsItem.newsShopAddr}}</view>
 				</view>
 				<view class="iconfont shop-next">&#xe6ee;</view>
 			</view>
 			<!-- 动态描述标题 -->
 			<view class="texts-box">
-				<text class="texts">{{text}}</text>
+				<text class="texts" space="emsp">{{newsItem.newsTitle}}</text>
 			</view>
 
 			<!-- 动态图片 -->
-			<view v-for="(i, index) in [1,2,3]" :key="index">
-				<image class="news-image" src="https://upload-images.jianshu.io/upload_images/14511997-6b7bdd51ef601f2f.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></image>
+			<view v-for="(item, index) in newsItem.newsImage" :key="index">
+				<image class="news-image" mode="widthFix" :src="item.imageUrl"></image>
 			</view>
-			
+
 			<!-- 底部的点赞,举报图标和时间 -->
 			<view class="icon-box">
-				<image class="icon" @click.stop="clickLike" :src="isLike? '../../static/news/click/like1.png': '../../static/news/like.png' ">
+				<image class="icon" @click.stop="clickLike" :src="isLike ? '../../static/news/click/like1.png': '../../static/news/like.png' ">
 				</image>
-				<text class="count">32</text>
-			
+				<text class="count">{{newsItem.likeCount}}</text>
+
 				<image class="icon" @click.stop="clickMore" src="../../static/news/more.png"></image>
-				<text class="date">2019:13:13</text>
+				<text class="date">{{newsItem.dateTime}}</text>
 			</view>
-			
+
 			<!-- 评论区块 -->
 			<view class="comment-box">
 				评论
@@ -56,20 +55,76 @@
 
 <script>
 	export default {
-		created() {
+		onLoad() {
 
+		},
+		created() {
+			var that = this;
+			//获取在主页缓存的单条动态数据对象信息
+			uni.getStorage({
+				key: 'newsItem',
+				success: function(res) {
+					console.log("获取数据成功")
+					console.log(res)
+					if(res.data == undefined || res.data == null){
+						that.newsItem = res
+					}else{
+						that.newsItem = res.data;
+					}	
+				}
+			});
+		},
+		mounted() {
+			this.isLike = this.newsItem.isLike;
 		},
 		data() {
 			return {
-				text: "撒旦解放打算离开房间啊是的时候就是第三方啥叫好的 始动画好几个军事大国",
-				isLike: true
+				newsItem: {}, //动态数据对象
+				isLike: 0
 			}
 		},
 		methods: {
 			goUserInfo() {
 
+			},
+			//点击了点赞/取消点赞
+			clickLike() {
+				if (this.isLike == 0) {
+					//TODO
+					this.isLike = 1
+					this.likeCount++;
+				} else {
+					//TODO	
+					this.isLike = 0
+					this.likeCount--;
+				}
+			},
+			//点击了更多
+			clickMore() {
+				console.log("更多")
 			}
-		}
+		},
+		computed: {
+			isIdStatus() {
+				let idStatus = this.newsItem.userInfo.idStatus;
+				if (idStatus == 1) {
+					return "店主"
+				} else if (idStatus == 0) {
+					return "顾客"
+				} else {
+					return ''
+				}
+			}
+		},
+		onUnload() {
+			//页面卸载后,清除缓存的动态对象
+			uni.removeStorage({
+				key: 'newsItem',
+				success: function(res) {
+					console.log('清除缓存的动态对象成功');
+				}
+			});
+		},
 	}
 </script>
 
@@ -143,8 +198,9 @@
 	}
 
 	.shop-icon {
-		width: 65upx;
-		height: 65upx;
+		padding-top: 10upx;
+		width: 60upx;
+		height: 60upx;
 	}
 
 	.shop-name-local {
@@ -196,7 +252,7 @@
 		height: 400upx;
 		margin-top: 20upx;
 	}
-	
+
 	.icon-box {
 		width: 750upx;
 		height: 100upx;
@@ -206,7 +262,7 @@
 		box-sizing: border-box;
 		flex-direction: row;
 	}
-	
+
 	.icon {
 		width: 80upx;
 		height: 80upx;
@@ -214,15 +270,17 @@
 		border-color: #FFFFFF;
 		margin-left: 25upx;
 	}
-	
+
 	.icon:active {
 		background-color: #eeeeee;
 	}
-	.count{
+
+	.count {
 		font-size: 22upx;
 		color: #707070;
 		margin-top: 40upx;
 	}
+
 	.date {
 		font-size: 30upx;
 		color: #999999;
@@ -230,7 +288,8 @@
 		right: 30upx;
 		line-height: 80upx;
 	}
-	.comment-box{
+
+	.comment-box {
 		width: 100%;
 		height: 500upx;
 		background-color: #999999;

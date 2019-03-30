@@ -73,10 +73,15 @@
 				isShowShop: false,
                 imageList: [],
                 sendDate: {
-                    score: 0,
-                    content: "",
+					publisherId: "",        //发布者id
+					content: "",			//动态标题内容
+					newsLatitude: "",		//动态发布的纬度
+					newsLongitude: "",		//动态发布的经度
 					newsCategory: "生活街", //动态分类,默认是生活街
-                    publisherId: "" //发布者id
+                    score: 0,				//动态有关店铺的评分
+					newsShopId: "",			//动态有关店铺的id
+					newsShopName: "",       //动态有关店铺的名字
+					newsShopAddr: ""        //动态有关店铺的位置
                 },
 				chooseShop: {} //选中的对象信息
             }
@@ -167,8 +172,13 @@
                             this.sendDate = {
                                 score: 0,
                                 content: "",
-								newsCategory: "",
-                                publisherId: ""
+								newsLatitude: "",
+								newsLongitude: "",
+								newsCategory: "生活街", 
+								newsShopId: "",	
+								newsShopName: "",
+								newsShopAddr: "",
+								publisherId: ""
                             }
                         }
                     },

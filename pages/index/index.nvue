@@ -170,10 +170,18 @@
 				});
 			},
 			goDetail(e) {
-				console.log("前往详情页面")
-				console.log(JSON.stringify(e.newsId))
-				uni.navigateTo({
-					url: '../newsDetail/newsDetail'
+				//这里的e是,单条动态数据对象, 我们在跳转前保存e进缓存,方便在详情页获取
+				console.log(e)
+				uni.setStorage({
+					key: 'newsItem',
+					data: e,
+					success: function() {
+						console.log('保存当前点击的动态对象成功');
+						console.log("前往详情页面")
+						uni.navigateTo({
+							url: '../newsDetail/newsDetail'
+						});
+					}
 				});
 			},
 			loadMore(e) {
