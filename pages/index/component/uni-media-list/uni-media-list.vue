@@ -274,7 +274,7 @@
 	.image-1 {
 		width: 750upx;
 		height: 400upx;
-		margin-bottom: 3upx;
+		/* margin-bottom: 3upx; */
 	}
 
 	.image-2-box {
@@ -304,7 +304,7 @@
 	}
 
 	.image-3-1 {
-		width: 248upx;
+		width: 247upx;
 		height: 248upx;
 		position: absolute;
 		right: 0;
@@ -321,7 +321,7 @@
 	.image-4-box {
 		position: relative;
 		width: 750upx;
-		height: 660upx;
+		height: 655upx;
 	}
 
 	.image4 {
@@ -333,7 +333,7 @@
 	}
 
 	.image-4 {
-		width: 248upx;
+		width: 246upx;
 		height: 240upx;
 	}
 </style>

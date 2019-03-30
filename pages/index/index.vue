@@ -86,8 +86,9 @@
 				url: url + '/newsdata',
 				success: (res) => {
 					console.log("请求newsdata数据成功成功..")
+					console.log(res)
 					recommendList = res.data.newsList
-
+					
 					this.listB = this.listB.concat(recommendList)
 
 					this.homeList.push(this.listB)
@@ -162,9 +163,6 @@
 				}
 			} else if (e.index == 1) {
 				console.log("点击了手动定位按钮")
-				uni.navigateTo({
-					url: '../newsDetail/newsDetail'
-				});
 			} else {
 				return;
 			}
