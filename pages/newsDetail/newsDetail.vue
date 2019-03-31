@@ -46,7 +46,7 @@
 
 			<!-- 评论区块 -->
 			<view class="comment-box">
-					<news-comment></news-comment>		
+				<news-comment ref="comment"></news-comment>
 			</view>
 
 		</view>
@@ -55,11 +55,11 @@
 
 <script>
 	import conf from '../../common/config.js'; //全局的一些配置信息
-	
+
 	import newsComment from "./component/news-comment.vue"; //导入评论组件
 
 	export default {
-		components:{
+		components: {
 			newsComment
 		},
 		data() {
@@ -86,8 +86,20 @@
 			});
 		},
 		onShow() {},
-		created() {},
+		created() {	
+		},
 		mounted() {},
+		//页面下拉刷新
+		onPullDownRefresh() {
+			console.log('refresh刷新动态详情');
+			setTimeout(function() {
+				uni.stopPullDownRefresh();
+			}, 1000);
+		},
+		//页面上拉触底
+		onReachBottom() {
+			this.$refs.comment.loadMoreComment(); //调用子组件加载更多评论
+		},
 		methods: {
 			goUserInfo() {
 

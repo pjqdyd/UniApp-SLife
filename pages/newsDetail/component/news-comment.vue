@@ -1,47 +1,111 @@
 <template>
 	<view>
 		<!-- 评论板块 -->
-		<!-- <block wx:for="{{commentsList}}"> -->
-		<!-- <view class='comments-all' bindtap='replyFocus' data-fatherCommentId='{{item.id}}' data-toUserId='{{item.fromUserId}}'
-		 data-toNickname='{{item.nickname}}'> -->
+		<view class="comment-count">评论<text class="comment-num">{{commentCount}}</text></view>
 
-		<view class="comment-count">评论<text class="comment-num">25</text></view>
+		<view class="comment-list-box">
+			
+			<block v-for="(item, index) in commentList" :key="index">
+				<view class='container-comments'>
+					<!-- <image class="face-comments" src='{{serverUrl}}{{item.faceImage}}'></image> -->
+					<image class="face-comments" :src='item.fromUserFace'></image>
+					
+					<!-- 评论者昵称, 和是否是回复 -->
+					<view class='nickname-comments'>
+						<view class='nickname-lbl'>{{item.fromUserName}}
+							<text class="nickname-reply" v-if="item.toUserName == null ? false : true">回复 {{item.toUserName}}</text>
+						</view>
+						
+						<!-- 评论/回复的内容 -->
+						<view class='comments-content'>{{item.comment}}</view>
+						
+						<!-- 回复按钮, 日期信息 -->
+						<view class="date-comment">
+							<text class="reply" @click="clickReply(item)">回复</text><!-- 回复按钮 -->
+							<text class='date-lbl'>{{item.dateTime}}
+								<text>{{item.toUserId == null ? " 留言" : " 回复"}}</text>
+							</text>
+						</view>
 
-		<block v-for="(i, index) in [1, 2, 3, 4, 5]" :key="index">
-			<view class='container-comments'>
-				<!-- <image class="face-comments" src='{{serverUrl}}{{item.faceImage}}'></image> -->
-				<image class="face-comments" src='https://upload-images.jianshu.io/upload_images/14511997-161603db93a6d5c4.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240'></image>
-				<view class='nickname-comments'>
-					<!-- <label class='nickname-lbl'>@{{item.nickname}}</label> -->
-					<text class='nickname-lbl'>刺猬的拥抱</text>
-					于
-					<text class='date-lbl'>2小时前</text>
-					<!-- 留言： -->
-					<!-- <block wx:if="{{item.toNickname != null}}"> -->
-					<block v-if="false">
-						回复
-						<!-- <label class='nickname-lbl'>@{{item.toNickname}}</label> -->
-						<text class='nickname-lbl'>刺猬</text>
-					</block>
-					<!-- <block wx:else> -->
-					<block v-if="true">
-						留言：
-					</block>
+					</view>
 
-					<view class='comments-content'>留言的内阿斯顿发大水和士大夫发生商店换行地方萨芬第三方</view>
 				</view>
+			</block>
+			<uni-load-more  status="noMore"></uni-load-more>
+		</view>
 
-			</view>
-		</block>
-		<!-- <view class='comments-content'>留言的内容地方萨芬第三方</view> -->
-		<!-- </view> -->
-		<!-- </block> -->
+		<view class="comment-input-box">
+			<input class="comment-input" :placeholder="placeholderText"  :focus="isFocus" :value="inputValue" @input="onInput" @blur="loseFoucs" />
+			<view class="iconfont comment-button" @click="createComment">&#xe634; 发表</view>
+		</view>
+
 	</view>
 </template>
 
 <script>
+	import conf from '@/common/config.js'; //全局的一些配置信息
+	
+	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue";
+	
 	export default {
-
+		components:{
+			uniLoadMore
+		},	
+		data() {
+			return {
+				commentCount: 0, //评论的数量
+				commentList: [], //评论的数据
+				
+				isFocus: false,
+				placeholderText: "请输入评论",
+				inputValue: ""
+			}
+		},
+		created() {
+			var url = conf.serverUrl;
+			var list = [];	
+			uni.request({
+				url: url + '/commentlist',
+				success: (res) => {
+					console.log("请求评论commentList数据成功..")
+					list = res.data.commentList;
+					this.commentCount = res.data.commentCount;
+					this.commentList = this.commentList.concat(list);
+				}
+			})		
+		},
+		mounted() {
+		},
+		methods: {
+			clickReply(e) {
+				//参数e为需要回复的评论对象
+				console.log(e)
+				this.isFocus = true;
+				this.placeholderText = "回复" + e.fromUserName;
+				console.log("回复...")
+			},
+			//输入框失去焦点
+			loseFoucs(){
+				this.isFocus = false
+			},
+			//正在输入
+			onInput(e){
+				this.inputValue = e.detail.value
+			},
+			//点击了发表评论
+			createComment(){
+				//TODO
+				//TODO 保存成功后,重新加载最新评论
+				console.log("发布评论" + this.inputValue)
+				this.inputValue = ""
+			},
+			
+			loadMoreComment(){
+				console.log("加载更多评论")
+			}
+		},
+		computed:{
+		}
 	}
 </script>
 
@@ -54,23 +118,29 @@
 		font-weight: 700;
 		color: #707070;
 	}
-	.comment-num{
+
+	.comment-num {
 		font-size: 32upx;
 		margin-left: 10upx;
+	}
+	
+	.comment-list-box{
+		margin-bottom: 120upx;
+		background-color: whitesmoke;
 	}
 
 	.container-comments {
 		width: 100%;
 		padding: 20upx;
 		box-sizing: border-box;
-		font-size: 38upx;
+		font-size: 34upx;
 		display: flex;
-		margin-bottom: 30upx;
+		margin-bottom: 10upx;
 	}
 
 	.face-comments {
-		width: 100upx;
-		height: 100upx;
+		width: 80upx;
+		height: 80upx;
 		border-radius: 50%;
 		margin-left: 10upx;
 		margin-top: 6upx;
@@ -79,25 +149,71 @@
 
 	.nickname-comments {
 		margin-left: 20upx;
-		height: 50upx;
+		height: 100%;
 		float: left;
 	}
 
 	.nickname-lbl {
-		font-size: 36upx;
-		color: #666;
+		font-size: 35upx;
+	}
+
+	.nickname-reply {
+		font-size: 30upx;
+		color: #707070;
+	}
+
+	.date-comment {
+		padding-left: 30upx;
+		text-align: right;
+	}
+
+	.reply {
+		float: left;
+		color: #EA5455;
+		font-size: 28upx;
+		font-weight: 600;
 	}
 
 	.date-lbl {
-		font-size: 36upx;
+		font-size: 28upx;
 		color: #707070;
 	}
 
 	.comments-content {
+		color: #666;
 		width: 500upx;
 		margin-left: 30upx;
 		margin-right: 5upx;
-		border-bottom: solid 1upx #707070;
-		font-size: 32upx;
+		border-bottom: solid 1upx #eeeeee;
+		font-size: 29upx;
+	}
+
+	.comment-input-box {
+		width: 100%;
+		height: 120upx;
+		background-color: #fff;
+		position: fixed;
+		bottom: 0;
+		display: flex;
+		justify-content: space-between;
+		padding: 20upx;
+		box-sizing: border-box;
+	}
+	
+	.comment-input{
+		width: 500upx;
+		height: 80upx;
+		line-height: 80upx;
+		font-size: 34upx;
+		background-color: #eeeeee;
+		border-radius: 10upx;
+	}
+	.comment-button{
+		width: 200upx;
+		height: 80upx;
+		line-height: 80upx;
+		font-size: 36upx;
+		color: #707070;
+		text-align: center;
 	}
 </style>
