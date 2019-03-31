@@ -24,7 +24,7 @@
 						<uni-media-list :itemData="item" @close="close(index)" @click="goDetail(item)"></uni-media-list>
 					</view>
 				</view>
-				<uni-load-more :loadingType="1"></uni-load-more>
+				<uni-load-more status="loading"></uni-load-more>
 			</swiper-item>
 
 		</swiper>

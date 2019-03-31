@@ -26,23 +26,23 @@
 			</div>
 
 			<!-- 动态的图片 盒子高度分别为 400 340 500 660 upx-->
-			<image  class="image-1" v-if="imgListSize == 1" resize="cover" :src="imageList[0].imageUrl"></image>
+			<image  class="image-1" v-if="imgListSize == 1" mode="aspectFill" :src="imageList[0].imageUrl"></image>
 
 			<div class="image-2-box" v-if="imgListSize == 2">
-				<image class="image-2" resize="cover" :src="imageList[0].imageUrl"></image>
-				<image class="image-2" resize="cover" :src="imageList[1].imageUrl"></image>
+				<image class="image-2" mode="aspectFill" :src="imageList[0].imageUrl"></image>
+				<image class="image-2" mode="aspectFill" :src="imageList[1].imageUrl"></image>
 			</div>
 
 			<div class="image-3-box" v-if="imgListSize == 3">
-				<image class="image-3-0" resize="cover" :src="imageList[0].imageUrl"></image>
-				<image class="image-3-1" resize="cover" :src="imageList[1].imageUrl"></image>
-				<image class="image-3-2" resize="cover" :src="imageList[2].imageUrl"></image>
+				<image class="image-3-0" mode="aspectFill" :src="imageList[0].imageUrl"></image>
+				<image class="image-3-1" mode="aspectFill" :src="imageList[1].imageUrl"></image>
+				<image class="image-3-2" mode="aspectFill" :src="imageList[2].imageUrl"></image>
 			</div>
 
 			<div class="image-4-box" v-if="imgListSize == 4">
-				<image class="image-1" resize="cover" :src="imageList[0].imageUrl"></image>
+				<image class="image-1" mode="aspectFill" :src="imageList[0].imageUrl"></image>
 				<div class="image4">
-					<image v-for="(i, index) in [1,2,3]" class="image-4" resize="cover" :src="imageList[i].imageUrl" :key="index"></image>
+					<image v-for="(i, index) in [1,2,3]" class="image-4" mode="aspectFill" :src="imageList[i].imageUrl" :key="index"></image>
 				</div>
 			</div>
 
