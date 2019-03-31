@@ -1,35 +1,39 @@
 {
-	"commentList": [{
-		"newsId": "634782052467",
-		"toUserId": null,
-		"toUserName": null,
-		"fromUserId": "894757454375",
-		"fromUserName": "刺猬的拥抱",
-		"comment": "这家店太好了,我经常来这里的,生活街app你的生活小助手",
-		"dateTime": "1小时前"
-	},{
-		"newsId": "634782052467",
-		"toUserId": "38476856",
-		"toUserName": "小猪佩奇",
-		"fromUserId": "894757454375",
-		"fromUserName": "刺猬的拥抱",
-		"comment": "生活街,这家店太好了,我经常来这里的,别问为什么",
-		"dateTime": "2小时前"
-	},{
-		"newsId": "634782052467",
-		"toUserId": null,
-		"toUserName": null,
-		"fromUserId": "894757454375",
-		"fromUserName": "小猪佩奇",
-		"comment": "这家店太好了,大家好我是佩奇,这是我的弟弟乔治",
-		"dateTime": "3小时前"
-	},{
-		"newsId": "634782052467",
-		"toUserId": null,
-		"toUserName": null,
-		"fromUserId": "894757454375",
-		"fromUserName": "王境泽",
-		"comment": "这家店太好了,别问为什么,问就是真香",
-		"dateTime": "4小时前"
-	}]
+  "commentList": [{
+    "newsId": "634782052467",
+    "toUserId": null,
+    "toUserName": null,
+    "fromUserId": "894757454375",
+    "fromUserName": "刺猬的拥抱",
+    "fromUserFace": "https://upload-images.jianshu.io/upload_images/14511997-f98df143a7bb5a83.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240",
+    "comment": "这家店太好了,我经常来这里的,生活街app你的生活小助手",
+    "dateTime": "1小时前"
+  }, {
+    "newsId": "634782052467",
+    "toUserId": "38476856",
+    "toUserName": "小猪佩奇",
+    "fromUserId": "894757454375",
+    "fromUserName": "刺猬的拥抱",
+    "fromUserFace": "https://upload-images.jianshu.io/upload_images/14511997-f98df143a7bb5a83.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240",
+    "comment": "生活街,这家店太好了,我经常来这里的,别问为什么",
+    "dateTime": "2小时前"
+  }, {
+    "newsId": "634782052467",
+    "toUserId": null,
+    "toUserName": null,
+    "fromUserId": "894757454375",
+    "fromUserName": "小猪佩奇",
+    "fromUserFace": "https://upload-images.jianshu.io/upload_images/14511997-d3e39ac722746d44.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240",
+    "comment": "这家店太好了,大家好我是佩奇,这是我的弟弟乔治",
+    "dateTime": "3小时前"
+  }, {
+    "newsId": "634782052467",
+    "toUserId": null,
+    "toUserName": null,
+    "fromUserId": "894757454375",
+    "fromUserName": "王境泽",
+    "fromUserName": "https://upload-images.jianshu.io/upload_images/14511997-02206884de2728b8.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240",
+    "comment": "这家店太好了,别问为什么,问就是真香",
+    "dateTime": "4小时前"
+  }]
 }
