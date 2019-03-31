@@ -99,7 +99,7 @@
 		mounted() {
 			setTimeout(() => {
 				this.getListHeight(); //获取并设置列表的高度信息(延迟是防止微信小程序节点还未挂载)
-			}, 200);
+			}, 500);
 		},
 		updated() {
 			this.getListHeight(); //重新获取并设置列表的高度信息
