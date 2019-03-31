@@ -7,6 +7,7 @@
 ```
  ├─appInfo               应用的一些介绍信息,演示,截图等
  ├─components            公用组件目录
+ ├─mockJson              测试的模拟json数据文件
  ├─common                存放全局的一些js变量配置, /style下存放icon字体图标样式
  ├─pages                 业务页面文件存放的目录
  ├─static                存放应用引用静态资源（如图片等）的地方，注意：静态资源只能存放于此
