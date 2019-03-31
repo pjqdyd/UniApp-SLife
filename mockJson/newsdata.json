@@ -1,0 +1,140 @@
+{
+  "newsList": [{
+    "newsId": "4545998677584395",
+    "userInfo": {
+      "id": "1115",
+      "faceUrl": "https://upload-images.jianshu.io/upload_images/14511997-4360141b964186a8.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240",
+      "nickname": "艾莉",
+      "sex": 2,
+      "idStatus": 1
+    },
+    "newsTitle": "这是动态消息3的标题,这家超市的东西太好了,实惠有有质量,太好了,别问为什么,问就是实惠, 既然追求质量那就要贯彻到底..",
+    "newsCategory": "超市",
+    "likeCount": 33,
+    "commentCount": 143,
+    "dateTime": "2019:03:15",
+    "isLike": 0,
+    "newsShopName": "生活街超市",
+    "newsShopId": "8958924050",
+    "newsShopAddr": "江西省南昌市南昌县昌东镇紫微路江西科技学院",
+    "newsImage": [{
+        "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-8e520501ad618878.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"
+      },
+      {
+        "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-ec037b183653ebf6.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"
+      },
+      {
+        "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-1044373d711b6724.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"
+      }
+    ]
+
+  }, {
+    "newsId": "3468477584395",
+    "userInfo": {
+      "id": "1111",
+      "faceUrl": "https://upload-images.jianshu.io/upload_images/14511997-f98df143a7bb5a83.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240",
+      "nickname": "刺猬的拥抱",
+      "sex": 1,
+      "idStatus": 0
+    },
+    "newsTitle": "这是动态消息1的标题,这家面包店的面包太好吃了, 隔壁的小孩都馋哭了,别为为什么,问就是好吃",
+    "newsCategory": "食品店",
+    "likeCount": 31,
+    "commentCount": 141,
+    "dateTime": "2019:03:15",
+    "isLike": 1,
+    "newsShopName": "生活街超市",
+    "newsShopId": "8958924050",
+    "newsShopAddr": "江西省南昌市南昌县昌东镇紫微路江西科技学院",
+    "newsImage": [{
+      "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-6b7bdd51ef601f2f.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"
+    }]
+
+  }, {
+    "newsId": "766687584395",
+    "userInfo": {
+      "id": "1115",
+      "faceUrl": "https://upload-images.jianshu.io/upload_images/14511997-6ccbf61568990b40.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240",
+      "nickname": "小猪佩奇",
+      "idStatus": 1
+    },
+    "newsTitle": "这是动态消息2的标题,这家店的水果太好吃了,非常新鲜,隔壁的小孩都哭了,",
+    "newsCategory": "水果店",
+    "likeCount": 32,
+    "commentCount": 142,
+    "dateTime": "2019:03:15",
+    "isLike": 0,
+    "newsShopName": "生活街超市",
+    "newsShopId": "8958924050",
+    "newsShopAddr": "江西省南昌市南昌县昌东镇紫微路江西科技学院",
+    "newsImage": [{
+        "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-a93407f6cf335716.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"
+      },
+      {
+        "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-df5b2b7455d52751.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"
+      }
+    ]
+
+  }, {
+    "newsId": "4545998677584395",
+    "userInfo": {
+      "id": "1115",
+      "faceUrl": "https://upload-images.jianshu.io/upload_images/14511997-3b2b5602699ee5b8.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240",
+      "nickname": "吴彦祖",
+      "sex": 1,
+      "idStatus": 0
+    },
+    "newsTitle": "这是动态消息3的标题,我真的是吴彦祖",
+    "newsCategory": "超市",
+    "likeCount": 33,
+    "commentCount": 143,
+    "dateTime": "2019:03:15",
+    "isLike": 0,
+    "newsShopName": "生活街超市",
+    "newsShopId": "8958924050",
+    "newsShopAddr": "江西省南昌市南昌县昌东镇紫微路江西科技学院",
+    "newsImage": [{
+        "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-8e520501ad618878.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"
+      },
+      {
+        "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-ec037b183653ebf6.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"
+      },
+      {
+        "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-1044373d711b6724.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"
+      }
+    ]
+
+  }, {
+    "newsId": "4545998677584395",
+    "userInfo": {
+      "id": "1115",
+      "faceUrl": "https://upload-images.jianshu.io/upload_images/14511997-02206884de2728b8.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240",
+      "nickname": "洪世贤",
+      "sex": 1,
+      "idStatus": 0
+    },
+    "newsTitle": "这是动态消息4的标题...,你好香啊,别问问什么,问就是你好香啊,",
+    "newsCategory": "餐馆",
+    "likeCount": 34,
+    "commentCount": 144,
+    "dateTime": "2019:03:15",
+    "isLike": 0,
+    "newsShopName": "生活街超市",
+    "newsShopId": "8958924050",
+    "newsShopAddr": "江西省南昌市南昌县昌东镇紫微路江西科技学院",
+    "newsImage": [{
+        "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-161603db93a6d5c4.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"
+      },
+      {
+        "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-c8fd9da0b90e8e63.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"
+      },
+      {
+        "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-09df8f95fe47cf6b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"
+      },
+      {
+        "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-2821e8e893895ee6.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"
+      }
+    ]
+
+  }]
+}
