@@ -1,0 +1,24 @@
+{
+	"shopId": "8958924050",
+	"shopName": "生活街商店",
+	"imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-42cba11e95693e6a.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240",
+	"rate": 4.7,
+	"category": "超市",
+	"distance": "100m",
+	"latitude": 28.681692,
+	"longitude": 116.016953,
+	"localAddr": "江西省南昌市南昌县昌东镇紫微路江西科技学院",
+	"userInfo": {
+		"userId": "32423432fhjhf340934",
+		"nickname": "刺猬的拥抱",
+		"idStatus": 1,
+		"sex": 1,
+		"faceImage": "https://upload-images.jianshu.io/upload_images/14511997-f98df143a7bb5a83.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"
+	},
+	"wifi": 1,
+	"alipay": 1,
+	"wechatpay": 1,
+	"cash": 1,
+	"openTime": "8:00--23:00",
+	"mainInfo": "主营日常生活用品和零食"
+}
