@@ -20,7 +20,7 @@
 
 项目使用的是DCloud旗下的[uniapp](https://uniapp.dcloud.io/)框架开发的移动端的app (开发中,文档后续更新...)
 
-项目需要使用DCloud自家的编辑器[HBuilder X](https://www.dcloud.io/hbuilderx.html)打开，请确保你的HbuildeX已经更新为最新版本， 且在首次编译时需要在需要在菜单【工具】-【插件安装】中安装如scss等语法编译插件，之后就可以运行到真机/微信小程序/或运行到浏览器，否则控制台会提示××插件未安装.
+项目需要使用DCloud自家的编辑器[HBuilder X](https://www.dcloud.io/hbuilderx.html)打开，请确保你的HbuildeX已经更新为最新版本， 且在首次编译时需要在需要在菜单【工具】-【插件安装】中安装如scss,Uniapp语法编译,Node.js插件,App真机运行等插件，之后就可以运行到真机/微信小程序/或运行到浏览器，否则控制台会提示××插件未安装.
 
 由于非原生组件在安卓不流畅,所以主页使用了weex(nvue)原生组件,在H5和小程序使用vue组件,兼容了移动端, H5和小程序
 
