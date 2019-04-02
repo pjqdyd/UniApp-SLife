@@ -64,7 +64,7 @@
 			}
 		},
 		onLoad() {
-			console.log("主页页面加载")
+			console.log("主页动态页面加载");
 		},
 		//页面下拉刷新
 		onPullDownRefresh() {
@@ -156,7 +156,7 @@
 				query.select("#swiperList").boundingClientRect(function(res) {
 					that.listHeight = res.height + 60 //默认的底部上拉加载框的高度60px
 				}).exec();
-			}
+			},
 		},
 		//监听导航栏的"三"或"O"的点击事件(展开/关闭侧边栏)(手动定位)
 		onNavigationBarButtonTap(e) {
