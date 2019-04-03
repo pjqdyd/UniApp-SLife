@@ -1,4 +1,6 @@
 {
+	"page": 1,
+  "totalPage": 5,
   "localList": [{
     "shopId": "8958924050",
     "shopName": "生活街商店",
