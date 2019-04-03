@@ -35,7 +35,16 @@
 			<local-item :shopItem="item"></local-item>
 		</view>
 
-		<uni-load-more status="loading"></uni-load-more>
+		<!-- 仅在小程序和H5显示加载更多 -->
+		<!-- #ifdef H5 || MP-WEIXIN -->
+		<uni-load-more :status="loadMoreStatus"></uni-load-more>
+		<!-- #endif -->
+
+		<!-- 在app端显示分页 -->
+		<!-- #ifdef APP-PLUS -->
+		<uni-pagination pageSize="7" :total="total" :current="page" @change="handPageChange"></uni-pagination>
+		<!-- #endif -->
+
 	</view>
 </template>
 
@@ -47,13 +56,15 @@
 	import localSwiper from "./component/local-swiper.vue"; //3d轮播图组件
 	import localItem from '@/components/local/local-item.vue'; //附近商铺列表item组件
 	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"; //加载更多组件
+	import uniPagination from "@/components/uni-pagination/uni-pagination.vue"; //分页组件
 
 
 	export default {
 		components: {
 			localSwiper,
 			localItem,
-			uniLoadMore
+			uniLoadMore,
+			uniPagination
 		},
 		data() {
 			return {
@@ -65,10 +76,14 @@
 					latitude: '',
 					addressName: ''
 				},
+				loadMoreStatus: "more", //加载的状态
 
-				localList: [],
+				localList: [], //附近商铺列表,用来存放每一页的list
+				page: 1, //当前页
+				total: 0, //总元素数
+				totalPaage: 0, //总页数
 
-				currentCateName: '默认', //当前分类的名字
+				currentCateName: '默认', //当前分类的名字 
 
 				categroyList: [{
 					id: "0",
@@ -135,24 +150,37 @@
 					that.getRegeo(); //获取并保存位置信息(高德)
 				}
 			});
+
 		},
-		created() {},
-		updated() {},
+		created() {
+			uni.startPullDownRefresh({});
+		},
+		//updated() {},
 		//页面下拉刷新
 		onPullDownRefresh() {
 			console.log('附近页refresh');
 
 			this.getLocalShopList(); //重新获取附近商铺列表数据
-			
-// 			setTimeout(function() {
-// 				uni.stopPullDownRefresh();
-// 			}, 1000);
+
 		},
-		//页面上拉触底
+		//页面上拉触底,加载更多(仅在H5和小程序有效
+		// #ifdef H5 || MP-WEIXIN
 		onReachBottom() {
 			//TODO
+			var currentPage = this.page;
+			var totalPage = this.totalPaage;
+			this.loadMoreStatus = "loading";
+			//判断当前页数和总页数是否相等,(没有更多了)
+			if (currentPage == totalPage) {
+				this.loadMoreStatus = "noMore";
+				return;
+			}
+			this.page ++;
+			this.getLocalShopList(); //获取更多一页数据 TODO
 			console.log('附近页refresh-触底,加载更多附近商铺');
 		},
+		// #endif
+
 		mounted() {},
 		computed: {
 			//计算icon在轮播图的分页
@@ -172,30 +200,68 @@
 			//点击了分类
 			changeCategory(index) {
 				this.currentCateName = this.categroyList[index].cateName;
+				var that = this;
+				 //重新根据分类查询一次
+				uni.startPullDownRefresh({
+					success() {
+						setTimeout(()=>{
+							uni.showToast({
+								icon: "none",
+								title: "切换店铺: " +  that.currentCateName
+							})
+						},1000)				
+					}
+				});
 			},
 			//请求后端数据,获取附近商店列表TODO
 			getLocalShopList() {
-				let url = conf.serverUrl;
+				var url = conf.serverUrl; //后端服务的base url
 				console.log(url + "/locallist")
 				//请求服务端数据
 				uni.request({
 					url: url + '/locallist',
 					success: (res) => {
-						uni.stopPullDownRefresh();//停止下拉刷新
+						setTimeout(() => {
+							uni.stopPullDownRefresh(); //停止下拉刷新
+						}, 200)
+
 						console.log("请求locallist数据成功成功..")
-						let list = res.data.localList
+						//判断当前page是否是第一页,如果是就设置localList为空
+						if (this.page == 1) {
+							this.localList = []
+						}
+						var list = res.data.localList; //新的数据列表	
+
+						// #ifdef H5 || MP-WEIXIN
 						this.localList = this.localList.concat(list);
+						this.totalPaage = res.data.totalPage;
+						this.total = res.data.total;
+						// #endif
+
+						// #ifdef APP-PLUS
+						this.localList = list;
+						this.totalPaage = res.data.totalPage;
+						this.total = res.data.total;
+						// #endif
 					}
 				});
 			},
-	
+			
+			// #ifdef APP-PLUS
+				handPageChange(val){
+					console.log(val.current) //当前分页页数
+					//根据分页的页数,请求后端数据
+					this.getLocalShopList(); //TODO
+				},
+			// #endif
+
 			// #ifdef  MP-WEIXIN
 			wxChooseLocal() {
 				console.log("微信-手动获取位置信息")
 				this.chooseLocalInfo();
 			},
 			// #endif
-			
+
 			//获取位置信息(使用高德地图sdk的api),并更新保存地址对象到缓存中
 			getRegeo() {
 				this.amapPlugin.getRegeo({
