@@ -28,7 +28,7 @@
 				</view>
 			</view>
 			<view class="list">
-				<view class="li noborder">
+				<view class="li noborder" @click="loginOut">
 					<image class="icon" src="../../static/user/option/out.png"></image>
 					<view class="text">退出登录</view>
 					<text class="iconfont">&#xe6ee;</text>
@@ -40,10 +40,9 @@
 	</view>
 </template>
 <script>
-	
 	import conf from '../../common/config.js'; //全局的一些配置信息
 	import utils from '../../common/utils.js'; //一些工具方法
-	
+
 	import userCrad from "./component/user-info/user-crad.vue"; //用户信息卡
 
 	export default {
@@ -56,13 +55,13 @@
 				option: [{
 					icon: "../../static/user/option/like.png",
 					name: "点赞的动态",
-				},{
+				}, {
 					icon: "../../static/user/option/apply.png",
-					name: "发布的动态",
-				},{
+					name: "申请店铺",
+				}, {
 					icon: "../../static/user/option/about.png",
 					name: "关于我们",
-				},{
+				}, {
 					icon: "../../static/user/option/issue.png",
 					name: "意见反馈",
 				}]
@@ -70,7 +69,7 @@
 		},
 		onLoad() {},
 		created() {
-			
+
 			var url = conf.serverUrl;
 			console.log(url + "/userinfo")
 			//请求服务端数据
@@ -82,9 +81,28 @@
 					this.userInfo = res.data.userInfo
 				}
 			});
-			
+
 		},
-		methods: {},
+		methods: {
+			loginOut() {
+				console.log("退出登录")
+				uni.showModal({
+					title: '退出登录',
+					content: '您是否要退出',
+					success: function(res) {
+						if (res.confirm) {
+							console.log('用户点击确定');
+							//TODO清除用户信息,跳转到登录页
+							uni.reLaunch({
+								url: '../login/login'
+							});
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
+				});
+			}
+		},
 		//监听导航栏的"<"的点击事件
 		onNavigationBarButtonTap(e) {
 			uni.switchTab({
@@ -99,8 +117,8 @@
 		background-color: #f1f1f1;
 		font-size: 30upx;
 	}
-	
-	.li:active{
+
+	.li:active {
 		background-color: #eeeeee;
 	}
 
