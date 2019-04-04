@@ -92,6 +92,11 @@
 					value: this.valueSync
 				})
 			}
+		},
+		watch: {
+			'value': function(value) {
+				this.valueSync = value;
+			}
 		}
 	}
 </script>
