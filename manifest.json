@@ -56,18 +56,18 @@
             },
             "icons" : {
                 "ios" : {
-                    "appstore" : "C:/Users/Z2/Desktop/生活街icon/icon2.png"
+                    "appstore" : "static/launch/Slife-icon.png"
                 },
                 "android" : {
-                    "mdpi" : "C:/Users/Z2/Desktop/生活街icon/icon2.png",
-                    "xxhdpi" : "C:/Users/Z2/Desktop/生活街icon/icon2.png"
+                    "mdpi" : "static/launch/Slife-icon.png",
+                    "xxhdpi" : "static/launch/Slife-icon.png"
                 }
             },
             "splashscreen" : {
                 "android" : {
-                    "hdpi" : "C:/Users/Z2/Desktop/生活街icon/launch.png",
-                    "xxhdpi" : "C:/Users/Z2/Desktop/生活街icon/launch.png",
-                    "xhdpi" : "C:/Users/Z2/Desktop/生活街icon/launch.png"
+                    "hdpi" : "static/launch/launch.png",
+                    "xxhdpi" : "static/launch/launch.png",
+                    "xhdpi" : "static/launch/launch.png"
                 }
             }
         }
