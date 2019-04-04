@@ -47,7 +47,7 @@
 				</div>
 			</div>
 
-			<!-- 底部的点赞,评论,举报图标和时间 -->
+			<!-- 底部的点赞,评论,更多图标和时间 -->
 			<div class="icon-box">
 				<image class="icon" @click="clickLike" :src="isLike? '../../static/news/click/like1.png': '../../static/news/like.png' ">
 					<text class="count">{{likeCount}}</text>
@@ -56,7 +56,8 @@
 					<text class="count">{{commentCount}}</text>
 				</image>
 
-				<image class="icon" src="../../static/news/more.png"></image>
+				<image class="icon" @click="clickMore" src="../../static/news/more.png"></image>
+				
 				<text class="date">{{itemData.dateTime}}</text>
 			</div>
 
@@ -110,10 +111,6 @@
 			}
 		},
 		methods: {
-			close(e) {
-				this.$emit('close');
-				e.stopPropagation();
-			},
 			goUserInfo() {
 				console.log("跳转到用户详情页")
 			},
@@ -136,7 +133,18 @@
 			},
 			//点击了评论按钮
 			clickComment() {
+				this.$emit('clickComment'); //向外触发点击评论事件
 				console.log("评论")
+			},
+			//点击了...
+			clickMore(){
+				uni.showActionSheet({
+				    itemList: ["举报"],
+				    success: (res) => {
+						//TODO
+				        console.log("举报动态: Id = " + this.itemData.newsId)
+				    }
+				})
 			}
 		}
 	}

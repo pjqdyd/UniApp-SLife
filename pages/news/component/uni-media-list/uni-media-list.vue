@@ -110,10 +110,6 @@
 			}
 		},
 		methods: {
-			close(e) {
-				this.$emit('close');
-				e.stopPropagation();
-			},
 			bindClick() {
 				console.log("点击进入详情")
 				this.$emit('click');
@@ -135,11 +131,18 @@
 			},
 			//点击了评论按钮
 			clickComment() {
+				this.$emit('clickComment'); //向外触发评论事件
 				console.log("评论")
 			},
-			//点击了更多
+			//点击了...
 			clickMore(){
-				console.log("更多")
+				uni.showActionSheet({
+				    itemList: ["举报"],
+				    success: (res) => {
+						//TODO
+				        console.log("举报动态: Id = " + this.itemData.newsId)
+				    }
+				})
 			}
 		}
 	}

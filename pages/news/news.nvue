@@ -1,9 +1,5 @@
 <template>
 	<div>
-		<!-- 侧边栏 -->
-		<uni-drawer :showDrawer="isShowDrawer" @closeDrawer="handDrawerClose">
-			<text style="font-size: 30px;">侧边栏</text>
-		</uni-drawer>
 
 		<uni-tabs @change="changeTab" :index="tabIndex">
 			<!-- 顶部分类栏 -->
@@ -19,7 +15,6 @@
 						<!-- <text class="refresh-text">{{refreshText}}</text> -->
 						<loading-indicator class="indicator"></loading-indicator>
 					</refresh>
-
 					<!-- 顶部占位盒子,并显示刷新信息 -->
 					<cell class="top-box">
 						<text class="refresh-text">{{refreshText}}</text>
@@ -27,7 +22,7 @@
 
 					<!-- 内容列表组件, homeList[tabNum]表示当前页的动态数据列表,这里的item就是每条动态数据, index表示这条动态数据的序号-->
 					<cell v-for="(item,index) in homeList[tabNum]" :key="index" style="background-color: #eeeeee">
-						<uni-media-list :itemData="item" @close="close(index)" @click="goDetail(item)"></uni-media-list>
+						<uni-media-list :itemData="item" @click="goDetail(item)" @clickComment="goDetail(item)"></uni-media-list>
 					</cell>
 					<!-- 底部加载更多组件 -->
 					<cell class="loadmore">
@@ -50,7 +45,7 @@
 	import uniTabBar from './component/uni-tab-bar/uni-tab-bar.nvue'
 	import uniTabs from './component/uni-tabs/uni-tabs.nvue'
 	import uniMediaList from './component/uni-media-list/uni-media-list.nvue'
-	import uniDrawer from './component/uni-drawer/uni-drawer.nvue'
+	//import uniDrawer from './component/uni-drawer/uni-drawer.nvue'
 
 	import conf from '../../common/config.js'; //全局的一些配置信息
 	import utils from '../../common/utils.js'; //一些工具方法
@@ -61,12 +56,10 @@
 			uniTabContent,
 			uniTabBar,
 			uniTabs,
-			uniMediaList,
-			uniDrawer
+			uniMediaList
 		},
 		data() {
 			return {
-				isShowDrawer: false,
 				refreshing: false,
 				refreshText: "下拉可以刷新",
 				loadingText: "加载更多中",
@@ -90,6 +83,13 @@
 				listC: [], //热门页的list
 				listCPage: 0, //热门页的当前Page数
 				listCTotalPage: 0, //热门页的总Page数
+				
+				//位置信息对象
+				localInfo: {
+					longitude: '',
+					latitude: '',
+					addressName: ''
+				},
 
 				tabBars: [{
 					name: '最新',
@@ -123,18 +123,15 @@
 				}
 			})
 
-			//监听导航栏的"三"或"O"的点击事件(展开/关闭侧边栏)
+			//监听导航栏的"<"或"O"的点击事件(返回,手动定位)
 			uni.onNavigationBarButtonTap((e) => {
 				console.log("监听到原生标题栏按钮点击事件");
 				if (e.index == 0) {
-					if (this.isShowDrawer == false) {
-						this.isShowDrawer = true
-						console.log("展开侧边栏")
-					} else {
-						this.isShowDrawer = false
-						console.log("关闭侧边栏")
-					}
+					uni.switchTab({
+						url: '/pages/local/local'
+					});
 				} else if (e.index == 1) {
+					this.chooseLocalInfo();
 					console.log("点击了重新定位按钮")
 				} else {
 					return;
@@ -143,9 +140,9 @@
 			})
 		},
 		mounted() {
+			this.setTabbarReddot();//设置红点
 		},
 		updated() {
-			this.setTabbarReddot();
 		},
 		methods: {
 			//设置红点
@@ -253,6 +250,30 @@
 				}
 
 			},
+			//手动选择位置信息,并保存到缓存中(手动选择的位置比较准确,所以覆盖高德api的地址信息)
+			chooseLocalInfo() {
+				var that = this;
+				uni.chooseLocation({
+					success: function(res) {
+						console.log('位置名称：' + res.name);
+						console.log('详细地址：' + res.address);
+						console.log('纬度：' + res.latitude);
+						console.log('经度：' + res.longitude);
+						that.localInfo = {
+							addressName: res.address,
+							longitude: res.longitude,
+							latitude: res.latitude
+						}
+						uni.setStorage({
+							key: 'localInfo',
+							data: that.localInfo,
+							success: function() {
+								console.log('更新保存地址信息对象localtionInfo成功(手动选择的地址)');
+							}
+						});
+					}
+				});
+			}
 		}
 	}
 </script>
