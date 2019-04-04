@@ -4,7 +4,7 @@
 		<!-- 自定义的顶部栏组件 已弃用-->
 		<!-- <top-bar topTitle="登录"></top-bar> -->
 
-		<view :style="{width: screenWidth + 'px'}" class="login-page">
+		<view class="login-page">
 			<!-- 登录的图标区块 -->
 			<view class="icon-box">
 				<image class="slife-icon" src="../../static/login/Slife-icon.png"></image>
@@ -38,7 +38,7 @@
 		},
 		data() {
 			return {
-				screenWidth: "750"
+				//screenWidth: "750"
 			}
 		},
 		components: {
@@ -56,6 +56,11 @@
 							provider: 'qq',
 							success: function(infoRes) {
 								console.log('用户昵称为：' + infoRes.userInfo.nickName);
+
+								//TODO 保存用户信息	
+								uni.reLaunch({
+									url: '../local/local'
+								});
 							}
 						});
 					}
@@ -72,6 +77,11 @@
 							provider: 'weixin',
 							success: function(infoRes) {
 								console.log('用户昵称为：' + infoRes.userInfo.nickName);
+
+								//TODO 保存用户信息								
+								uni.reLaunch({
+									url: '../local/local'
+								});
 							}
 						});
 					}
@@ -86,8 +96,7 @@
 						console.log(res)
 						console.log(res.data)
 						//设置页面的宽度
-						that.$data.screenWidth = res.data.screenWidth,
-							console.log(that.$data.screenWidth)
+						//that.$data.screenWidth = res.data.screenWidth,
 					}
 				})
 			},
@@ -103,6 +112,7 @@
 
 	.login-page {
 		position: fixed;
+		width: 750upx;
 	}
 
 	.icon-box {
