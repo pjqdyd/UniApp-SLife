@@ -37,7 +37,7 @@
 		</view>
 
 		<!-- 附近商铺列表 -->
-		<view v-for="(item, index) in localList" :key="index">
+		<view v-for="(item, index) in localList" :key="index" @click="goShopInfo(item.shopId)">
 			<local-item :shopItem="item"></local-item>
 		</view>
 
@@ -225,6 +225,13 @@
 							})
 						},1000)				
 					}
+				});
+			},
+			//跳转到店铺详情页
+			goShopInfo(shopId){
+				console.log("跳转到店铺详情页, 店铺Id=" + shopId)
+				uni.navigateTo({
+					url: '../shopDetail/shopDetail?shopId=' + shopId
 				});
 			},
 			//请求后端数据,获取附近商店列表TODO
