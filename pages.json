@@ -130,7 +130,6 @@
 				"navigationBarTitleText": "店铺详情",
 				"navigationBarBackgroundColor": "#ea5455",
 				"navigationBarTextStyle": "white",
-				"enablePullDownRefresh": true,
 				"app-plus": {
 					"titleNView": {
 						"buttons": []

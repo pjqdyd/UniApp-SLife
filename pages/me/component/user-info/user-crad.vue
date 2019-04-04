@@ -20,7 +20,7 @@
 							<image class="icon" src="../../static/user/follow.png"></image>
 							<view class="text">关注{{isIdStatus}}</view>
 						</view>
-						<view class="item">
+						<view class="item" @click="clickShopInfo" v-if="userInfo.idStatus == 1">
 							<image class="icon" src="../../static/user/shop.png"></image>
 							<view class="text">访问店铺</view>
 						</view>
@@ -41,6 +41,14 @@
 			return {}
 		},
 		mounted() {},
+		methods: {
+			//点击了访问店铺
+			clickShopInfo() {
+				uni.navigateTo({
+					url: '/pages/shopDetail/shopDetail?shoperId=' + this.userInfo.userId
+				});
+			}
+		},
 		computed: {
 			isIdStatus() {
 				if (this.userInfo == null || this.userInfo == undefined) {
@@ -87,8 +95,8 @@
 		background-color: #f1f1f1;
 		font-size: 30upx;
 	}
-	
-	.item:active{
+
+	.item:active {
 		background-color: #eeeeee;
 	}
 

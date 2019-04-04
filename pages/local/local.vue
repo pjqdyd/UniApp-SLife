@@ -56,7 +56,7 @@
 
 <script>
 	import conf from '../../common/config.js'; //全局的一些配置信息
-	import utils from '../../common/utils.js'; //一些工具方法
+	//import utils from '../../common/utils.js'; //一些工具方法
 	import amap from '../../common/amap-wx.js'; //地图工具
 
 	import uniDrawer from "./component/uni-drawer/uni-drawer.vue"; //导入侧边抽屉组件
