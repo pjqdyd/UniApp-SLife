@@ -21,16 +21,17 @@
 							"fontSize": "25px",
 							"float":"right"
 						},{
-							"type":"back",
+							"text": "\ue563",
+							"fontSrc": "/static/uni.ttf",
 							"fontSize": "25px",
-							"float":"left"
+							"float": "left"
 						}]
 					}
 				}
 			}
 		},
 		{
-			"path": "pages/index/index",
+			"path": "pages/news/news",
 			"style": {
 				"navigationBarTitleText": "动态",
 				"navigationBarBackgroundColor": "#ea5455",
@@ -39,10 +40,9 @@
 				"app-plus": {
 					"titleNView": {
 						"buttons": [{
-							"text": "\ue563",
-							"fontSrc": "/static/uni.ttf",
+							"type":"back",
 							"fontSize": "25px",
-							"float": "left"
+							"float":"left"
 						},{
 							"text": "\ue333",
 							"fontSrc": "/static/uni.ttf",
@@ -154,18 +154,19 @@
 	"tabBar": {
 		"backgroundColor": "#FFFFFF",
 		"selectedColor": "#ea5455",
-		"list": [{
-				"pagePath": "pages/index/index",
-				"text": "首页",
-				"iconPath": "static/tabBar/home.png",
-				"selectedIconPath": "static/tabBar/click/home.png"
-			},
+		"list": [
 			{
 				"pagePath": "pages/local/local",
 				"text": "附近",
 				"iconPath": "static/tabBar/local.png",
 				"selectedIconPath": "static/tabBar/click/local.png"
 			},
+			{
+					"pagePath": "pages/news/news",
+					"text": "动态",
+					"iconPath": "static/tabBar/news.png",
+					"selectedIconPath": "static/tabBar/click/news.png"
+				},
 			{
 				"pagePath": "pages/chat/chat",
 				"text": "消息",

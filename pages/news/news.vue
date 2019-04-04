@@ -1,12 +1,5 @@
 <template>
 	<view>
-		<!-- 使用侧边栏组件 -->
-		<uni-drawer :visible="isShowDrawer" :mask="true" @close="handDrawerClose">
-			<view style="padding:30upx;">
-				<view class="uni-title">抽屉式导航</view>
-			</view>
-		</uni-drawer>
-
 		<!-- 顶部分类栏 -->
 		<view class='category-box'>
 			<view class="category-item" :class="[currentItem==0 ? 'active' : '']" data-item='0' @click='handTapItem'>最新</view>
@@ -21,14 +14,14 @@
 			<swiper-item v-for="i in [0,1,2]" :key="i">
 				<view id="swiperList" style="background-color: #eeeeee; overflow: hidden;">
 					<view v-for="(item,index1) in homeList[i]" :key="index1">
-						<uni-media-list :itemData="item" @close="close(index)" @click="goDetail(item)"></uni-media-list>
+						<uni-media-list :itemData="item" @click="goDetail(item)" @clickComment="goDetail(item)"></uni-media-list>
 					</view>
 				</view>
 				<uni-load-more status="loading"></uni-load-more>
 			</swiper-item>
 
 		</swiper>
-		
+
 		<!-- 悬浮的发布按钮 -->
 		<div>
 			<image class="create-icon" src="../../static/news/create.png" @click="handCreateCilck"></image>
@@ -37,7 +30,6 @@
 </template>
 
 <script>
-	import uniDrawer from "./component/uni-drawer/uni-drawer.vue" //导入主页侧边抽屉组件
 	import uniMediaList from "./component/uni-media-list/uni-media-list.vue";
 	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"
 
@@ -46,7 +38,6 @@
 
 	export default {
 		components: {
-			uniDrawer,
 			uniMediaList,
 			uniLoadMore
 		},
@@ -54,6 +45,13 @@
 			return {
 				isShowDrawer: false,
 				currentItem: 1, //当前的分类序号
+
+				//位置信息对象
+				localInfo: {
+					longitude: '',
+					latitude: '',
+					addressName: ''
+				},
 
 				homeList: [], //用来存储首页的3个tab页list对象,
 				listA: [],
@@ -65,6 +63,7 @@
 		},
 		onLoad() {
 			console.log("主页动态页面加载");
+			this.setTabbarReddot(); //设置红点
 		},
 		//页面下拉刷新
 		onPullDownRefresh() {
@@ -87,7 +86,7 @@
 				success: (res) => {
 					console.log("请求newsdata数据成功成功..")
 					recommendList = res.data.newsList
-					
+
 					this.listB = this.listB.concat(recommendList)
 
 					this.homeList.push(this.listB)
@@ -105,11 +104,6 @@
 			this.getListHeight(); //重新获取并设置列表的高度信息
 		},
 		methods: {
-			//侧边栏的关闭事件
-			handDrawerClose: function() {
-				this.isShowDrawer = false
-				console.log("侧边栏关闭")
-			},
 			//监听分类栏点击事件, 完成顶部分类栏切换
 			handTapItem: function(e) {
 				var itemNum = e.currentTarget.dataset.item //获取点击的分类item序号
@@ -131,6 +125,15 @@
 				uni.navigateTo({
 					url: '../create/create'
 				});
+			},
+			//设置红点
+			setTabbarReddot() {
+				//延时获取uni的api,防止调用不到,设置红点
+				setTimeout(() => {
+					uni.showTabBarRedDot({
+						index: 2,
+					})
+				}, 200)
 			},
 			//跳转到详情页
 			goDetail(e) {
@@ -157,19 +160,40 @@
 					that.listHeight = res.height + 60 //默认的底部上拉加载框的高度60px
 				}).exec();
 			},
+			//手动选择位置信息,并保存到缓存中(手动选择的位置比较准确,所以覆盖高德api的地址信息)
+			chooseLocalInfo() {
+				var that = this;
+				uni.chooseLocation({
+					success: function(res) {
+						console.log('位置名称：' + res.name);
+						console.log('详细地址：' + res.address);
+						console.log('纬度：' + res.latitude);
+						console.log('经度：' + res.longitude);
+						that.localInfo = {
+							addressName: res.address,
+							longitude: res.longitude,
+							latitude: res.latitude
+						}
+						uni.setStorage({
+							key: 'localInfo',
+							data: that.localInfo,
+							success: function() {
+								console.log('更新保存地址信息对象localtionInfo成功(手动选择的地址)');
+							}
+						});
+					}
+				});
+			}
 		},
-		//监听导航栏的"三"或"O"的点击事件(展开/关闭侧边栏)(手动定位)
+		//监听导航栏的"<"或"O"的点击事件(返回)(手动定位)
 		onNavigationBarButtonTap(e) {
 			console.log(e.index)
 			if (e.index == 0) {
-				if (this.isShowDrawer == false) {
-					this.isShowDrawer = true
-					console.log("展开侧边栏")
-				} else {
-					this.isShowDrawer = false
-					console.log("关闭侧边栏")
-				}
+				uni.switchTab({
+					url: '/pages/local/local'
+				});
 			} else if (e.index == 1) {
+				this.chooseLocalInfo();
 				console.log("点击了手动定位按钮")
 			} else {
 				return;
@@ -229,7 +253,7 @@
 		bottom: 0;
 		border-radius: 16rpx;
 	}
-	
+
 	.create-icon {
 		width: 110upx;
 		height: 110upx;
@@ -238,7 +262,13 @@
 		padding: 25upx;
 		box-sizing: border-box;
 		position: fixed;
-		bottom: 160upx;
+		/* #ifdef H5*/
+		bottom: 140upx;
+		/* #endif */
+		
+		/* #ifdef MP-WEIXIN*/
+		bottom: 70upx;
+		/* #endif */
 		right: 70upx;
 		opacity: .9;
 		box-shadow: 0 5upx 7upx 0 #707070;

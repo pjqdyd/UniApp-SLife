@@ -1,4 +1,5 @@
 <template>
+	<!-- 在nvue页面使用的侧边栏组件,已弃用 -->
 	<div>
 		<!-- <div class="drawer-box" :style="{width: drawerBoxWidth + 'px'}" @click="handClickMask"> -->
 		<div v-if="showDrawer" class="drawer-box" @click="handClickMask">

@@ -1,5 +1,11 @@
 <template>
 	<view class="local-page">
+		<!-- 使用侧边栏组件 -->
+		<uni-drawer :visible="isShowDrawer" :mask="true" @close="handDrawerClose">
+			<view style="padding:30upx;">
+				<view class="uni-title">抽屉式导航</view>
+			</view>
+		</uni-drawer>
 
 		<view class="category-box"><text class="iconfont category-icon">&#xe614;</text>推荐店铺
 			<!--  #ifdef MP-WEIXIN  -->
@@ -53,6 +59,7 @@
 	import utils from '../../common/utils.js'; //一些工具方法
 	import amap from '../../common/amap-wx.js'; //地图工具
 
+	import uniDrawer from "./component/uni-drawer/uni-drawer.vue"; //导入侧边抽屉组件
 	import localSwiper from "./component/local-swiper.vue"; //3d轮播图组件
 	import localItem from '@/components/local/local-item.vue'; //附近商铺列表item组件
 	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"; //加载更多组件
@@ -61,6 +68,7 @@
 
 	export default {
 		components: {
+			uniDrawer,
 			localSwiper,
 			localItem,
 			uniLoadMore,
@@ -77,6 +85,7 @@
 					addressName: ''
 				},
 				loadMoreStatus: "more", //加载的状态
+				isShowDrawer: false,	//是否显示侧边栏
 
 				localList: [], //附近商铺列表,用来存放每一页的list
 				page: 1, //当前页
@@ -197,6 +206,11 @@
 			}
 		},
 		methods: {
+			//侧边栏的关闭事件
+			handDrawerClose: function() {
+				this.isShowDrawer = false
+				console.log("侧边栏关闭")
+			},
 			//点击了分类
 			changeCategory(index) {
 				this.currentCateName = this.categroyList[index].cateName;
@@ -326,13 +340,17 @@
 				});
 			}
 		},
-		//监听导航栏的"<"或"O"的点击事件
+		//监听导航栏的"三"或"O"的点击事件(展开/关闭侧边栏)(手动定位)
 		onNavigationBarButtonTap(e) {
 			console.log(e.index)
 			if (e.index == 1) {
-				uni.switchTab({
-					url: '/pages/index/index'
-				});
+				if (this.isShowDrawer == false) {
+					this.isShowDrawer = true
+					console.log("展开侧边栏")
+				} else {
+					this.isShowDrawer = false
+					console.log("关闭侧边栏")
+				}
 			} else if (e.index == 0) {
 				this.chooseLocalInfo();
 				console.log("点击了手动重新定位")
