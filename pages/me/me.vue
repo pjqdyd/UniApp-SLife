@@ -21,7 +21,7 @@
 				</view>
 			</view>
 			<view class="list">
-				<view class="li" v-for="(item, index) in option" :key="index">
+				<view class="li" v-for="(item, index) in option" :key="index" @click="clickOption(index)">
 					<image class="icon" :src="item.icon"></image>
 					<view class="text">{{item.name}}</view>
 					<text class="iconfont">&#xe6ee;</text>
@@ -84,6 +84,21 @@
 
 		},
 		methods: {
+
+			//点击了选项,index为选项在option[]的位置
+			clickOption(index) {
+				if (index == 1) { //点击了申请店铺
+					console.log("申请店铺")
+					//TODO 判断用户是否有店铺在申请中, 是就跳转到申请店铺状态页,否就申请店铺
+					uni.navigateTo({
+						url: "/pages/applyShop/applyShop"
+					});
+				} else {
+					return;
+				}
+			},
+
+			//点击了退出登录
 			loginOut() {
 				console.log("退出登录")
 				uni.showModal({

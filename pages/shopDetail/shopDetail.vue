@@ -26,10 +26,10 @@
 
 		<!-- 店主信息 -->
 		<view class="shoper-info-box">
-			<image class="shoper-face" :src="shopInfo.userInfo.faceImage"></image>
+			<image class="shoper-face" :src="faceUrl"></image>
 			<view class="shoper-info">
 				<view class="shop-title">欢迎光临店铺,我是店主</view>
-				<view class="shoper-name">{{shopInfo.userInfo.nickname}}</view>
+				<view class="shoper-name">{{nickname}}</view>
 			</view>
 			<view class="iconfont shoper-chat">&#xe739;</view>
 		</view>
@@ -69,7 +69,9 @@
 			return {
 				shopId: '', //店铺Id
 				shoperId: '', //店主Id
-				shopInfo: {}
+				shopInfo: {},
+				faceUrl: '',
+				nickname: ''
 			}
 		},
 		//res为上个页面传入的参数
@@ -98,14 +100,15 @@
 				uni.request({
 					url: requestUrl,
 					success: (res) => {
-						this.shopInfo = res.data
-
-						console.log(res.data);
+						this.shopInfo = res.data;
+						this.faceUrl = res.data.userInfo.faceImage;
+						this.nickname = res.data.userInfo.nickname;
 					}
 				});
 			},
 		},
-		computed: {}
+		computed: {
+		}
 	}
 </script>
 

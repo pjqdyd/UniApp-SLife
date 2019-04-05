@@ -7,10 +7,12 @@
 			<block v-for="(item, index) in msgCategory" :key="index">
 				<uni-collapse-item :title="item.name" :open="false" :icon="item.icon" :key="index">
 					<view>{{index}}</view>
+					<!-- 默认 暂无信息-->
+					<cmd-result-page text="暂无数据"></cmd-result-page>
 				</uni-collapse-item>
 				<view class="list"></view>
 			</block>
-			
+
 			<!-- 好友消息, name值用于标识这个是好友消息 -->
 			<uni-collapse-item title="好友消息" open="true" icon="../../static/chat/firend.png" name="5">
 				<!-- 好友消息列表 -->
@@ -19,9 +21,9 @@
 					</uni-swipe-action>
 				</view>
 			</uni-collapse-item>
-			
+
 		</uni-collapse>
-		
+
 	</view>
 </template>
 
@@ -30,6 +32,7 @@
 	import uniCollapseItem from '@/components/collapse/uni-collapse-item.vue';
 
 	import uniSwipeAction from "./component/uni-swipe-action.vue"; //好友消息组件
+	import cmdResultPage from "@/components/cmd-result-page/cmd-result-page.vue"; //页面结果组件
 
 	import utils from '../../common/utils.js'; //一些工具方法
 
@@ -37,7 +40,8 @@
 		components: {
 			uniSwipeAction,
 			uniCollapse,
-			uniCollapseItem
+			uniCollapseItem,
+			cmdResultPage
 		},
 		data() {
 			return {
@@ -50,8 +54,11 @@
 					icon: "../../static/chat/like.png",
 					name: "点赞我的",
 				}, {
+					icon: "../../static/chat/fans.png",
+					name: "我的粉丝",
+				}, {
 					icon: "../../static/chat/follow.png",
-					name: "关注我的",
+					name: "我的关注",
 				}, {
 					icon: "../../static/chat/notify.png",
 					name: "系统通知",
@@ -205,6 +212,6 @@
 	.list {
 		width: 100%;
 		border-bottom: 8upx solid #f1f1f1;
-		background: #fff;	
-		}
+		background: #fff;
+	}
 </style>

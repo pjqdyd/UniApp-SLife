@@ -112,6 +112,18 @@
 				}
 			}
 		},{
+			"path": "pages/applyShop/applyShop",
+			"style": {
+				"navigationBarTitleText": "上线店铺",
+				"navigationBarBackgroundColor": "#ea5455",
+				"navigationBarTextStyle": "white",
+				"app-plus": {
+					"titleNView": {
+						"buttons": []
+					}
+				}
+			}
+		},{
 			"path": "pages/newsDetail/newsDetail",
 			"style": {
 				"navigationBarTitleText": "动态详情",
