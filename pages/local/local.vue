@@ -349,7 +349,6 @@
 		},
 		//监听导航栏的"三"或"O"的点击事件(展开/关闭侧边栏)(手动定位)
 		onNavigationBarButtonTap(e) {
-			console.log(e.index)
 			if (e.index == 1) {
 				if (this.isShowDrawer == false) {
 					this.isShowDrawer = true
