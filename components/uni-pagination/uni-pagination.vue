@@ -117,7 +117,7 @@
 				this.change('prev')
 			},
 			clickRight() {
-				if (Number(this.currentIndex) === this.maxPage) {
+				if (Number(this.currentIndex) === this.maxPage || Number(this.currentIndex) > this.maxPage) {
 					return
 				}
 				this.currentIndex += 1

@@ -49,6 +49,10 @@
 			uniRate,
 			uniBadge
 		},
+		data(){		
+			return {
+			}		
+		},
 		created() {},
 		mounted() {}
 	}
