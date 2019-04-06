@@ -41,13 +41,13 @@
 			<local-item :shopItem="item"></local-item>
 		</view>
 
-		<!-- 仅在小程序和H5显示加载更多 -->
-		<!-- #ifdef H5 || MP-WEIXIN -->
+		<!-- 仅在H5显示加载更多 -->
+		<!-- #ifdef H5 -->
 		<uni-load-more :status="loadMoreStatus"></uni-load-more>
 		<!-- #endif -->
 
-		<!-- 在app端显示分页 -->
-		<!-- #ifdef APP-PLUS -->
+		<!-- 在app端和小程序显示分页 -->
+		<!-- #ifdef APP-PLUS || MP-WEIXIN-->
 		<uni-pagination pageSize="7" :total="total" :current="page" @change="handPageChange"></uni-pagination>
 		<!-- #endif -->
 
@@ -90,7 +90,7 @@
 				localList: [], //附近商铺列表,用来存放每一页的list
 				page: 1, //当前页
 				total: 0, //总元素数
-				totalPaage: 0, //总页数
+				totalPage: 0, //总页数
 
 				currentCateName: '默认', //当前分类的名字 
 
@@ -172,12 +172,12 @@
 			this.getLocalShopList(); //重新获取附近商铺列表数据
 
 		},
-		//页面上拉触底,加载更多(仅在H5和小程序有效
-		// #ifdef H5 || MP-WEIXIN
+		//页面上拉触底,加载更多(仅在H5有效)
+		// #ifdef H5
 		onReachBottom() {
 			//TODO
 			var currentPage = this.page;
-			var totalPage = this.totalPaage;
+			var totalPage = this.totalPage;
 			this.loadMoreStatus = "loading";
 			//判断当前页数和总页数是否相等,(没有更多了)
 			if (currentPage == totalPage) {
@@ -253,26 +253,32 @@
 						}
 						var list = res.data.localList; //新的数据列表	
 
-						// #ifdef H5 || MP-WEIXIN
+						// #ifdef H5
 						this.localList = this.localList.concat(list);
-						this.totalPaage = res.data.totalPage;
+						this.totalPage = res.data.totalPage;
 						this.total = res.data.total;
 						// #endif
 
-						// #ifdef APP-PLUS
+						// #ifdef APP-PLUS || MP-WEIXIN
 						this.localList = list;
-						this.totalPaage = res.data.totalPage;
+						this.totalPage = res.data.totalPage;
 						this.total = res.data.total;
 						// #endif
 					}
 				});
 			},
 			
-			// #ifdef APP-PLUS
+			// #ifdef APP-PLUS || MP-WEIXIN
 				handPageChange(val){
 					console.log(val.current) //当前分页页数
 					//根据分页的页数,请求后端数据
-					this.getLocalShopList(); //TODO
+					if(val.current == this.totalPage){
+						console.log("没有更多了")
+						return;
+					}else{
+						this.page = val.current;
+						this.getLocalShopList(); //TODO
+					}		
 				},
 			// #endif
 
