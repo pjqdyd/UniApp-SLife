@@ -350,23 +350,6 @@
     .news-uploader {
     	padding: 10upx 20upx;
     }
-    .news-star {
-    	font-family: uniicons;
-    	font-size: 40upx;
-    	margin-left: 6upx;
-    }
-    .news-star-view {
-    	margin-left: 20upx;
-    }
-    .news-star:after {
-    	content: '\e408';
-    }
-    .news-star.active {
-    	color: #FFB400;
-    }
-    .news-star.active:after {
-    	content: '\e438';
-    }
     .news-submit {
     	background: #ea5455;
     	color: #FFFFFF;
