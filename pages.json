@@ -161,6 +161,18 @@
 				}
 			}
 		},{
+			"path": "pages/shopCategory/shopCategory",
+			"style": {
+				"navigationBarTitleText": "店铺分类",
+				"navigationBarBackgroundColor": "#ea5455",
+				"navigationBarTextStyle": "white",
+				"app-plus": {
+					"titleNView": {
+						"buttons": []
+					}
+				}
+			}
+		},{
 			"path": "pages/chooseShop/chooseShop",
 			"style": {
 				"navigationBarTitleText": "选择店铺",

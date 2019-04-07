@@ -7,7 +7,7 @@
 			</view>
 		</uni-drawer>
 
-		<view class="category-box"><text class="iconfont category-icon">&#xe614;</text>推荐店铺
+		<view class="category-box"><text class="iconfont category-icon">&#xe614;</text>热门店铺
 			<!--  #ifdef MP-WEIXIN  -->
 			<text class="iconfont category-icon-wx" @click="wxChooseLocal">&#xe611;定位</text>
 			<!--  #endif -->
@@ -32,8 +32,8 @@
 
 		<view class="category-box">
 			<text class="iconfont category-icon">&#xe610;</text>
-			分类店铺
-			<text class="current-cate">当前分类: {{currentCateName}}</text>
+			推荐店铺
+			<text class="current-cate">当前分类: 推荐</text>
 		</view>
 
 		<!-- 附近商铺列表 -->
@@ -81,8 +81,6 @@
 				page: 1, //当前页
 				total: 0, //总元素数
 				totalPage: 0, //总页数
-
-				currentCateName: '默认', //当前分类的名字 
 
 				categroyList: [{
 					id: "0",
@@ -197,21 +195,13 @@
 				this.isShowDrawer = false
 				console.log("侧边栏关闭")
 			},
-			//点击了分类
+			//点击了icon分类
 			changeCategory(index) {
-				this.currentCateName = this.categroyList[index].cateName;
-				var that = this;
-				//重新根据分类查询一次
-				uni.startPullDownRefresh({
-					success() {
-						setTimeout(() => {
-							uni.showToast({
-								icon: "none",
-								title: "切换店铺: " + that.currentCateName
-							})
-						}, 1000)
-					}
-				});
+				 let currentCateName = this.categroyList[index].cateName; //获取点击分类的名字
+				 //跳转到分类的店铺列表页
+				 uni.navigateTo({
+				 	url: "/pages/shopCategory/shopCategory?categoryName=" + currentCateName
+				 })	
 			},
 			//跳转到店铺详情页
 			goShopInfo(shopId) {
