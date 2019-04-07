@@ -70,6 +70,9 @@
 		methods: {
 			toMessageDetail(i) {
 				console.log('进入到聊天界面' + i)
+				uni.navigateTo({
+					url: "/pages/chatScreen/chatScreen"
+				})
 			},
 			getSize() {
 				uni.createSelectorQuery().in(this).select(`#${this.elId}`).boundingClientRect().exec((ret) => {
