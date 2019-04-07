@@ -128,7 +128,7 @@
 				console.log("监听到原生标题栏按钮点击事件");
 				if (e.index == 0) {
 					uni.switchTab({
-						url: '/pages/local/local'
+						url: '/pages/index/index'
 					});
 				} else if (e.index == 1) {
 					this.chooseLocalInfo();

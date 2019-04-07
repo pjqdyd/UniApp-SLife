@@ -157,6 +157,9 @@
 				}
 			});
 		},
+		onReachBottom() {
+			//TODO
+		},
 		mounted() {
 			this.getRegeo()
 		},

@@ -13,9 +13,22 @@
 				<view class="rate-cate-box">
 					<view class="rate-box">
 						<!-- 星星评分 -->
+						
+						<!-- 仅在H5使用uni提供的星标组件 因为此组件在app和小程序创建多了就卡顿-->
+						<!-- #ifdef H5 -->
 						<uni-rate size="18" :value="shopItem.rate"></uni-rate>
+						<!-- #endif -->
+						
+						<!-- 在app端和小程序使用text绘制星标 流畅-->
+						<!-- #ifdef APP-PLUS || MP-WEIXIN-->
+						<view class="news-star-view">
+							<text class="news-star" v-for="(value,key) in stars" :key="key" :class="key < shopItem.rate ? 'active' : ''"></text>
+						</view>
+						<!-- #endif -->
+						
 						<view class="rate-text">{{shopItem.rate}}</view>
 					</view>
+					
 					<view class="cate-box">
 						<!-- 所属类目标签 -->
 						<uni-badge type="warning" :text="shopItem.category"></uni-badge>
@@ -34,8 +47,8 @@
 </template>
 
 <script>
-	import uniRate from "@/components/rate/uni-rate.vue";
 	import uniBadge from "@/components/uni-badge/uni-badge.vue";
+	import uniRate from "@/components/rate/uni-rate.vue";
 	export default {
 		props: {
 			shopItem: {
@@ -49,9 +62,10 @@
 			uniRate,
 			uniBadge
 		},
-		data(){		
+		data() {
 			return {
-			}		
+				stars: [1, 2, 3, 4, 5]
+			}
 		},
 		created() {},
 		mounted() {}
@@ -69,7 +83,8 @@
 		display: flex;
 		justify-content: space-between;
 	}
-	.list-item:active{
+
+	.list-item:active {
 		background-color: #eeeeee;
 	}
 
@@ -116,13 +131,12 @@
 		line-height: 36upx;
 		position: relative;
 	}
-
 	.rate-text {
 		width: 180upx;
-		height: 31upx;
+		height: 40upx;
 		color: #707070;
 		font-size: 26upx;
-		line-height: 31upx;
+		line-height: 40upx;
 		position: absolute;
 		top: 5upx;
 		right: 0;
@@ -144,13 +158,14 @@
 	}
 
 	.local-box {
- 		display: flex;
+		display: flex;
 		flex-wrap: wrap;
 		flex-direction: row;
 		width: 370upx;
 		height: 45upx;
 		overflow: hidden;
 	}
+
 	.text {
 		line-height: 45upx;
 		font-size: 25upx;
@@ -158,9 +173,10 @@
 		width: 100%;
 		overflow: hidden;
 		text-overflow: ellipsis;
-		white-space: nowrap;	
+		white-space: nowrap;
 	}
-	.distance-box{
+
+	.distance-box {
 		width: 160upx;
 		height: 45upx;
 		line-height: 45upx;

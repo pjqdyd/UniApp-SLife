@@ -190,7 +190,7 @@
 			console.log(e.index)
 			if (e.index == 0) {
 				uni.switchTab({
-					url: '/pages/local/local'
+					url: '/pages/index/index'
 				});
 			} else if (e.index == 1) {
 				this.chooseLocalInfo();

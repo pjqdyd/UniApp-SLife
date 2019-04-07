@@ -7,7 +7,7 @@
 			</view>
 		</uni-drawer>
 
-		<view class="category-box"><text class="iconfont category-icon">&#xe614;</text>推荐店铺
+		<view class="category-box"><text class="iconfont category-icon">&#xe614;</text>热门店铺
 			<!--  #ifdef MP-WEIXIN  -->
 			<text class="iconfont category-icon-wx" @click="wxChooseLocal">&#xe611;定位</text>
 			<!--  #endif -->
@@ -32,8 +32,8 @@
 
 		<view class="category-box">
 			<text class="iconfont category-icon">&#xe610;</text>
-			分类店铺
-			<text class="current-cate">当前分类: {{currentCateName}}</text>
+			推荐店铺
+			<text class="current-cate">当前分类: 推荐</text>
 		</view>
 
 		<!-- 附近商铺列表 -->
@@ -41,15 +41,8 @@
 			<local-item :shopItem="item"></local-item>
 		</view>
 
-		<!-- 仅在H5显示加载更多 -->
-		<!-- #ifdef H5 -->
+		<!-- 底部的加载更多组件 -->
 		<uni-load-more :status="loadMoreStatus"></uni-load-more>
-		<!-- #endif -->
-
-		<!-- 在app端和小程序显示分页 -->
-		<!-- #ifdef APP-PLUS || MP-WEIXIN-->
-		<uni-pagination pageSize="7" :total="total" :current="page" @change="handPageChange"></uni-pagination>
-		<!-- #endif -->
 
 	</view>
 </template>
@@ -63,16 +56,13 @@
 	import localSwiper from "./component/local-swiper.vue"; //3d轮播图组件
 	import localItem from '@/components/local/local-item.vue'; //附近商铺列表item组件
 	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"; //加载更多组件
-	import uniPagination from "@/components/uni-pagination/uni-pagination.vue"; //分页组件
-
 
 	export default {
 		components: {
 			uniDrawer,
 			localSwiper,
 			localItem,
-			uniLoadMore,
-			uniPagination
+			uniLoadMore
 		},
 		data() {
 			return {
@@ -85,14 +75,12 @@
 					addressName: ''
 				},
 				loadMoreStatus: "more", //加载的状态
-				isShowDrawer: false,	//是否显示侧边栏
+				isShowDrawer: false, //是否显示侧边栏
 
 				localList: [], //附近商铺列表,用来存放每一页的list
 				page: 1, //当前页
 				total: 0, //总元素数
 				totalPage: 0, //总页数
-
-				currentCateName: '默认', //当前分类的名字 
 
 				categroyList: [{
 					id: "0",
@@ -170,10 +158,8 @@
 			console.log('附近页refresh');
 
 			this.getLocalShopList(); //重新获取附近商铺列表数据
-
 		},
 		//页面上拉触底,加载更多(仅在H5有效)
-		// #ifdef H5
 		onReachBottom() {
 			//TODO
 			var currentPage = this.page;
@@ -184,12 +170,10 @@
 				this.loadMoreStatus = "noMore";
 				return;
 			}
-			this.page ++;
+			this.page++;
 			this.getLocalShopList(); //获取更多一页数据 TODO
 			console.log('附近页refresh-触底,加载更多附近商铺');
 		},
-		// #endif
-
 		mounted() {},
 		computed: {
 			//计算icon在轮播图的分页
@@ -211,24 +195,16 @@
 				this.isShowDrawer = false
 				console.log("侧边栏关闭")
 			},
-			//点击了分类
+			//点击了icon分类
 			changeCategory(index) {
-				this.currentCateName = this.categroyList[index].cateName;
-				var that = this;
-				 //重新根据分类查询一次
-				uni.startPullDownRefresh({
-					success() {
-						setTimeout(()=>{
-							uni.showToast({
-								icon: "none",
-								title: "切换店铺: " +  that.currentCateName
-							})
-						},1000)				
-					}
-				});
+				 let currentCateName = this.categroyList[index].cateName; //获取点击分类的名字
+				 //跳转到分类的店铺列表页
+				 uni.navigateTo({
+				 	url: "/pages/shopCategory/shopCategory?categoryName=" + currentCateName
+				 })	
 			},
 			//跳转到店铺详情页
-			goShopInfo(shopId){
+			goShopInfo(shopId) {
 				console.log("跳转到店铺详情页, 店铺Id=" + shopId)
 				uni.navigateTo({
 					url: '../shopDetail/shopDetail?shopId=' + shopId
@@ -244,7 +220,7 @@
 					success: (res) => {
 						setTimeout(() => {
 							uni.stopPullDownRefresh(); //停止下拉刷新
-						}, 200)
+						}, 500)
 
 						console.log("请求locallist数据成功成功..")
 						//判断当前page是否是第一页,如果是就设置localList为空
@@ -253,34 +229,12 @@
 						}
 						var list = res.data.localList; //新的数据列表	
 
-						// #ifdef H5
 						this.localList = this.localList.concat(list);
 						this.totalPage = res.data.totalPage;
-						this.total = res.data.total;
-						// #endif
-
-						// #ifdef APP-PLUS || MP-WEIXIN
-						this.localList = list;
-						this.totalPage = res.data.totalPage;
-						this.total = res.data.total;
-						// #endif
+						this.total = res.data.total;			
 					}
 				});
 			},
-			
-			// #ifdef APP-PLUS || MP-WEIXIN
-				handPageChange(val){
-					console.log(val.current) //当前分页页数
-					//根据分页的页数,请求后端数据
-					if(val.current == this.totalPage){
-						console.log("没有更多了")
-						return;
-					}else{
-						this.page = val.current;
-						this.getLocalShopList(); //TODO
-					}		
-				},
-			// #endif
 
 			// #ifdef  MP-WEIXIN
 			wxChooseLocal() {
