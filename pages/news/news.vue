@@ -12,7 +12,7 @@
 
 			<!-- 分别对应3个分类页 -->
 			<swiper-item v-for="i in [0,1,2]" :key="i">
-				<view id="swiperList" style="background-color: #eeeeee; overflow: hidden;">
+				<view :id="'swiperList' + i" style="background-color: #eeeeee; overflow: hidden;">
 					<view v-for="(item,index1) in homeList[i]" :key="index1">
 						<uni-media-list :itemData="item" @click="goDetail(item)" @clickComment="goDetail(item)"></uni-media-list>
 					</view>
@@ -32,7 +32,7 @@
 <script>
 	import uniMediaList from "./component/uni-media-list/uni-media-list.vue";
 	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"
-	
+
 	import utils from '../../common/utils.js'; //一些工具方法
 
 	export default {
@@ -44,7 +44,7 @@
 			return {
 				isShowDrawer: false,
 				currentItem: 1, //当前的分类序号
-				categoryList: ["最新","推荐","热门"],
+				categoryList: ["最新", "推荐", "热门"],
 
 				//位置信息对象
 				localInfo: {
@@ -53,29 +53,33 @@
 					addressName: ''
 				},
 
-				homeList: [], //用来存储首页的3个tab页list对象,
+				//用来存储首页的3个tab页list对象,
+				homeList: [
+					[],
+					[],
+					[]
+				],
 				
-				listA: [],  //最新页的list数据
-				pageA: 1,	//当前页数
-				totalA: 0,	//总页数
+				//最新页的数据条数,
+				pageA: 1, //当前页数
+				totalA: 0, //总页数
 				totalPageA: 0, //总元素数
-				
-				
-				listB: [], //推荐页的list数据
-				pageB: 1,	//当前页数
-				totalB: 0,	//总页数
-				totalPageB: 0, //总元素数
-				
-				ListC: [], //热门页的list数据
-				pageC: 1,	//当前页数
-				totalC: 0,	//总页数
-				totalPageC: 0, //总元素数
+
+				//推荐页的数据条数,
+				pageB: 1,
+				totalB: 0,
+				totalPageB: 0,
+
+				//热门页的数据条数,
+				pageC: 1,
+				totalC: 0,
+				totalPageC: 0,
 
 				listHeight: 0
 			}
 		},
 		onLoad() {
-			console.log("主页动态页面加载");
+			console.log("动态页面加载");
 			this.setTabbarReddot(); //设置红点
 		},
 		//页面下拉刷新
@@ -90,33 +94,36 @@
 			console.log('refresh-触底');
 		},
 		created() {
-			this.getNewsList(1,1);
+			//查询每个分类的第1页数据
+			this.getNewsList(1, 0);
+			this.getNewsList(1, 1);
+			this.getNewsList(1, 2);
 		},
 		mounted() {
+			//获取并设置列表的高度信息(延迟是防止微信小程序节点还未挂载)
+			//this.currentItem用于区分设置3个中哪个列表页的高度
 			setTimeout(() => {
-				this.getListHeight(); //获取并设置列表的高度信息(延迟是防止微信小程序节点还未挂载)
-			}, 500);
+				this.getListHeight(this.currentItem);
+			}, 200);
 		},
 		updated() {
-			this.getListHeight(); //重新获取并设置列表的高度信息
 		},
 		methods: {
 			//获取对应分类的动态数据(index为动态的分类下标)
-			getNewsList(page, index){
+			getNewsList(page, index) {
 				var url = this.server_Url; //读取在main.js中挂载的vue全局属性server_Url
 				console.log(url)
 				//请求服务端数据
 				uni.request({
 					url: url + '/newsdata?category=' + this.categoryList[index] + "&page=" + page,
-					success: (res) => {		
-					this.listB = this.listB.concat(res.data.newsList)
-					this.homeList.push(this.listB)
-					this.homeList.push(this.listB)
-					this.homeList.push(this.listB)
+					success: (res) => {
+						//添加数据到对应分类的list中
+						console.log("请求分类" + this.categoryList[index] + "的第" + page + "页数据");
+						this.homeList[index] = this.homeList[index].concat(res.data.newsList);
 					}
-				})	
+				})
 			},
-			
+
 			//监听分类栏点击事件, 完成顶部分类栏切换
 			handTapItem: function(e) {
 				var itemNum = e.currentTarget.dataset.item //获取点击的分类item序号
@@ -128,10 +135,16 @@
 					this.currentItem = itemNum
 				}
 			},
-			//左右滑动更改当前页currentItem
+			//左右滑动更改当前页currentItem, 或者点击改变了currentItem也会触发此函数
 			switchPage: function(e) {
 				console.log("切换页面")
-				this.currentItem = e.detail.current
+				let currentItem = e.detail.current;
+				//如果当前分类页没有数据,就加载第一页数据
+				if(this.homeList[this.currentItem].length == 0){
+					console.log("没有数据,加载一页数据")
+					this.getNewsList(1, this.currentItem)
+				}
+				this.currentItem = currentItem;
 			},
 			//点击了发布按钮
 			handCreateCilck() {
@@ -165,12 +178,13 @@
 				});
 			},
 			//获取列表的高度信息,设置给swiper,以免无法左右滑动
-			getListHeight() {
+			getListHeight(index) {
 				var that = this;
 				//获取所有列表的高度
 				var query = uni.createSelectorQuery();
-				query.select("#swiperList").boundingClientRect(function(res) {
-					that.listHeight = res.height + 60 //默认的底部上拉加载框的高度60px
+				query.select("#swiperList" + index).boundingClientRect(function(res) {	
+					//保证swiper至少有600px的高度
+					res.height < 600 ? that.listHeight = 600 : that.listHeight = res.height + 60 //默认的底部上拉加载框的高度60px
 				}).exec();
 			},
 			//手动选择位置信息,并保存到缓存中(手动选择的位置比较准确,所以覆盖高德api的地址信息)
@@ -196,6 +210,13 @@
 						});
 					}
 				});
+			}
+		},
+		watch:{
+			//监听当前的分类是否切换
+			'currentItem': function(val){
+				//console.log(val)
+				this.getListHeight(val); //重新获取并设置对应分类的列表的高度信息
 			}
 		},
 		//监听导航栏的"<"或"O"的点击事件(返回)(手动定位)
@@ -278,7 +299,7 @@
 		/* #ifdef H5*/
 		bottom: 140upx;
 		/* #endif */
-		
+
 		/* #ifdef MP-WEIXIN*/
 		bottom: 70upx;
 		/* #endif */
