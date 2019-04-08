@@ -40,7 +40,6 @@
 	</view>
 </template>
 <script>
-	import conf from '../../common/config.js'; //全局的一些配置信息
 	import utils from '../../common/utils.js'; //一些工具方法
 
 	import userCrad from "./component/user-info/user-crad.vue"; //用户信息卡
@@ -67,10 +66,19 @@
 				}]
 			}
 		},
-		onLoad() {},
+		onLoad(params) {
+		},
+		onShow() {
+			//由于从非tab页跳转到tab页的url后是不能跟参数的,所以只能从缓存中读取要查询的userId		
+			uni.getStorage({
+				key: "searchUserId",
+				success(res) {
+					console.log(res.data)
+				}
+			})
+		},
 		created() {
-
-			var url = conf.serverUrl;
+			var url = this.server_Url; //读取在main.js中挂载的vue全局属性
 			console.log(url + "/userinfo")
 			//请求服务端数据
 			uni.request({
@@ -84,7 +92,11 @@
 
 		},
 		methods: {
-
+			//根据userId请求用户数据的方法
+			getUserInfo(){
+				
+			},
+			
 			//点击了选项,index为选项在option[]的位置
 			clickOption(index) {
 				if (index == 1) { //点击了申请店铺
@@ -117,6 +129,12 @@
 					}
 				});
 			}
+		},
+		onHide() {
+			console.log("me页面隐藏")
+		},
+		onUnload(){
+			console.log("me页面卸载")
 		},
 		//监听导航栏的"<"的点击事件
 		onNavigationBarButtonTap(e) {

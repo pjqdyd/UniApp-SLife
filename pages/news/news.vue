@@ -32,8 +32,7 @@
 <script>
 	import uniMediaList from "./component/uni-media-list/uni-media-list.vue";
 	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"
-
-	import conf from '../../common/config.js'; //全局的一些配置信息
+	
 	import utils from '../../common/utils.js'; //一些工具方法
 
 	export default {
@@ -77,7 +76,7 @@
 			console.log('refresh-触底');
 		},
 		created() {
-			var url = conf.serverUrl;
+			var url = this.server_Url; //读取在main.js中挂载的vue全局属性server_Url
 			console.log(url)
 			var recommendList = [] //推荐页的数据
 			//请求服务端数据

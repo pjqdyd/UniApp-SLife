@@ -48,8 +48,6 @@
 </template>
 
 <script>
-	import conf from '../../common/config.js'; //全局的一些配置信息
-	//import utils from '../../common/utils.js'; //一些工具方法
 	import amap from '../../common/amap-wx.js'; //地图工具
 
 	import uniDrawer from "./component/uni-drawer/uni-drawer.vue"; //导入侧边抽屉组件
@@ -212,7 +210,7 @@
 			},
 			//请求后端数据,获取附近商店列表TODO
 			getLocalShopList() {
-				var url = conf.serverUrl; //后端服务的base url
+				var url = this.server_Url; //读取在main.js中挂载的vue全局属性server_Url
 				console.log(url + "/locallist")
 				//请求服务端数据
 				uni.request({

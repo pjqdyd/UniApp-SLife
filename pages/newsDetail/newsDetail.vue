@@ -16,7 +16,8 @@
 			</view>
 
 			<!-- 动态有关的店铺的信息 -->
-			<view class="shop-info">
+			<view class="shop-info" @click="goShopDetail">
+								
 				<image class="shop-icon" src="../../static/news/shop.png"></image>
 				<view class="shop-name-local">
 					<view class="shop-name">{{'[' + newsItem.newsShopName + ']'}}</view>
@@ -86,7 +87,7 @@
 			});
 		},
 		onShow() {},
-		created() {	
+		created() {
 		},
 		mounted() {},
 		//页面下拉刷新
@@ -101,8 +102,25 @@
 			this.$refs.comment.loadMoreComment(); //调用子组件加载更多评论
 		},
 		methods: {
+			//跳转到用户详情页,将需要查询的userId存入缓存
 			goUserInfo() {
-
+				//console.log(this.newsItem.userInfo.id)
+				
+				uni.setStorage({
+					key: "searchUserId",
+					data: this.newsItem.userInfo.id,
+					success() {
+						uni.switchTab({
+							url: "/pages/me/me"
+						})
+					}
+				});	
+			},
+			//跳转到店铺详情页
+			goShopDetail(){
+				uni.navigateTo({
+					url: "/pages/shopDetail/shopDetail?shopId=" + this.newsItem.newsShopId
+				})
 			},
 			//点击了点赞/取消点赞
 			clickLike() {
@@ -119,6 +137,13 @@
 			//点击了更多
 			clickMore() {
 				console.log("更多")
+				uni.showActionSheet({
+				    itemList: ["举报"],
+				    success: (res) => {
+						//TODO
+				        console.log("举报动态: Id = " + this.newsItem.newsId)
+				    }
+				})
 			}
 		},
 		computed: {
