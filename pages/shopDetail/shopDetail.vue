@@ -26,12 +26,12 @@
 
 		<!-- 店主信息 -->
 		<view class="shoper-info-box">
-			<image class="shoper-face" :src="faceUrl"></image>
+			<image class="shoper-face" :src="faceUrl" @click="goUserInfo"></image>
 			<view class="shoper-info">
 				<view class="shop-title">欢迎光临店铺,我是店主</view>
 				<view class="shoper-name">{{nickname}}</view>
 			</view>
-			<view class="iconfont shoper-chat">&#xe739;</view>
+			<view class="iconfont shoper-chat" @click="goChat">&#xe739;</view>
 		</view>
 		
 		<!-- 店铺介绍 -->
@@ -104,6 +104,23 @@
 					}
 				});
 			},
+			//跳转到用户详情页,将需要查询的userId存入缓存
+			goUserInfo() {
+				//console.log(this.newsItem.userInfo.id)		
+				uni.setStorage({
+					key: "searchUserId",
+					data: this.shopInfo.userInfo.userId,
+					success() {
+						uni.switchTab({
+							url: "/pages/me/me"
+						})
+					}
+				});	
+			},
+			//跳转到与店主聊天的界面
+			goChat(){
+				console.log("跳转到聊天界面")
+			}
 		},
 		computed: {
 		}

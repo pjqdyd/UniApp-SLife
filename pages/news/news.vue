@@ -44,6 +44,7 @@
 			return {
 				isShowDrawer: false,
 				currentItem: 1, //当前的分类序号
+				categoryList: ["最新","推荐","热门"],
 
 				//位置信息对象
 				localInfo: {
@@ -53,9 +54,22 @@
 				},
 
 				homeList: [], //用来存储首页的3个tab页list对象,
-				listA: [],
-				listB: [], //推荐页的list
-				ListC: [],
+				
+				listA: [],  //最新页的list数据
+				pageA: 1,	//当前页数
+				totalA: 0,	//总页数
+				totalPageA: 0, //总元素数
+				
+				
+				listB: [], //推荐页的list数据
+				pageB: 1,	//当前页数
+				totalB: 0,	//总页数
+				totalPageB: 0, //总元素数
+				
+				ListC: [], //热门页的list数据
+				pageC: 1,	//当前页数
+				totalC: 0,	//总页数
+				totalPageC: 0, //总元素数
 
 				listHeight: 0
 			}
@@ -76,23 +90,7 @@
 			console.log('refresh-触底');
 		},
 		created() {
-			var url = this.server_Url; //读取在main.js中挂载的vue全局属性server_Url
-			console.log(url)
-			var recommendList = [] //推荐页的数据
-			//请求服务端数据
-			uni.request({
-				url: url + '/newsdata',
-				success: (res) => {
-					console.log("请求newsdata数据成功成功..")
-					recommendList = res.data.newsList
-
-					this.listB = this.listB.concat(recommendList)
-
-					this.homeList.push(this.listB)
-					this.homeList.push(this.listB)
-					this.homeList.push(this.listB)
-				}
-			})
+			this.getNewsList(1,1);
 		},
 		mounted() {
 			setTimeout(() => {
@@ -103,6 +101,22 @@
 			this.getListHeight(); //重新获取并设置列表的高度信息
 		},
 		methods: {
+			//获取对应分类的动态数据(index为动态的分类下标)
+			getNewsList(page, index){
+				var url = this.server_Url; //读取在main.js中挂载的vue全局属性server_Url
+				console.log(url)
+				//请求服务端数据
+				uni.request({
+					url: url + '/newsdata?category=' + this.categoryList[index] + "&page=" + page,
+					success: (res) => {		
+					this.listB = this.listB.concat(res.data.newsList)
+					this.homeList.push(this.listB)
+					this.homeList.push(this.listB)
+					this.homeList.push(this.listB)
+					}
+				})	
+			},
+			
 			//监听分类栏点击事件, 完成顶部分类栏切换
 			handTapItem: function(e) {
 				var itemNum = e.currentTarget.dataset.item //获取点击的分类item序号

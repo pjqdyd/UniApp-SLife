@@ -111,8 +111,18 @@
 			}
 		},
 		methods: {
+			//跳转到用户详情页,将需要查询的userId存入缓存
 			goUserInfo() {
-				console.log("跳转到用户详情页")
+				//console.log(this.newsItem.userInfo.id)		
+				uni.setStorage({
+					key: "searchUserId",
+					data: this.itemData.userInfo.id,
+					success() {
+						uni.switchTab({
+							url: "/pages/me/me"
+						})
+					}
+				});	
 			},
 			bindClick() {
 				this.$emit('click'); //向外触发点击动态事件

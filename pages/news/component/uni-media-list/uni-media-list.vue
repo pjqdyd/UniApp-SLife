@@ -114,8 +114,18 @@
 				console.log("点击进入详情")
 				this.$emit('click');
 			},
-			goUserInfo(){
-				console.log("进入用户详情")
+			//跳转到用户详情页,将需要查询的userId存入缓存
+			goUserInfo() {
+				//console.log(this.newsItem.userInfo.id)		
+				uni.setStorage({
+					key: "searchUserId",
+					data: this.itemData.userInfo.id,
+					success() {
+						uni.switchTab({
+							url: "/pages/me/me"
+						})
+					}
+				});	
 			},
 			//点击了点赞/取消点赞
 			clickLike() {
