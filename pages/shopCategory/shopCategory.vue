@@ -23,7 +23,6 @@
 </template>
 
 <script>
-	import conf from '../../common/config.js'; //全局的一些配置信息
 	
 	import uniCollapse from '@/components/collapse/uni-collapse.vue'; //折叠面板组件
 	import uniCollapseItem from '@/components/collapse/uni-collapse-item.vue';	
@@ -130,7 +129,7 @@
 			},
 			//请求后端数据,获取分类的商店列表TODO
 			getCateShopList() {
-				var url = conf.serverUrl; //后端服务的base url
+				var url = this.server_Url; //读取在main.js中挂载的vue全局属性server_Url
 				console.log(url + "/locallist")
 				//请求服务端数据
 				uni.request({

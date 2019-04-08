@@ -16,7 +16,7 @@
 						
 						<!-- 仅在H5使用uni提供的星标组件 因为此组件在app和小程序创建多了就卡顿-->
 						<!-- #ifdef H5 -->
-						<uni-rate size="18" :value="shopItem.rate"></uni-rate>
+						<uni-rate size="18" disabled="true" :value="shopItem.rate"></uni-rate>
 						<!-- #endif -->
 						
 						<!-- 在app端和小程序使用text绘制星标 流畅-->

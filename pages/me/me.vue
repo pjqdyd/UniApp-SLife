@@ -40,7 +40,6 @@
 	</view>
 </template>
 <script>
-	import conf from '../../common/config.js'; //全局的一些配置信息
 	import utils from '../../common/utils.js'; //一些工具方法
 
 	import userCrad from "./component/user-info/user-crad.vue"; //用户信息卡
@@ -52,6 +51,8 @@
 		data() {
 			return {
 				userInfo: {},
+				userId: '',
+				isSelfId: false, //是否是自己的id用户信息,默认是
 				option: [{
 					icon: "../../static/user/option/like.png",
 					name: "点赞的动态",
@@ -67,23 +68,43 @@
 				}]
 			}
 		},
-		onLoad() {},
-		created() {
-
-			var url = conf.serverUrl;
-			console.log(url + "/userinfo")
-			//请求服务端数据
-			uni.request({
-				url: url + '/userinfo',
-				success: (res) => {
-					console.log("请求userinfo数据成功成功..")
-					//console.log(res.data.userInfo)
-					this.userInfo = res.data.userInfo
-				}
-			});
-
+		onLoad(params) {
+			//查询用户信息
+			//this.getUserInfo(this.userId);
 		},
+		onShow() {
+			var that = this;
+			//由于从非tab页跳转到tab页的url后是不能跟参数的,所以只能从缓存中读取要查询的userId		
+			uni.getStorage({
+				key: "searchUserId",
+				success(res) {
+					that.getUserInfo(res.data); //根据缓存的searchUserId查询用户信息
+					that.isSelfId = false; //设置当前的用户信息不是自身的
+				},
+				fail() {
+					if(!that.isSelfId){ //如果当前不是自己的信息,就查询,避免重复查询自己的信息
+						that.getUserInfo(that.userInfo.userId)
+						that.isSelfId = true; //设置当前的用户信息是自身的
+					}
+				}
+			})
+		},
+		created() {},
 		methods: {
+			//根据userId请求用户数据的方法
+			getUserInfo(userId) {
+				var url = this.server_Url; //读取在main.js中挂载的vue全局属性
+				console.log(url + "/userinfo")
+				//请求服务端数据
+				uni.request({
+					url: url + '/userinfo?userId=' + userId,
+					success: (res) => {
+						console.log("请求/userinfo?userId=" + userId + "数据成功成功..")
+						//console.log(res.data.userInfo)
+						this.userInfo = res.data.userInfo
+					}
+				});
+			},
 
 			//点击了选项,index为选项在option[]的位置
 			clickOption(index) {
@@ -117,6 +138,18 @@
 					}
 				});
 			}
+		},
+		onHide() {
+			console.log("me页面隐藏")
+			uni.removeStorage({
+				key: 'searchUserId',
+				success: function(res) {
+					console.log("清除searchUserId成功");
+				}
+			});
+		},
+		onUnload() {
+			console.log("me页面卸载")
 		},
 		//监听导航栏的"<"的点击事件
 		onNavigationBarButtonTap(e) {
