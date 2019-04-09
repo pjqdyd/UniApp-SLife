@@ -1,7 +1,7 @@
 {
 	"page": 1,
   "total": 20,
-  "tatalPage": 4,
+  "totalPage": 4,
   "newsList": [{
     "newsId": "4545998677584395",
     "userInfo": {

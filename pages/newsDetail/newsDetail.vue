@@ -3,11 +3,11 @@
 		<view class="page-box">
 			<!-- 动态的顶部用户信息, 头像,昵称,动态标题  280upx-->
 			<view class="userInfo-box">
-				<image class="face" :src="newsItem.userInfo.faceUrl" @click.stop="goUserInfo"></image> <!-- 用户头像 -->
+				<image class="face" :src="userInfo.faceUrl" @click.stop="goUserInfo"></image> <!-- 用户头像 -->
 
 				<!-- 用户昵称,性别, 身份 -->
 				<view class="nickname-sex-idStatus-box">
-					<text class="nickname">{{newsItem.userInfo.nickname}}</text> <!-- 用户昵称 -->
+					<text class="nickname">{{userInfo.nickname}}</text> <!-- 用户昵称 -->
 					<!-- 身份 -->
 					<text class="id-status-text">-{{isIdStatus}}-</text>
 				</view>
@@ -17,7 +17,7 @@
 
 			<!-- 动态有关的店铺的信息 -->
 			<view class="shop-info" @click="goShopDetail">
-								
+
 				<image class="shop-icon" src="../../static/news/shop.png"></image>
 				<view class="shop-name-local">
 					<view class="shop-name">{{'[' + newsItem.newsShopName + ']'}}</view>
@@ -46,8 +46,8 @@
 			</view>
 
 			<!-- 评论区块 -->
-			<view class="comment-box">
-				<news-comment ref="comment"></news-comment>
+			<view class="comment-box" id="comm">
+				<news-comment ref="comment" @inputFocus="handInputFoucs"></news-comment>
 			</view>
 
 		</view>
@@ -66,7 +66,14 @@
 		data() {
 			return {
 				newsItem: {}, //动态数据对象
-				likeCount: 0, //点赞的数量
+				userInfo: { //用户信息对象
+					id: '',
+					faceUrl: '',
+					nickname: '',
+					sex: 0,
+					idStatus: 0
+				},
+ 				likeCount: 0, //点赞的数量
 				isLike: 0
 			}
 		},
@@ -81,15 +88,24 @@
 					//如果拿到的是json字符串,说明是从index.nvue跳转的, 否则是从index.vue跳转的,无需转换
 					let newsItem = typeof res.data == 'string' ? JSON.parse(res.data) : res.data;
 					that.newsItem = newsItem;
+					that.userInfo = newsItem.userInfo;
 					that.isLike = newsItem.isLike;
 					that.likeCount = newsItem.likeCount;
 				}
 			});
+			
+			//根据params.flag判断是否是从评论按钮点击进入的,如果是,页面就滑动到评论位置
+			if(params.flag == 1){
+				//获取评论节点的信息, 设置页面滚动到评论的位置
+				setTimeout(() => {
+					this.getElemCommAndSetTop();
+				}, 100)
+			}
 		},
 		onShow() {},
-		created() {
+		created() {},
+		mounted() {
 		},
-		mounted() {},
 		//页面下拉刷新
 		onPullDownRefresh() {
 			console.log('refresh刷新动态详情');
@@ -105,7 +121,7 @@
 			//跳转到用户详情页,将需要查询的userId存入缓存
 			goUserInfo() {
 				//console.log(this.newsItem.userInfo.id)
-				
+
 				uni.setStorage({
 					key: "searchUserId",
 					data: this.newsItem.userInfo.id,
@@ -114,10 +130,10 @@
 							url: "/pages/me/me"
 						})
 					}
-				});	
+				});
 			},
 			//跳转到店铺详情页
-			goShopDetail(){
+			goShopDetail() {
 				uni.navigateTo({
 					url: "/pages/shopDetail/shopDetail?shopId=" + this.newsItem.newsShopId
 				})
@@ -138,17 +154,33 @@
 			clickMore() {
 				console.log("更多")
 				uni.showActionSheet({
-				    itemList: ["举报"],
-				    success: (res) => {
+					itemList: ["举报"],
+					success: (res) => {
 						//TODO
-				        console.log("举报动态: Id = " + this.newsItem.newsId)
-				    }
+						console.log("举报动态: Id = " + this.newsItem.newsId)
+					}
 				})
+			},
+			//输入框激活了
+			handInputFoucs(){
+				//获取评论节点的信息, 设置页面滚动到评论的位置
+				//this.getElemCommAndSetTop();
+			},
+			//获取节点的信息,设置页面的滚动位置
+			getElemCommAndSetTop() {
+				//获取评论元素节点的信息, 并设置页面滚动到评论元素的位置
+				var query = uni.createSelectorQuery();
+				query.select("#comm").boundingClientRect(function(res) {
+					uni.pageScrollTo({
+						scrollTop: res.top,
+						duration: 800
+					});
+				}).exec();
 			}
 		},
 		computed: {
 			isIdStatus() {
-				let idStatus = this.newsItem.userInfo.idStatus;
+				let idStatus = this.userInfo.idStatus;
 				if (idStatus == 1) {
 					return "店主"
 				} else if (idStatus == 0) {

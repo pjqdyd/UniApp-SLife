@@ -20,9 +20,9 @@
 						<text class="refresh-text">{{refreshText}}</text>
 					</cell>
 
-					<!-- 内容列表组件, homeList[tabNum]表示当前页的动态数据列表,这里的item就是每条动态数据, index表示这条动态数据的序号-->
-					<cell v-for="(item,index) in homeList[tabNum]" :key="index" style="background-color: #eeeeee">
-						<uni-media-list :itemData="item" @click="goDetail(item)" @clickComment="goDetail(item)"></uni-media-list>
+					<!-- 内容列表组件, homeList[tabNum].list表示当前页的动态数据列表,这里的item就是每条动态数据, index表示这条动态数据的序号-->
+					<cell v-for="(item,index) in homeList[tabNum].list" :key="index" style="background-color: #eeeeee">
+						<uni-media-list :itemData="item" @click="goDetail(item, 0)" @clickComment="goDetail(item , 1)"></uni-media-list>
 					</cell>
 					<!-- 底部加载更多组件 -->
 					<cell class="loadmore">
@@ -45,10 +45,8 @@
 	import uniTabBar from './component/uni-tab-bar/uni-tab-bar.nvue'
 	import uniTabs from './component/uni-tabs/uni-tabs.nvue'
 	import uniMediaList from './component/uni-media-list/uni-media-list.nvue'
-	//import uniDrawer from './component/uni-drawer/uni-drawer.nvue'
 
 	import conf from '../../common/config.js'; //全局的一些配置信息
-	import utils from '../../common/utils.js'; //一些工具方法
 
 	const dom = weex.requireModule('dom')
 	export default {
@@ -62,7 +60,7 @@
 			return {
 				refreshing: false,
 				refreshText: "下拉可以刷新",
-				loadingText: "加载更多中",
+				loadingText: "加载更多中..",
 				isShowTab: true,
 				isShowButt: true,
 				scrollY: 0,
@@ -70,19 +68,25 @@
 				tabNums: [0, 1, 2],
 				tabIndex: 1,
 
-				homeList: [], //用来存储首页的3个tab页list对象,
-
-				listA: [], //最新页的list
-				listAPage: 0, //最新页的当前Page数
-				listATotalPage: 0, //最新页的总Page数
-
-				listB: [], //推荐页的list
-				listBPage: 0, //推荐页的当前Page数
-				listBTotalPage: 0, //推荐页的总Page数
-
-				listC: [], //热门页的list
-				listCPage: 0, //热门页的当前Page数
-				listCTotalPage: 0, //热门页的总Page数
+				//用来存储动态页的3个tab分类页list数据对象
+				homeList: [
+					{	//最新页的数据
+						page: 1,
+						total: 0,
+						totalPage: 0,
+						list: []
+					},{	//推荐页的数据
+						page: 1,
+						total: 0,
+						totalPage: 0,
+						list: []
+					},{	//热门页的数据
+						page: 1,
+						total: 0,
+						totalPage: 0,
+						list: []
+					}
+				],
 				
 				//位置信息对象
 				localInfo: {
@@ -104,25 +108,9 @@
 			}
 		},
 		created() {
-			var url = conf.serverUrl;
-			console.log(url)
-			var recommendList = [] //推荐页的数据
-			//请求服务端数据
-			uni.request({
-				url: url + '/newsdata',
-				success: (res) => {
-					console.log("请求newsdata数据成功成功..")
-					recommendList = res.data.newsList
-
-					this.listB = this.listB.concat(recommendList)
-
-					console.log(this.listB)
-					this.homeList.push(this.listB)
-					this.homeList.push(this.listB)
-					this.homeList.push(this.listB)
-				}
-			})
-
+			//查询默认的推荐分类的第1页数据
+			this.getNewsList(1, this.tabIndex);
+			
 			//监听导航栏的"<"或"O"的点击事件(返回,手动定位)
 			uni.onNavigationBarButtonTap((e) => {
 				console.log("监听到原生标题栏按钮点击事件");
@@ -144,7 +132,42 @@
 		},
 		updated() {
 		},
+		watch:{
+			//监听当前分类的切换
+			'tabIndex': function(val){
+				let objectItem = this.homeList[val];
+				//如果当前分类页没有数据,就加载第一页数据
+				if (objectItem.list.length == 0) {
+					console.log("没有数据,加载一页数据")
+					this.getNewsList(1, val)
+				}
+			}
+		},
 		methods: {
+			//获取对应分类tabbar的动态数据(index为动态的分类下标)
+			getNewsList(page, index) {
+				var url = conf.serverUrl; //读取属性serverUrl
+				var objectItem = this.homeList[index]; //要操作的分类的数据对象
+				console.log(url)
+				//请求服务端数据
+				uni.request({
+					url: url + '/newsdata?category=' + this.tabBars[index].name + "&page=" + page,
+					success: (res) => {
+						console.log("请求分类" + this.tabBars[index].name + "的第" + page + "页数据");
+						let result = res.data;
+						//拼接数据到对应分类的list中,且设置分页信息
+						objectItem.list = objectItem.list.concat(result.newsList);
+						//objectItem.page = result.page;
+						objectItem.page = page;
+						objectItem.total = result.total;
+						objectItem.totalPage = result.totalPage;
+						//覆盖原有的数据
+						this.homeList[index] = objectItem; 	
+						this.refreshing = false; //刷新结束
+					}
+				});
+			},
+			
 			//设置红点
 			setTabbarReddot() {
 				//延时获取uni的api,防止调用不到,设置红点
@@ -160,13 +183,16 @@
 				this.isShowDrawer = false
 				console.log("点遮罩或关闭按钮-侧边栏关闭")
 			},
-			//点击了发布按钮
+			//点击了发布+按钮
 			handCreateCilck() {
 				uni.navigateTo({
 					url: '../create/create'
 				});
 			},
-			goDetail(e) {
+			goDetail(e,flag) {
+				//这里的e是,单条动态数据对象, 我们在跳转前保存e进缓存,方便在详情页获取
+				//flag是标识是否点击了评论才跳转到详情页, 0和1
+				
 				//由于在APP端,getStorage取不到在nvue页面设置的js对象data,所以就转换为json保存
 				var item = JSON.stringify(e)
 				uni.setStorage({
@@ -175,19 +201,12 @@
 					success: function() {
 						console.log('保存单条动态信息成功');
 						uni.navigateTo({
-							url: '/pages/newsDetail/newsDetail'
+							url: '/pages/newsDetail/newsDetail?flag=' + flag
 						});
 					}
 				});
 			},
-			loadMore(e) {
-				setTimeout(() => {
-					this.addData(e);
-				}, 1000);
-			},
-			addData(e) {
-				console.log("加载更多...");
-			},
+			//分类的tab切换了
 			async changeTab(e) {
 				this.tabIndex = e.index;
 			},
@@ -198,28 +217,16 @@
 					})
 				})
 			},
-			//添加拼接数据的方法
-			addListData(list) {
-				//console.log(list)
-				let ary = []; //最外层数组对象,存放三个分类页的数据
-				for (let i = 0, length = this.tabBars.length; i < length; i++) {
-					//一个aryItem对象就是一个分类页
-					let aryItem = {
-						loadingText: "加载更多...",
-						data: []
-					};
-					aryItem.data.push(list); //添加每一页的data数据
-					ary.push(aryItem); //添加该页进ary数组
-				}
-				return ary;
-			},
 			onrefresh(event) {
 				this.refreshText = "正在刷新...";
 				this.refreshing = true;
-				setTimeout(() => {
-					console.log("刷新结束")
-					this.refreshing = false
-				}, 1000)
+				this.loadingText = ''; //设置底部的加载更多为空
+				let index = this.tabIndex;//当前分类tab的下标
+				this.homeList[index].page = 1;
+				this.homeList[index].list = []; //清空数据
+				
+				//重新获取当前分类的第1页数据
+				this.getNewsList(1, index);
 			},
 			onpullingdown(event) {
 				if (this.refreshing) {
@@ -230,6 +237,19 @@
 				} else {
 					this.refreshText = "下拉可以刷新";
 				}
+			},
+			loadMore(e) {
+				this.loadingText = "加载更多中.."
+				let index = this.tabIndex; //当前分类tab的下标
+				let page = this.homeList[index].page + 1; //下一页
+				let totalPage = this.homeList[index].totalPage;
+				if(page > totalPage){ //没有更多数据了
+					this.loadingText = "没有更多了"
+					return;
+				}else{
+					//加载下一页的数据
+					this.getNewsList(page, index);	
+				}		
 			},
 			//监听页面的滚动,判断滑动的位移差,如果是上滑,就隐藏分类栏
 			handScroll(event) {

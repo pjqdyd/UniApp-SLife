@@ -86,7 +86,6 @@
 		},
 		created() {
 			var data = this.itemData;
-			console.log(JSON.stringify(this.itemData.newsImage[0].imageUrl))
 			this.imageList = data.newsImage; //主页动态的图片列表
 			this.isLike = data.isLike;
 			this.likeCount = data.likeCount;
