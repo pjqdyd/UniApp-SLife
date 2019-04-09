@@ -3,11 +3,11 @@
 		<view class="page-box">
 			<!-- 动态的顶部用户信息, 头像,昵称,动态标题  280upx-->
 			<view class="userInfo-box">
-				<image class="face" :src="newsItem.userInfo.faceUrl" @click.stop="goUserInfo"></image> <!-- 用户头像 -->
+				<image class="face" :src="userInfo.faceUrl" @click.stop="goUserInfo"></image> <!-- 用户头像 -->
 
 				<!-- 用户昵称,性别, 身份 -->
 				<view class="nickname-sex-idStatus-box">
-					<text class="nickname">{{newsItem.userInfo.nickname}}</text> <!-- 用户昵称 -->
+					<text class="nickname">{{userInfo.nickname}}</text> <!-- 用户昵称 -->
 					<!-- 身份 -->
 					<text class="id-status-text">-{{isIdStatus}}-</text>
 				</view>
@@ -66,7 +66,14 @@
 		data() {
 			return {
 				newsItem: {}, //动态数据对象
-				likeCount: 0, //点赞的数量
+				userInfo: { //用户信息对象
+					id: '',
+					faceUrl: '',
+					nickname: '',
+					sex: 0,
+					idStatus: 0
+				},
+ 				likeCount: 0, //点赞的数量
 				isLike: 0
 			}
 		},
@@ -81,6 +88,7 @@
 					//如果拿到的是json字符串,说明是从index.nvue跳转的, 否则是从index.vue跳转的,无需转换
 					let newsItem = typeof res.data == 'string' ? JSON.parse(res.data) : res.data;
 					that.newsItem = newsItem;
+					that.userInfo = newsItem.userInfo;
 					that.isLike = newsItem.isLike;
 					that.likeCount = newsItem.likeCount;
 				}
@@ -165,14 +173,14 @@
 				query.select("#comm").boundingClientRect(function(res) {
 					uni.pageScrollTo({
 						scrollTop: res.top,
-						duration: 500
+						duration: 800
 					});
 				}).exec();
 			}
 		},
 		computed: {
 			isIdStatus() {
-				let idStatus = this.newsItem.userInfo.idStatus;
+				let idStatus = this.userInfo.idStatus;
 				if (idStatus == 1) {
 					return "店主"
 				} else if (idStatus == 0) {
