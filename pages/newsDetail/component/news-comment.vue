@@ -31,11 +31,13 @@
 
 				</view>
 			</block>
-			<uni-load-more  status="noMore"></uni-load-more>
+			<view style="height: 200upx;">
+				<uni-load-more  status="noMore"></uni-load-more>
+			</view>
 		</view>
 
 		<view class="comment-input-box">
-			<input class="comment-input" :placeholder="placeholderText"  :focus="isFocus" :value="inputValue" @input="onInput" @blur="loseFoucs" />
+			<input class="comment-input" :placeholder="placeholderText"  :focus="isFocus" :value="inputValue" @input="onInput" @blur="loseFoucs" @focus="inputFocus" />
 			<view class="iconfont comment-button" @click="createComment">&#xe634; 发表</view>
 		</view>
 
@@ -83,6 +85,10 @@
 				this.isFocus = true;
 				this.placeholderText = "回复" + e.fromUserName;
 				console.log("回复...")
+			},
+			//输入框获取焦点
+			inputFocus(){
+				this.$emit('inputFocus'); //向外触发输入框激活事件
 			},
 			//输入框失去焦点
 			loseFoucs(){
