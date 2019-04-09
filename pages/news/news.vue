@@ -146,7 +146,6 @@
 						uni.stopPullDownRefresh();
 					}
 				});
-				console.log(this.homeList)
 			},
 
 			//监听分类栏点击事件, 完成顶部分类栏切换
