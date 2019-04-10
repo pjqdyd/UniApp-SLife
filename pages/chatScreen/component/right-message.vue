@@ -8,7 +8,7 @@
 		</view>
 		<view class="avator-wrapper">
 			<view class="avator">
-				<img src="http://img1.3lian.com/gif/more/11/201212/04378257474004fcdd62f619d724db0c.jpg" class="img">
+				<image class="img" :src="faceUrl"></image>
 			</view>
 		</view>
 	</view>
@@ -18,57 +18,65 @@
 	export default {
 		name: 'right-message',
 		props: {
-			data: String,//聊天内容
-			time: String,//提取名称的一个字
+			data: String, //聊天内容
+			time: String, //时间
+			faceUrl: String //头像
 		}
 	}
 </script>
 
 <style lang="scss" scoped="true">
-	.right-message{
-		display:flex;
+	.right-message {
+		display: flex;
 		padding-right: 20upx;
 	}
-	.avator-wrapper{
+
+	.avator-wrapper {
 		flex: 0 0 auto;
 	}
-	.bubble-wrapper{
+
+	.bubble-wrapper {
 		padding-left: 135upx;
 		flex: 1;
 		padding-right: 30upx;
-		.bubble{
+
+		.bubble {
 			padding: 20upx;
 			background: #d5ebff;
-			border-radius:15upx;
+			border-radius: 15upx;
 			position: relative;
-			&::before{
-				position:absolute;
+
+			&::before {
+				position: absolute;
 				right: -20upx;
 				top: 10upx;
 				content: "";
-				width: 0; 
-				height: 0; 
-				border-top: 20px solid transparent; 
-				border-left: 20px solid #d5ebff; 
-				border-bottom: 20px solid transparent; 
+				width: 0;
+				height: 0;
+				border-top: 20px solid transparent;
+				border-left: 20px solid #d5ebff;
+				border-bottom: 20px solid transparent;
 			}
 		}
 	}
-	.avator{
+
+	.avator {
 		width: 100upx;
 		height: 100upx;
 		border-radius: 50%;
 		overflow: hiideen;
 		background: #f1f1f1;
-		.img{
-			width:100%;
+
+		.img {
+			width: 100%;
 			height: 100%;
 			border-radius: 50%;
 		}
 	}
-	.time{
+
+	.time {
 		line-height: 50upx;
-		color:#b7b7b7;
+		color: #b7b7b7;
 		font-size: 24upx;
 	}
 </style>

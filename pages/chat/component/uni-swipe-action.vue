@@ -5,10 +5,10 @@
 				<view class="uni-swipe-action__container" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd"
 				 @touchcancel="touchEnd" :style="{'transform':messageIndex == i ? transformX : 'translateX(0px)','-webkit-transform':messageIndex == i ? transformX : 'translateX(0px)'}"
 				 :data-index="i" :data-disabled="it.disabled + 1">
-					<view class="uni-swipe-action__content " @click="toMessageDetail(i)">
+					<view class="uni-swipe-action__content " @click="toMessageDetail(it)">
 						<view class="item" :class=" i==0  ? 'stick' : ''">
 							<view class="item-left">
-								<image :src="it.url" class="image" />
+								<image :src="it.faceUrl" class="image" />
 							</view>
 							<view class="item-middle">
 								<text class="title">{{it.title}}</text>
@@ -68,10 +68,11 @@
 		},
 		// #endif
 		methods: {
-			toMessageDetail(i) {
-				console.log('进入到聊天界面' + i)
+			//跳转到聊天界面, e为单个好友消息对象
+			toMessageDetail(e) {
+				console.log('进入到聊天界面' + e.id)
 				uni.navigateTo({
-					url: "/pages/chatScreen/chatScreen"
+					url: "/pages/chatScreen/chatScreen?id=" + e.id + "&faceUrl=" + e.faceUrl
 				})
 			},
 			getSize() {

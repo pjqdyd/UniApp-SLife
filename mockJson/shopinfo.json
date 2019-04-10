@@ -1,7 +1,7 @@
 {
   "shopId": "8958924050",
   "shopName": "生活街商店",
-  "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-42cba11e95693e6a.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240",
+  "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-42cba11e95693e6a.jpg",
   "rate": 4.7,
   "category": "超市",
   "distance": "100m",
@@ -13,16 +13,16 @@
     "nickname": "刺猬的拥抱",
     "idStatus": 1,
     "sex": 1,
-    "faceImage": "https://upload-images.jianshu.io/upload_images/14511997-f98df143a7bb5a83.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"
+    "faceImage": "https://upload-images.jianshu.io/upload_images/14511997-f98df143a7bb5a83.png"
   },
   "shopImageList": [{
-      "shopImage": "https://upload-images.jianshu.io/upload_images/14511997-6b7bdd51ef601f2f.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"
+      "shopImage": "https://upload-images.jianshu.io/upload_images/14511997-6b7bdd51ef601f2f.jpg"
     },
     {
-      "shopImage": "https://upload-images.jianshu.io/upload_images/14511997-ec037b183653ebf6.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"
+      "shopImage": "https://upload-images.jianshu.io/upload_images/14511997-ec037b183653ebf6.jpg"
     },
     {
-      "shopImage": "https://upload-images.jianshu.io/upload_images/14511997-1044373d711b6724.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"
+      "shopImage": "https://upload-images.jianshu.io/upload_images/14511997-1044373d711b6724.jpg"
     }
   ],
   "wifi": 1,
