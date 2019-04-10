@@ -2,7 +2,7 @@
 	<view class="left-message">
 		<view class="avator-wrapper">
 			<view class="avator">
-				<img src="http://img1.3lian.com/gif/more/11/201212/04378257474004fcdd62f619d724db0c.jpg" class="img">
+				<image class="img" :src="faceUrl"></image>
 			</view>
 		</view>
 		<view class="bubble-wrapper">
@@ -19,7 +19,8 @@
 		name: 'left-message',
 		props: {
 			data: String,//聊天内容
-			time: String,//提取名称的一个字
+			time: String,//时间
+			faceUrl: String //聊天头像
 		}
 	}
 </script>
