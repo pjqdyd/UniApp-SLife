@@ -33,7 +33,7 @@
 			</view>
 			<view class="iconfont shoper-chat" @click="goChat">&#xe739;</view>
 		</view>
-		
+
 		<!-- 店铺介绍 -->
 		<view class="shop-introduce">—店铺介绍—</view>
 		<view class="shop-info">
@@ -46,11 +46,11 @@
 			<view class="shop-open-time">营业时间: {{shopInfo.openTime}}</view>
 			<view class="shop-desc">{{shopInfo.mainInfo}}</view>
 		</view>
-		
+
 		<!-- 底部的店铺按钮 -->
 		<view class="shop-button">
-			<view class="iconfont icon-butt" style="border-right: 1upx solid #707070;">&#xe613; 分享</view>
-			<view class="iconfont icon-butt">&#xe64b; 动态</view>
+			<view class="iconfont icon-butt" @click="shareShop" style="border-right: 1upx solid #707070;">&#xe613; 分享微信</view>
+			<view class="iconfont icon-butt" @click="goNewsList(0)">&#xe64b; 店铺动态</view>
 		</view>
 
 	</view>
@@ -112,12 +112,35 @@
 				})
 			},
 			//跳转到与店主聊天的界面
-			goChat(){
+			goChat() {
 				console.log("跳转到聊天界面")
+			},
+			//跳转到动态, type标识是发布的动态还是点赞的动态
+			goNewsList(type) {
+				uni.navigateTo({
+					url: "/pages/newsList/newsList?userId=" + this.shoperId + "&type=" + type
+				})
+			},
+			//分享店铺到微信()
+			shareShop() {
+				uni.share({
+					provider: "weixin",
+					scene: "WXSceneSession",
+					type: 0,
+					href: "http://uniapp.dcloud.io/", //点击跳转链接
+					title: "生活街分享",
+					summary: "我在生活街APP发现了优质店铺,赶紧跟我一起来体验吧！",
+					imageUrl:this.shopInfo.shopImageList[0].shopImage, //图片
+					success: function(res) {
+						console.log("success:" + JSON.stringify(res));
+					},
+					fail: function(err) {
+						console.log("fail:" + JSON.stringify(err));
+					}
+				});
 			}
 		},
-		computed: {
-		}
+		computed: {}
 	}
 </script>
 
@@ -196,7 +219,8 @@
 			color: #707070;
 		}
 	}
-	.local-info-box:active{
+
+	.local-info-box:active {
 		background-color: #eeeeee;
 	}
 
@@ -249,8 +273,8 @@
 	.shoper-info-box:active {
 		background-color: #eeeeee;
 	}
-	
-	.shop-introduce{
+
+	.shop-introduce {
 		width: 100%;
 		height: 80upx;
 		text-align: center;
@@ -259,37 +283,41 @@
 		color: #707070;
 		border-bottom: 2upx solid #eeeeee;
 	}
-	
-	.shop-info{
+
+	.shop-info {
 		width: 100%;
 		height: 220upx;
 		box-sizing: border-box;
 		padding: 0 25upx 0 25upx;
 		color: #707070;
-		.shop-icon{
+
+		.shop-icon {
 			width: 100%;
 			height: 60upx;
 			line-height: 60upx;
-			.icon{
+
+			.icon {
 				margin-right: 30upx;
 				font-size: 26upx;
 			}
 		}
-		.shop-open-time{
+
+		.shop-open-time {
 			width: 100%;
 			height: 60upx;
 			font-size: 26upx;
 			line-height: 60upx;
 		}
-		.shop-desc{
+
+		.shop-desc {
 			width: 100%;
 			height: 300upx;
 			font-size: 28upx;
 			line-height: 80upx;
 		}
 	}
-	
-	.shop-button{
+
+	.shop-button {
 		width: 100%;
 		height: 100upx;
 		padding: 20upx;
@@ -300,15 +328,13 @@
 		border-top: 2upx solid #eeeeee;
 		display: flex;
 		justify-content: space-between;
-		.icon-butt{
+
+		.icon-butt {
 			width: 50%;
 			color: #707070;
 			font-size: 35upx;
 			text-align: center;
 			line-height: 60upx;
-		}
-		.icon-butt:active{
-			background-color: #fff;
 		}
 	}
 </style>
