@@ -5,7 +5,7 @@
   "localList": [{
     "shopId": "8958924050",
     "shopName": "生活街商店",
-    "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-42cba11e95693e6a.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240",
+    "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-42cba11e95693e6a.jpg",
     "rate": 4.7,
     "category": "超市",
     "distance": "100m",
@@ -15,7 +15,7 @@
   }, {
     "shopId": "8958924051",
     "shopName": "生活街水果店",
-    "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-a93407f6cf335716.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240",
+    "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-a93407f6cf335716.jpg",
     "rate": 4.8,
     "category": "水果店",
     "distance": "200m",
@@ -25,7 +25,7 @@
   }, {
     "shopId": "8958924052",
     "shopName": "生活街小餐馆",
-    "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-09df8f95fe47cf6b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240",
+    "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-09df8f95fe47cf6b.jpg",
     "rate": 4.5,
     "category": "餐馆",
     "distance": "100m",
@@ -35,7 +35,7 @@
   }, {
     "shopId": "8958924053",
     "shopName": "生活街百货店",
-    "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-ec037b183653ebf6.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240",
+    "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-ec037b183653ebf6.jpg",
     "rate": 4.8,
     "category": "超市",
     "distance": "300m",
@@ -45,7 +45,7 @@
   }, {
     "shopId": "8958924054",
     "shopName": "生活街诊所",
-    "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-a6e4ad5d7768f290.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240",
+    "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-a6e4ad5d7768f290.jpg",
     "rate": 4.8,
     "category": "诊所",
     "distance": "100m",
@@ -55,7 +55,7 @@
   }, {
     "shopId": "8958924055",
     "shopName": "生活街美食",
-    "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-c8fd9da0b90e8e63.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240",
+    "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-c8fd9da0b90e8e63.jpg",
     "rate": 4.8,
     "category": "小吃餐馆",
     "distance": "110m",
@@ -65,7 +65,7 @@
   }, {
     "shopId": "8958924056",
     "shopName": "生活街购物",
-    "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-161603db93a6d5c4.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240",
+    "imageUrl": "https://upload-images.jianshu.io/upload_images/14511997-161603db93a6d5c4.jpg",
     "rate": 4.5,
     "category": "超市",
     "distance": "90m",
