@@ -7,7 +7,7 @@
 						<view class="avator">
 							<img :src="isFaceImage">
 						</view>
-						<view class="user-nickname">{{userInfo == null ? "未登录": userInfo.nickname}}</view>
+						<view class="user-nickname">{{userInfo.nickname == null ? "未登录": userInfo.nickname}}</view>
 						<view class="id-status-sex-box">-{{isIdStatus}}-<text class="iconfont" v-html="isBoy"></text></view>
 					</view>
 
@@ -38,7 +38,8 @@
 			userInfo: Object
 		},
 		data() {
-			return {}
+			return {
+			}
 		},
 		mounted() {},
 		methods: {
@@ -78,7 +79,7 @@
 			},
 			isFaceImage() {
 				let user = this.userInfo;
-				if (user == null || user == undefined || user.faceImage == '') {
+				if (user == null || user.faceImage == undefined || user.faceImage == '') {
 					return "../../../../static/user/noface.png"
 				} else {
 					return user.faceImage

@@ -27,9 +27,9 @@
 				</view>
 			</view>
 			<view class="list">
-				<view class="li noborder" @click="loginOut">
-					<image class="icon" src="../../static/user/option/out.png"></image>
-					<view class="text">退出登录</view>
+				<view class="li noborder" @click="aboutUs">
+					<image class="icon" src="../../static/user/option/about.png"></image>
+					<view class="text">关于我们</view>
 					<text class="iconfont">&#xe6ee;</text>
 				</view>
 			</view>
@@ -41,7 +41,7 @@
 <script>
 	import utils from '../../common/utils.js'; //一些工具方法
 
-	import userCrad from "./component/user-info/user-crad.vue"; //用户信息卡
+	import userCrad from "../me/component/user-info/user-crad.vue"; //用户信息卡
 
 	export default {
 		components: {
@@ -54,30 +54,29 @@
 				option: [{
 					icon: "../../static/user/option/like.png",
 					name: "点赞的动态",
-				}, {
-					icon: "../../static/user/option/apply.png",
-					name: "申请店铺",
+				},{
+					icon: "../../static/chat/fans.png",
+					name: "Ta的粉丝",
+				},{
+					icon: "../../static/chat/follow.png",
+					name: "Ta的关注",
 				}, {
 					icon: "../../static/user/option/issue.png",
 					name: "意见反馈",
-				}, {
-					icon: "../../static/user/option/about.png",
-					name: "关于我们",
 				}]
 			}
 		},
 		onLoad(params) {
-			//从缓存中读取用户信息TODO
-			//缓存中存在,已登录
+			//从跳转的params中获取用户id
 			//this.userInfo = {}//设置缓存的用户信息
-			this.userId = "0001";
-			//不存在就提示用户登录,跳转到登录界面TODO
-			this.getUserInfo("0001");  //这里测试,就手动请求一次数据
+			this.userId = params.userId;
+
+			//根据跳转的userId查询用户信息
+			this.getUserInfo(params.userId); //这里测试,就手动请求一次数据
 		},
-		onShow() {
-		},
+		onShow() {},
 		created() {},
-		methods: {	
+		methods: {
 			//根据userId请求用户数据的方法
 			getUserInfo(userId) {
 				var url = this.server_Url; //读取在main.js中挂载的vue全局属性
@@ -93,63 +92,34 @@
 				});
 			},
 			//点击了发布的动态, type标识是发布的动态
-			clickCreateNews(){
+			clickCreateNews() {
 				uni.navigateTo({
 					url: "/pages/newsList/newsList?userId=" + this.userId + "&type=1"
 				})
 			},
-			
 			//点击了选项,index为选项在option[]的位置
 			clickOption(index) {
-				if (index == 1) { //点击了申请店铺
-					console.log("申请店铺")
-					//TODO 判断用户是否有店铺在申请中, 是就跳转到申请店铺状态页,否就申请店铺
-					uni.navigateTo({
-						url: "/pages/applyShop/applyShop"
-					});
+				if (index == 1) {
+					console.log("1")
 				} else {
 					return;
 				}
 			},
 
-			//点击了退出登录
-			loginOut() {
-				console.log("退出登录")
-				uni.showModal({
-					title: '退出登录',
-					content: '您是否要退出',
-					success: function(res) {
-						if (res.confirm) {
-							console.log('用户点击确定');
-							//TODO清除用户信息,跳转到登录页
-							uni.reLaunch({
-								url: '../login/login'
-							});
-						} else if (res.cancel) {
-							console.log('用户点击取消');
-						}
-					}
-				});
+			//关于我们
+			aboutUs() {
+
 			}
+
 		},
 		onHide() {
-			console.log("me页面隐藏")
-			uni.removeStorage({
-				key: 'searchUserId',
-				success: function(res) {
-					console.log("清除searchUserId成功");
-				}
-			});
+			console.log("userInfo页面隐藏")
 		},
 		onUnload() {
-			console.log("me页面卸载")
+			console.log("userInfo页面卸载")
 		},
 		//监听导航栏的"<"的点击事件
-		onNavigationBarButtonTap(e) {
-			uni.switchTab({
-				url: '/pages/news/news'
-			});
-		},
+		onNavigationBarButtonTap(e) {},
 	}
 </script>
 
