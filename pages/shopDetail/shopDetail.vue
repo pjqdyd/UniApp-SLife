@@ -106,16 +106,10 @@
 			},
 			//跳转到用户详情页,将需要查询的userId存入缓存
 			goUserInfo() {
-				//console.log(this.newsItem.userInfo.id)		
-				uni.setStorage({
-					key: "searchUserId",
-					data: this.shopInfo.userInfo.userId,
-					success() {
-						uni.switchTab({
-							url: "/pages/me/me"
-						})
-					}
-				});	
+				//console.log(this.newsItem.userInfo.id)
+				uni.navigateTo({
+					url: "/pages/userInfo/userInfo?userId=" + this.shopInfo.userInfo.userId
+				})
 			},
 			//跳转到与店主聊天的界面
 			goChat(){

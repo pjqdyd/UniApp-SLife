@@ -26,7 +26,8 @@
 							"fontSize": "25px",
 							"float": "left"
 						}]
-					}
+					},
+					"scrollIndicator": "none"
 				}
 			}
 		},
@@ -79,14 +80,15 @@
 							"fontSize": "25px",
 							"float":"left"
 						}]
-					}
+					},
+					"scrollIndicator": "none"
 				}
 			}
 		},
 		{
 			"path": "pages/me/me",
 			"style": {
-				"navigationBarTitleText": "个人信息",
+				"navigationBarTitleText": "我的信息",
 				"navigationBarBackgroundColor": "#ea5455",
 				"navigationBarTextStyle": "white",
 				"app-plus": {
@@ -96,7 +98,22 @@
 							"fontSize": "25px",
 							"float":"left"
 						}]
-					}
+					},
+					"scrollIndicator": "none"
+				}
+			}
+		},{
+			"path": "pages/userInfo/userInfo",
+			"style": {
+				"navigationBarTitleText": "用户信息",
+				"navigationBarBackgroundColor": "#ea5455",
+				"navigationBarTextStyle": "white",
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"titleNView": {
+						"buttons": []
+					},
+					"scrollIndicator": "none"
 				}
 			}
 		},{
@@ -108,7 +125,8 @@
 				"app-plus": {
 					"titleNView": {
 						"buttons": []
-					}
+					},
+					"scrollIndicator": "none"
 				}
 			}
 		},{
@@ -120,7 +138,8 @@
 				"app-plus": {
 					"titleNView": {
 						"buttons": []
-					}
+					},
+					"scrollIndicator": "none"
 				}
 			}
 		},{
@@ -132,7 +151,8 @@
 				"app-plus": {
 					"titleNView": {
 						"buttons": []
-					}
+					},
+					"scrollIndicator": "none"
 				}
 			}
 		},{
@@ -145,7 +165,22 @@
 				"app-plus": {
 					"titleNView": {
 						"buttons": []
-					}
+					},
+					"scrollIndicator": "none"
+				}
+			}
+		},{
+			"path": "pages/newsList/newsList",
+			"style": {
+				"navigationBarTitleText": "动态列表",
+				"navigationBarBackgroundColor": "#ea5455",
+				"navigationBarTextStyle": "white",
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"titleNView": {
+						"buttons": []
+					},
+					"scrollIndicator": "none"
 				}
 			}
 		},{
@@ -157,7 +192,8 @@
 				"app-plus": {
 					"titleNView": {
 						"buttons": []
-					}
+					},
+					"scrollIndicator": "none"
 				}
 			}
 		},{
@@ -169,7 +205,8 @@
 				"app-plus": {
 					"titleNView": {
 						"buttons": []
-					}
+					},
+					"scrollIndicator": "none"
 				}
 			}
 		},{
@@ -192,7 +229,8 @@
 							"width": "75px",
 							"float":"right"
 						}]
-					}
+					},
+					"scrollIndicator": "none"
 				}
 			}
 		}

@@ -48,20 +48,20 @@
 				focus: false,
 				isShowView: true,
 				msgCategory: [{
-					icon: "../../static/chat/report.png",
-					name: "回复我的",
-				}, {
-					icon: "../../static/chat/like.png",
-					name: "点赞我的",
-				}, {
-					icon: "../../static/chat/fans.png",
-					name: "我的粉丝",
-				}, {
 					icon: "../../static/chat/follow.png",
 					name: "我的关注",
-				}, {
+				},{
+					icon: "../../static/chat/fans.png",
+					name: "我的粉丝",
+				},{
 					icon: "../../static/chat/notify.png",
 					name: "系统通知",
+				},{
+					icon: "../../static/chat/report.png",
+					name: "回复我的",
+				},{
+					icon: "../../static/chat/like.png",
+					name: "点赞我的",
 				}],
 				options: [{
 					tag: 1,

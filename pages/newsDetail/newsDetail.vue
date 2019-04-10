@@ -118,19 +118,12 @@
 			this.$refs.comment.loadMoreComment(); //调用子组件加载更多评论
 		},
 		methods: {
-			//跳转到用户详情页,将需要查询的userId存入缓存
+			//跳转到用户详情页,带入要查询的userId
 			goUserInfo() {
 				//console.log(this.newsItem.userInfo.id)
-
-				uni.setStorage({
-					key: "searchUserId",
-					data: this.newsItem.userInfo.id,
-					success() {
-						uni.switchTab({
-							url: "/pages/me/me"
-						})
-					}
-				});
+				uni.navigateTo({
+					url: "/pages/userInfo/userInfo?userId=" + this.newsItem.userInfo.id
+				})
 			},
 			//跳转到店铺详情页
 			goShopDetail() {
