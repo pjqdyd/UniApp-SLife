@@ -13,7 +13,7 @@
 		<!-- 选项 -->
 		<view class="list-content">
 			<view class="list">
-				<view class="li noborder" @click="clickCreateNews">
+				<view class="li noborder" @click="goNewsList(0)">
 					<image class="icon" src="../../static/user/option/news.png"></image>
 					<view class="text">发布的动态</view>
 					<text class="iconfont">&#xe6ee;</text>
@@ -91,16 +91,18 @@
 					}
 				});
 			},
-			//点击了发布的动态, type标识是发布的动态
-			clickCreateNews() {
+			//跳转到动态, type标识是发布的动态还是点赞的动态
+			goNewsList(type){
 				uni.navigateTo({
-					url: "/pages/newsList/newsList?userId=" + this.userId + "&type=1"
+					url: "/pages/newsList/newsList?userId=" + this.userId + "&type=" + type
 				})
 			},
 			//点击了选项,index为选项在option[]的位置
 			clickOption(index) {
-				if (index == 1) {
-					console.log("1")
+				if(index == 0){ //点击了点赞的店铺
+					this.goNewsList(1);
+				}else if (index == 1) {
+					console.log("点击了Ta的粉丝")
 				} else {
 					return;
 				}

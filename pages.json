@@ -26,7 +26,8 @@
 							"fontSize": "25px",
 							"float": "left"
 						}]
-					}
+					},
+					"scrollIndicator": "none"
 				}
 			}
 		},
@@ -79,7 +80,8 @@
 							"fontSize": "25px",
 							"float":"left"
 						}]
-					}
+					},
+					"scrollIndicator": "none"
 				}
 			}
 		},
@@ -96,7 +98,8 @@
 							"fontSize": "25px",
 							"float":"left"
 						}]
-					}
+					},
+					"scrollIndicator": "none"
 				}
 			}
 		},{
@@ -109,7 +112,8 @@
 				"app-plus": {
 					"titleNView": {
 						"buttons": []
-					}
+					},
+					"scrollIndicator": "none"
 				}
 			}
 		},{
@@ -121,7 +125,8 @@
 				"app-plus": {
 					"titleNView": {
 						"buttons": []
-					}
+					},
+					"scrollIndicator": "none"
 				}
 			}
 		},{
@@ -133,7 +138,8 @@
 				"app-plus": {
 					"titleNView": {
 						"buttons": []
-					}
+					},
+					"scrollIndicator": "none"
 				}
 			}
 		},{
@@ -145,7 +151,8 @@
 				"app-plus": {
 					"titleNView": {
 						"buttons": []
-					}
+					},
+					"scrollIndicator": "none"
 				}
 			}
 		},{
@@ -158,7 +165,8 @@
 				"app-plus": {
 					"titleNView": {
 						"buttons": []
-					}
+					},
+					"scrollIndicator": "none"
 				}
 			}
 		},{
@@ -171,7 +179,8 @@
 				"app-plus": {
 					"titleNView": {
 						"buttons": []
-					}
+					},
+					"scrollIndicator": "none"
 				}
 			}
 		},{
@@ -183,7 +192,8 @@
 				"app-plus": {
 					"titleNView": {
 						"buttons": []
-					}
+					},
+					"scrollIndicator": "none"
 				}
 			}
 		},{
@@ -195,7 +205,8 @@
 				"app-plus": {
 					"titleNView": {
 						"buttons": []
-					}
+					},
+					"scrollIndicator": "none"
 				}
 			}
 		},{
@@ -218,7 +229,8 @@
 							"width": "75px",
 							"float":"right"
 						}]
-					}
+					},
+					"scrollIndicator": "none"
 				}
 			}
 		}
