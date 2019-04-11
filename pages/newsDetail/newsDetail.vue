@@ -31,7 +31,7 @@
 			</view>
 
 			<!-- 动态图片 -->
-			<view v-for="(item, index) in newsItem.newsImage" :key="index">
+			<view v-for="(item, index) in newsItem.newsImage" :key="index" style="background-color: #fff;">
 				<image class="news-image" mode="widthFix" :src="item.imageUrl"></image>
 			</view>
 
@@ -324,6 +324,7 @@
 	.icon-box {
 		width: 750upx;
 		height: 100upx;
+		padding: 10upx 0 10upx 0;
 		background-color: #fff;
 		display: flex;
 		box-sizing: border-box;

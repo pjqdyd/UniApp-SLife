@@ -5,7 +5,7 @@
 				<view class="uni-swipe-action__container" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd"
 				 @touchcancel="touchEnd" :style="{'transform':messageIndex == i ? transformX : 'translateX(0px)','-webkit-transform':messageIndex == i ? transformX : 'translateX(0px)'}"
 				 :data-index="i" :data-disabled="it.disabled + 1">
-					<view class="uni-swipe-action__content " @click="toMessageDetail(it)">
+					<view class="uni-swipe-action__content " @click="toMessageDetail(i)">
 						<view class="item" :class=" i==0  ? 'stick' : ''">
 							<view class="item-left">
 								<image :src="it.faceUrl" class="image" />
@@ -68,12 +68,9 @@
 		},
 		// #endif
 		methods: {
-			//跳转到聊天界面, e为单个好友消息对象
-			toMessageDetail(e) {
-				console.log('进入到聊天界面' + e.id)
-				uni.navigateTo({
-					url: "/pages/chatScreen/chatScreen?id=" + e.id + "&faceUrl=" + e.faceUrl
-				})
+			//index为该消息对象在messagesList中的下标
+			toMessageDetail(index) {
+				this.$emit('clickMessage', index); //向外触发点击了消息,带上点击的消息的下标			
 			},
 			getSize() {
 				uni.createSelectorQuery().in(this).select(`#${this.elId}`).boundingClientRect().exec((ret) => {
