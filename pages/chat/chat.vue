@@ -13,8 +13,8 @@
 				<view class="list"></view>
 			</block>
 
-			<!-- 好友消息, name值用于标识这个是好友消息 -->
-			<uni-collapse-item title="好友消息" open="true" icon="../../static/chat/firend.png" name="5">
+			<!-- 好友消息 -->
+			<uni-collapse-item title="好友消息" open="true" icon="../../static/chat/firend.png">
 				<!-- 好友消息列表 -->
 				<view class="content">
 					<uni-swipe-action :options="options" :messagesList="messageList" @clickMessage="handMessageClick"></uni-swipe-action>
@@ -48,8 +48,7 @@
 		},
 		data() {
 			return {
-				focus: false,
-				isShowView: true,
+				
 				msgCategory: [{
 					icon: "../../static/chat/follow.png",
 					name: "我的关注",
@@ -164,7 +163,9 @@
 				]
 			};
 		},
-		onLoad() {},
+		onLoad(params) {
+			
+		},
 		created() {},
 		onShow() {
 			//隐藏红点
@@ -185,6 +186,7 @@
 				msgObj.count = 0; //设置未读消息数为0
 			}
 		},
+		
 		//监听导航栏的"<"的点击事件
 		onNavigationBarButtonTap(e) {
 			uni.switchTab({

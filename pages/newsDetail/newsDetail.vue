@@ -120,6 +120,9 @@
 		methods: {
 			//跳转到用户详情页,带入要查询的userId
 			goUserInfo() {
+				
+				//判断是不是自己的id,是就跳转到个人信息页TODO
+				
 				//console.log(this.newsItem.userInfo.id)
 				uni.navigateTo({
 					url: "/pages/userInfo/userInfo?userId=" + this.newsItem.userInfo.id

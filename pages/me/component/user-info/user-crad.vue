@@ -12,13 +12,13 @@
 					</view>
 
 					<view class="box-bd">
-						<view class="item">
+						<view class="item" @click="goChat">
 							<image class="icon" src="../../static/user/chat.png"></image>
-							<view class="text">发起聊天</view>
+							<view class="text">{{isMe ? "进入聊天" : "发起聊天"}}</view>
 						</view>
 						<view class="item">
 							<image class="icon" src="../../static/user/follow.png"></image>
-							<view class="text">关注{{isIdStatus}}</view>
+							<view class="text">{{isMe ? "我的关注" : "关注"+isIdStatus}}</view>
 						</view>
 						<view class="item" @click="clickShopInfo" v-if="userInfo.idStatus == 1">
 							<image class="icon" src="../../static/user/shop.png"></image>
@@ -35,14 +35,29 @@
 <script>
 	export default {
 		props: {
-			userInfo: Object
+			userInfo: Object,
+			isMe: Boolean //是否是自己的个人信息
 		},
 		data() {
-			return {
-			}
+			return {}
 		},
 		mounted() {},
 		methods: {
+			//点击了进入聊天(自己), 发起聊天(其他用户)
+			goChat() {
+				if (this.isMe) { //进入聊天
+					uni.switchTab({
+						url: '/pages/chat/chat'
+					});
+				}else{ //发起聊天
+					let user = this.userInfo;
+					console.log('创建聊天界面' + user.userId)
+					uni.navigateTo({
+						url: "/pages/chatScreen/chatScreen?id=" + user.userId + "&faceUrl=" + user.faceImage + "&name=" + user.nickname
+					})
+				}
+			},
+
 			//点击了访问店铺
 			clickShopInfo() {
 				uni.navigateTo({
@@ -171,7 +186,7 @@
 				flex-wrap: wrap;
 				flex-direction: row;
 				justify-content: center;
-				border-right: 1px solid #f1f1f1;
+				border-right: 1upx solid #f1f1f1;
 				margin: 15upx 0;
 
 				&:last-child {
@@ -181,11 +196,9 @@
 				.icon {
 					width: 50upx;
 					height: 50upx;
-
-					img {
-						width: 100%;
-						height: 100%;
-					}
+					/*  #ifdef  APP-PLUS  */
+					margin-left: 10upx;
+					/* #endif */
 				}
 
 				.text {
