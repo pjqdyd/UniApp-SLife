@@ -31,7 +31,7 @@
 			</view>
 
 			<!-- 动态图片 -->
-			<view v-for="(item, index) in newsItem.newsImage" :key="index">
+			<view v-for="(item, index) in newsItem.newsImage" :key="index" style="background-color: #fff;">
 				<image class="news-image" mode="widthFix" :src="item.imageUrl"></image>
 			</view>
 
@@ -120,6 +120,9 @@
 		methods: {
 			//跳转到用户详情页,带入要查询的userId
 			goUserInfo() {
+				
+				//判断是不是自己的id,是就跳转到个人信息页TODO
+				
 				//console.log(this.newsItem.userInfo.id)
 				uni.navigateTo({
 					url: "/pages/userInfo/userInfo?userId=" + this.newsItem.userInfo.id
@@ -324,6 +327,7 @@
 	.icon-box {
 		width: 750upx;
 		height: 100upx;
+		padding: 10upx 0 10upx 0;
 		background-color: #fff;
 		display: flex;
 		box-sizing: border-box;

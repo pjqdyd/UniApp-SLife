@@ -41,7 +41,7 @@
 		padding-right: 30upx;
 
 		.bubble {
-			padding: 20upx;
+			padding: 22upx;
 			background: #d5ebff;
 			border-radius: 15upx;
 			position: relative;
@@ -49,7 +49,7 @@
 			&::before {
 				position: absolute;
 				right: -20upx;
-				top: 10upx;
+				top: 0upx;
 				content: "";
 				width: 0;
 				height: 0;

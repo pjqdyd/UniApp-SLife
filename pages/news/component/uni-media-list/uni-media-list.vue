@@ -239,7 +239,7 @@
 	.text {
 		box-sizing: border-box;
 		overflow: hidden;
-		font-size: 28upx;
+		font-size: 30upx;
 		color: #555555;
 	}
 

@@ -13,12 +13,16 @@
 				<view class="list"></view>
 			</block>
 
-			<!-- 好友消息, name值用于标识这个是好友消息 -->
-			<uni-collapse-item title="好友消息" open="true" icon="../../static/chat/firend.png" name="5">
+			<!-- 好友消息 -->
+			<uni-collapse-item title="好友消息" open="true" icon="../../static/chat/firend.png">
 				<!-- 好友消息列表 -->
-				<view class="content" @click="handCilck">
-					<uni-swipe-action :options="options" :messagesList="messageList"></uni-swipe-action>
+				<view class="content">
+					<uni-swipe-action :options="options" :messagesList="messageList" @clickMessage="handMessageClick"></uni-swipe-action>
 				</view>
+				<!-- 如果messageList.length = 0, 就暂无信息-->
+				<view v-if="messageList.length == 0">
+					<cmd-result-page text="暂无数据"></cmd-result-page>
+				</view>	
 			</uni-collapse-item>
 
 		</uni-collapse>
@@ -44,8 +48,7 @@
 		},
 		data() {
 			return {
-				focus: false,
-				isShowView: true,
+				
 				msgCategory: [{
 					icon: "../../static/chat/follow.png",
 					name: "我的关注",
@@ -160,7 +163,9 @@
 				]
 			};
 		},
-		onLoad() {},
+		onLoad(params) {
+			
+		},
 		created() {},
 		onShow() {
 			//隐藏红点
@@ -169,10 +174,19 @@
 			})
 		},
 		methods: {
-			handCilck() {
-				console.log("点击")
+			//点击了单条消息,index为消息对象的下标
+			handMessageClick(index){
+				var msgObj = this.messageList[index]; //获取点击的消息对象
+				
+				console.log('进入到聊天界面' + msgObj.id)
+				uni.navigateTo({
+					url: "/pages/chatScreen/chatScreen?id=" + msgObj.id + "&faceUrl=" + msgObj.faceUrl + "&name=" + msgObj.title
+				})
+				
+				msgObj.count = 0; //设置未读消息数为0
 			}
 		},
+		
 		//监听导航栏的"<"的点击事件
 		onNavigationBarButtonTap(e) {
 			uni.switchTab({

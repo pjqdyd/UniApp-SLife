@@ -149,10 +149,10 @@
 				"navigationBarBackgroundColor": "#ea5455",
 				"navigationBarTextStyle": "white",
 				"app-plus": {
+					"animationType": "slide-in-bottom",
 					"titleNView": {
 						"buttons": []
-					},
-					"scrollIndicator": "none"
+					}
 				}
 			}
 		},{

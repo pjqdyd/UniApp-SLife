@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<!-- 用户信息卡 -->
-		<user-crad :userInfo="userInfo"></user-crad>
+		<user-crad :userInfo="userInfo" :isMe="false"></user-crad>
 
 		<!-- 用户的数据 -->
 		<view class="user-data-bar">

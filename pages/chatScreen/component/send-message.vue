@@ -1,16 +1,40 @@
 <template>
 	<view class="send-message">
-		<view class="input-wrapper"><input type="text" cursor-spacing ="0" adjust-position="true"></view>
-		<view class="iconfont send">&#xe634; 发送</view>
+		<view class="input-wrapper"><input type="text" cursor-spacing ="0" :value="text" @input="onInput"></view>
+		<view class="iconfont send" @click="sendMessage">&#xe634; 发送</view>
 	</view>
 </template>
 
 <script>
 	export default {
 		name: 'send-message',
-		props: {
-			data: String,//聊天内容
-			time: String,//提取名称的一个字
+		data(){
+			return{
+				//输入的消息对象
+				messageItem: {
+					type: 1,
+					time: "",
+					message: ""
+				},
+				text: "" //输入的内容
+			}
+		},
+		methods:{
+			//正在输入
+			onInput(e){		
+				this.text = e.detail.value;
+			},
+			//点击了发送
+			sendMessage(){	
+				var date = new Date();
+				var m = date.getMinutes() < 10? ("0" + date.getMinutes()): date.getMinutes();
+				 this.messageItem.time =  date.getHours() + ":" + m; //设置当前时间
+				 this.messageItem.message = this.text; //设置消息
+				 
+				 this.$emit("messageSend", this.messageItem) //向外触发发送函数,带上输入的消息对象
+				 
+				 this.text = ''; //清空输入框
+			}
 		}
 	}
 </script>

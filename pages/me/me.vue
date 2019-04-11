@@ -1,7 +1,7 @@
 <template>
 	<view class="text-font">
 		<!-- 用户信息卡 -->
-		<user-crad :userInfo="userInfo"></user-crad>
+		<user-crad :userInfo="userInfo" :isMe="true"></user-crad>
 
 		<!-- 用户的数据 -->
 		<view class="user-data-bar">
@@ -39,8 +39,6 @@
 	</view>
 </template>
 <script>
-	import utils from '../../common/utils.js'; //一些工具方法
-
 	import userCrad from "./component/user-info/user-crad.vue"; //用户信息卡
 
 	export default {
