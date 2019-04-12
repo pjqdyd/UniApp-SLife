@@ -86,7 +86,7 @@
 					success: (res) => {
 						console.log("请求/userinfo?userId=" + userId + "数据成功成功..")
 						//console.log(res.data.userInfo)
-						this.userInfo = res.data.userInfo
+						this.userInfo = res.data.userInfo;
 					}
 				});
 			},
@@ -111,7 +111,6 @@
 					return;
 				}
 			},
-
 			//点击了退出登录
 			loginOut() {
 				console.log("退出登录")

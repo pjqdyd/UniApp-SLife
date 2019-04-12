@@ -20,12 +20,29 @@
 				</view>
 			</view>
 			<view class="list">
-				<view class="li" v-for="(item, index) in option" :key="index" @click="clickOption(index)">
-					<image class="icon" :src="item.icon"></image>
-					<view class="text">{{item.name}}</view>
+				<view class="li noborder" @click="goNewsList(1)">
+					<image class="icon" src="../../static/user/option/like.png"></image>
+					<view class="text">点赞的动态</view>
+					<text class="iconfont">&#xe6ee;</text>
+				</view>
+				<!-- 折叠面板 -->
+				<uni-collapse>
+					<uni-collapse-item title="Ta的粉丝" open="false" @onIsOpen="handFansOpen" icon="../../static/chat/fans.png">
+						<cmd-result-page text="暂无数据"></cmd-result-page>
+					</uni-collapse-item>
+
+					<uni-collapse-item title="Ta的关注" open="false" @onIsOpen="handFollowOpen" icon="../../static/chat/follow.png">
+						<cmd-result-page text="暂无数据"></cmd-result-page>
+					</uni-collapse-item>
+				</uni-collapse>
+
+				<view class="li noborder" @click="aboutUs">
+					<image class="icon" src="../../static/user/option/issue.png"></image>
+					<view class="text">意见反馈</view>
 					<text class="iconfont">&#xe6ee;</text>
 				</view>
 			</view>
+
 			<view class="list">
 				<view class="li noborder" @click="aboutUs">
 					<image class="icon" src="../../static/user/option/about.png"></image>
@@ -39,31 +56,25 @@
 	</view>
 </template>
 <script>
-	import utils from '../../common/utils.js'; //一些工具方法
-
 	import userCrad from "../me/component/user-info/user-crad.vue"; //用户信息卡
+
+	import uniCollapse from '@/components/collapse/uni-collapse.vue'; //折叠面板组件
+	import uniCollapseItem from '@/components/collapse/uni-collapse-item.vue';
+
+	import cmdResultPage from "@/components/cmd-result-page/cmd-result-page.vue"; //页面结果组件
+
 
 	export default {
 		components: {
-			userCrad
+			userCrad,
+			uniCollapse,
+			uniCollapseItem,
+			cmdResultPage
 		},
 		data() {
 			return {
 				userInfo: {},
-				userId: '',
-				option: [{
-					icon: "../../static/user/option/like.png",
-					name: "点赞的动态",
-				},{
-					icon: "../../static/chat/fans.png",
-					name: "Ta的粉丝",
-				},{
-					icon: "../../static/chat/follow.png",
-					name: "Ta的关注",
-				}, {
-					icon: "../../static/user/option/issue.png",
-					name: "意见反馈",
-				}]
+				userId: ''
 			}
 		},
 		onLoad(params) {
@@ -92,27 +103,23 @@
 				});
 			},
 			//跳转到动态, type标识是发布的动态还是点赞的动态
-			goNewsList(type){
+			goNewsList(type) {
 				uni.navigateTo({
 					url: "/pages/newsList/newsList?userId=" + this.userId + "&type=" + type
 				})
 			},
-			//点击了选项,index为选项在option[]的位置
-			clickOption(index) {
-				if(index == 0){ //点击了点赞的店铺
-					this.goNewsList(1);
-				}else if (index == 1) {
-					console.log("点击了Ta的粉丝")
-				} else {
-					return;
-				}
+			//点击展开了用户的粉丝
+			handFansOpen(isopen) {
+				console.log( isopen ?"展开了用户的粉丝":"收起了用户的粉丝")
 			},
-
+			//点击展开了用户的关注
+			handFollowOpen(isopen) {
+				console.log( isopen ?"展开了用户的关注":"收起了用户的关注")
+			},
 			//关于我们
 			aboutUs() {
 
 			}
-
 		},
 		onHide() {
 			console.log("userInfo页面隐藏")
@@ -188,6 +195,7 @@
 				flex-shrink: 0;
 				width: 50upx;
 				height: 50upx;
+				margin-right: 25upx;
 
 				image {
 					width: 50upx;
@@ -196,8 +204,8 @@
 			}
 
 			.text {
-				padding-left: 20upx;
 				width: 100%;
+				font-size: 32upx;
 				color: #666;
 			}
 		}
