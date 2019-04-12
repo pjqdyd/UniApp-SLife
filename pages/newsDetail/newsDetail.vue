@@ -36,7 +36,7 @@
 			</view>
 
 			<!-- 底部的点赞,举报图标和时间 -->
-			<view class="icon-box">
+			<view class="icon-box" id="comm">
 				<image class="icon" @click.stop="clickLike" :src="isLike ? '../../static/news/click/like1.png': '../../static/news/like.png' ">
 				</image>
 				<text class="count">{{likeCount}}</text>
@@ -46,7 +46,7 @@
 			</view>
 
 			<!-- 评论区块 -->
-			<view class="comment-box" id="comm">
+			<view class="comment-box">
 				<news-comment ref="comment" @inputFocus="handInputFoucs"></news-comment>
 			</view>
 
@@ -96,10 +96,10 @@
 			
 			//根据params.flag判断是否是从评论按钮点击进入的,如果是,页面就滑动到评论位置
 			if(params.flag == 1){
-				//获取评论节点的信息, 设置页面滚动到评论的位置
+				//获取元素节点的信息, 设置页面滚动到评论的位置
 				setTimeout(() => {
 					this.getElemCommAndSetTop();
-				}, 100)
+				}, 400)
 			}
 		},
 		onShow() {},
@@ -164,12 +164,12 @@
 			},
 			//获取节点的信息,设置页面的滚动位置
 			getElemCommAndSetTop() {
-				//获取评论元素节点的信息, 并设置页面滚动到评论元素的位置
+				//获取id=comm元素节点的信息, 并设置页面滚动到评论元素的位置
 				var query = uni.createSelectorQuery();
 				query.select("#comm").boundingClientRect(function(res) {
 					uni.pageScrollTo({
-						scrollTop: res.top,
-						duration: 800
+						scrollTop: res.top - 320,
+						duration: 1000
 					});
 				}).exec();
 			}

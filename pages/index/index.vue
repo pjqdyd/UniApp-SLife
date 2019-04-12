@@ -321,6 +321,13 @@
 			} else {
 				return;
 			}
+		},
+		//监听导航栏的搜索框的输入确认事件
+		onNavigationBarSearchInputConfirmed(res) {
+			//跳转到分类店铺页,跟上搜索文本的参数res.text
+			uni.navigateTo({
+				url: "/pages/shopCategory/shopCategory?categoryName=" + res.text
+			})
 		}
 	}
 </script>

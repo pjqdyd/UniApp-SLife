@@ -117,7 +117,7 @@
 				}
 			}
 		},{
-			"path": "pages/create/create",
+			"path": "pages/createNews/createNews",
 			"style": {
 				"navigationBarTitleText": "发布动态",
 				"navigationBarBackgroundColor": "#ea5455",
@@ -136,6 +136,7 @@
 				"navigationBarBackgroundColor": "#ea5455",
 				"navigationBarTextStyle": "white",
 				"app-plus": {
+					"animationType": "slide-in-bottom",
 					"titleNView": {
 						"buttons": []
 					},
@@ -163,6 +164,7 @@
 				"navigationBarTextStyle": "white",
 				"enablePullDownRefresh": true,
 				"app-plus": {
+					"animationType": "pop-in",
 					"titleNView": {
 						"buttons": []
 					},

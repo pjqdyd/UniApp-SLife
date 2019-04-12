@@ -1,5 +1,6 @@
 <template>
 	<view class="page">
+		<image class="top-banner" mode="aspectFit" src="../../static/local/applyShop.png"></image>
 
 		<!-- 图片选择 -->
 		<view class='shop-title'>
@@ -32,8 +33,8 @@
 			<text>店铺名称</text>
 		</view>
 		<view class="shop-body">
-			<textarea placeholder="请输入店铺名称..." v-model="sendDate.content" maxlength="7" class="shop-textare" />
-		</view>
+			<textarea placeholder="请输入店铺名称..." v-model="sendDate.shopName" maxlength="7" class="shop-textare" />
+			</view>
 		
 		<!-- 店铺分类选择 -->
 		<view class='shop-body shop-cate' @tap="chooseMsg">
@@ -81,7 +82,7 @@
 	   
 	   <!-- 店铺的主营信息 -->
 	   <view class="shop-sell-info">
-		   <textarea placeholder="请输入店铺简介,主营范围等信息..." v-model="sendDate.shopSellInfo" maxlength="100" class="shop-sell-textarea" />
+		   <textarea placeholder="请输入店铺简介,主营范围等信息..." v-model="sendDate.mainInfo" maxlength="100" class="shop-sell-textarea" />
 	   </view>
 	   
 	   <!-- 入住店铺费用 -->
@@ -128,18 +129,22 @@
 				
                 imageList: [],
                 sendDate: {
-					//publisherId: "",        //发布者id
-					content: "",			//店铺的名称
+					applyerId: "",          //申请者id
+					shopName: "",			//店铺的名称
 					shopLatitude: "",		//店铺的纬度
 					shopLongitude: "",		//店铺的经度
-					shopCategory: "生活街", //店铺分类,默认是生活街
-					shopSellInfo: "",       //店铺的主营介绍信息
-					shopAddr: ""        //店铺的位置
+					shopCategory: "生活街",  //店铺分类,默认是生活街
+					mainInfo: "",           //店铺的主营介绍信息
+					shopAddr: "",           //店铺的位置
+					openTime: "",			//营业时间 
+					supportServer: []		//支持的服务数组
                 }
             }
         },
 		//params为上个页面跳转过来的参数
-        onLoad(params) {		
+        onLoad(params) {	
+			//TODO读取VUE根实例属性用户信息并设置申请者id
+			this.sendDate.applyerId = "0001";
         },
 		onShow() {
 		},
@@ -161,6 +166,19 @@
             },
 			chooseLocaltion(){//选择位置
 				console.log("选择位置")
+				//手动选择位置信息,并设置店铺的位置信息(手动选择的位置比较准确)
+				var that = this;
+				uni.chooseLocation({
+					success: function(res) {
+						console.log('位置名称：' + res.name);
+						console.log('详细地址：' + res.address);
+						console.log('纬度：' + res.latitude);
+						console.log('经度：' + res.longitude);
+						that.sendDate.shopLatitude = res.latitude;
+						that.sendDate.shopLongitude = res.longitude;
+						that.sendDate.shopAddr = res.address;
+					}
+				});    
 			},
             chooseImg() { //选择图片
                 uni.chooseImage({
@@ -177,54 +195,73 @@
                     urls: this.imageList
                 });
             },
-			//获取多选框数据
+			//获取多选框数据,设置支持的服务
 			handCheckBox(e){
 				//e.detail.value为选中的数组
 				console.log(e.detail.value)
+				this.sendDate.supportServer = e.detail.value;
 			},
-			//选择了时间
+			//选择了时间,设置营业时间
 			bindTimeChange(e) {
 				if(e.target.id == 1){
 					this.time1 = e.detail.value
+					this.sendDate.openTime = this.time1 + "-" + this.time2;
 				}else if(e.target.id == 2){
 					this.time2 = e.detail.value
+					this.sendDate.openTime = this.time1 + "-" + this.time2;
 				}else{
 					return;
 				}
 			},
             send() { //发送反馈
                 console.log(JSON.stringify(this.sendDate));
+				
+				//验证信息完整性
+				var sendDate = this.sendDate;
+				if(sendDate.applyerId == '' || sendDate.shopName == '' ||
+				   sendDate.mainInfo == '' || sendDate.shopAddr == '' ||
+				   sendDate.supportServer.length == 0 || this.imageList.length == 0){
+					   
+					   uni.showToast({
+					   	title: "您还有信息未填写完整哦",
+						icon: "none"
+					   });
+					   return;
+				   }
+				
                 let imgs = this.imageList.map((value, index) => {
                     return {
                         name: "image" + index,
                         uri: value
                     }
                 })
+				var url = this.server_Url;
                 uni.uploadFile({
-                    url: "https://service.dcloud.net.cn/new",
+                    url: url + "/applyShop",
                     files: imgs,
                     formData: this.sendDate,
                     success: (res) => {
                         if (res.statusCode === 200) {
                             uni.showToast({
-                                title: "发布成功!"
+                                title: "提交成功!"
                             });
                             this.imageList = [];
                             this.sendDate = {
-                                content: "",
-								shopLatitude: "",
-								shopLongitude: "",
-								shopCategory: "生活街", 
-								shopShopId: "",	
-								shopShopName: "",
-								shopShopAddr: "",
-								publisherId: ""
+                               applyerId: "",          
+                               shopName: "",
+                               shopLatitude: "",
+                               shopLongitude: "",
+                               shopCategory: "生活街",
+                               mainInfo: "",
+                               shopAddr: "",
+                               openTime: "",
+                               supportServer: []
                             }
                         }
                     },
                     fail: (res) => {
                         uni.showToast({
-                            title: "失败",
+                            title: "提交失败",
                             icon:"none"
                         });
                         console.log(res)
@@ -248,6 +285,10 @@
     view{
         font-size: 28upx;
     }
+	.top-banner{
+		width: 100%;
+		height: 190upx;
+	},
     .input-view {
         font-size: 28upx;
     }
