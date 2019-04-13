@@ -77,10 +77,11 @@
     /* 快应用特有相关 */
     "mp-weixin" : {
         /* 小程序特有相关 */
-        "appid" : "wxcd192b2593be1c3f",
+        "appid" : "",
         "setting" : {
             "urlCheck" : false,
-            "postcss" : true
+            "postcss" : true,
+            "es6" : true
         }
     }
 }
