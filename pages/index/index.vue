@@ -2,16 +2,22 @@
 	<view class="local-page">
 		<!-- 使用侧边栏组件 -->
 		<uni-drawer :visible="isShowDrawer" :mask="true" @close="handDrawerClose">
-			<view style="padding:30upx;">
-				<view class="uni-title">抽屉式导航</view>
+			<view style="padding:20upx;">
+				<drawer-list></drawer-list>
 			</view>
 		</uni-drawer>
 
+		<!--  #ifdef APP-PLUS || H5  -->
 		<view class="category-box"><text class="iconfont category-icon">&#xe614;</text>热门店铺
-			<!--  #ifdef MP-WEIXIN  -->
-			<text class="iconfont category-icon-wx" @click="wxChooseLocal">&#xe611;定位</text>
-			<!--  #endif -->
 		</view>
+		<!--  #endif -->
+
+		<!--  #ifdef MP-WEIXIN  -->
+		<view class="category-box" style="height: 55upx;">
+			<text class="iconfont category-icon" @click="handWxOpenDrawer" style="font-size: 34upx;">&#xe622;<text style="color: black;margin-left: 10upx;">展开</text></text>
+			<text class="iconfont category-icon-wx" @click="wxChooseLocal">&#xe611;定位</text>
+		</view>
+		<!--  #endif -->
 
 		<!-- 3d轮播图 -->
 		<local-swiper></local-swiper>
@@ -51,6 +57,8 @@
 	import amap from '../../common/amap-wx.js'; //地图工具
 
 	import uniDrawer from "./component/uni-drawer/uni-drawer.vue"; //导入侧边抽屉组件
+	import drawerList from "./component/drawer-list/drawer-list.vue"; //导入侧边栏的列表内容
+
 	import localSwiper from "./component/local-swiper.vue"; //3d轮播图组件
 	import localItem from '@/components/local/local-item.vue'; //附近商铺列表item组件
 	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"; //加载更多组件
@@ -58,6 +66,7 @@
 	export default {
 		components: {
 			uniDrawer,
+			drawerList,
 			localSwiper,
 			localItem,
 			uniLoadMore
@@ -195,11 +204,11 @@
 			},
 			//点击了icon分类
 			changeCategory(index) {
-				 let currentCateName = this.categroyList[index].cateName; //获取点击分类的名字
-				 //跳转到分类的店铺列表页
-				 uni.navigateTo({
-				 	url: "/pages/shopCategory/shopCategory?categoryName=" + currentCateName
-				 })	
+				let currentCateName = this.categroyList[index].cateName; //获取点击分类的名字
+				//跳转到分类的店铺列表页
+				uni.navigateTo({
+					url: "/pages/shopCategory/shopCategory?categoryName=" + currentCateName
+				})
 			},
 			//跳转到店铺详情页
 			goShopInfo(shopId) {
@@ -229,7 +238,7 @@
 
 						this.localList = this.localList.concat(list);
 						this.totalPage = res.data.totalPage;
-						this.total = res.data.total;			
+						this.total = res.data.total;
 					}
 				});
 			},
@@ -303,7 +312,13 @@
 						});
 					}
 				});
+			},
+			// #ifdef MP-WEIXIN
+			//在微信上点击了展开
+			handWxOpenDrawer(){
+				this.isShowDrawer = true
 			}
+			// #endif
 		},
 		//监听导航栏的"三"或"O"的点击事件(展开/关闭侧边栏)(手动定位)
 		onNavigationBarButtonTap(e) {

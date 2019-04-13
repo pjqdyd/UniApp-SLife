@@ -2,7 +2,7 @@
 	<view v-if="visibleSync" class="uni-drawer" @touchmove.stop.prevent="moveHandle" :class="{'uni-drawer--visible':showDrawer,'uni-drawer--right':rightMode}">
 		<view class="uni-drawer__mask" @tap="close"></view>
 		<view class="uni-drawer__content" @click="handClickDrawer">
-			<slot></slot>		
+			<slot></slot>
 			<text class="button" @click="close">关闭</text>
 		</view>
 	</view>
@@ -99,7 +99,7 @@
 		bottom: 0;
 		overflow: hidden;
 		visibility: hidden;
-		z-index: 10001;
+		z-index: 1001;
 		height: 100%;
 
 		&.uni-drawer--right {
@@ -149,11 +149,11 @@
 	}
 	
 	.button{
-		width: 300upx;
-		height: 70upx;
+		width: 280upx;
+		height: 60upx;
 		text-align: center;
 		font-size: 35upx;
-		line-height: 70upx;
+		line-height: 60upx;
 		color: #FFFFFF;
 		background-color: #EA5455;
 		margin: 0 70upx;

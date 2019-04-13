@@ -26,7 +26,7 @@
 							"fontSize": "25px",
 							"float": "left"
 						}]
-					},
+					},		
 					"scrollIndicator": "none"
 				}
 			}
@@ -112,6 +112,18 @@
 				"app-plus": {
 					"titleNView": {
 						"buttons": []
+					},
+					"scrollIndicator": "none"
+				}
+			}
+		},{
+			"path": "pages/changeUserInfo/changeUserInfo",
+			"style": {
+				"navigationBarTitleText": "修改个人信息",
+				"navigationBarBackgroundColor": "#ea5455",
+				"navigationBarTextStyle": "white",
+				"app-plus": {
+					"titleNView": {
 					},
 					"scrollIndicator": "none"
 				}

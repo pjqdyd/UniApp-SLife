@@ -206,7 +206,8 @@
 									newsShopName: "",
 									newsShopAddr: "",
 									publisherId: ""
-					            }
+					            };
+								//TODO返回跳转到动态页
 					        }
 					    },
 					    fail: (res) => {

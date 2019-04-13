@@ -146,7 +146,7 @@
 		//监听导航栏的"<"的点击事件
 		onNavigationBarButtonTap(e) {
 			uni.switchTab({
-				url: '/pages/news/news'
+				url: '/pages/index/index'
 			});
 		},
 	}
