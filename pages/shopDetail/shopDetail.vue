@@ -184,6 +184,7 @@
 		height: 120upx;
 		box-sizing: border-box;
 		border-bottom: 2upx solid #eeeeee;
+		background-color: #fff;
 
 		.shop-name {
 			height: 60upx;
@@ -224,7 +225,7 @@
 		padding: 10upx 25upx 10upx 25upx;
 		box-sizing: border-box;
 		justify-content: space-between;
-
+		background-color: #fff;
 		.addr-text {
 			line-height: 80upx;
 			font-size: 35upx;
@@ -257,7 +258,7 @@
 		display: flex;
 		color: #707070;
 		justify-content: space-between;
-
+		background-color: #fff;
 		.shoper-face {
 			width: 110upx;
 			height: 110upx;
@@ -305,6 +306,7 @@
 		font-size: 32upx;
 		color: #707070;
 		border-bottom: 2upx solid #eeeeee;
+		background-color: #fff;
 	}
 
 	.shop-info {
@@ -313,7 +315,7 @@
 		box-sizing: border-box;
 		padding: 0 25upx 0 25upx;
 		color: #707070;
-
+		background-color: #fff;
 		.shop-icon {
 			width: 100%;
 			height: 60upx;

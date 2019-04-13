@@ -5,10 +5,9 @@
 		<!-- <top-bar topTitle="登录"></top-bar> -->
 		<view class="login-page">
 			<!-- 登录的图标区块 -->
-			<view class="icon-box">
+			<view class="icon-login-box">
 				<image class="slife-icon" src="../../static/login/Slife-icon.png"></image>
 				<view class="slife-text">快来登录你的生活小助手</view>
-				<view></view>
 			</view>
 
 
@@ -32,7 +31,6 @@
 	export default {
 		onLoad() {
 			console.log("进入login页面")
-			this.getSystemInfo();
 		},
 		data() {
 			return {
@@ -48,7 +46,7 @@
 				uni.login({
 					provider: 'qq',
 					success: function(loginRes) {
-						console.log(JSON.stringify(loginRes.authResult));
+						console.log(loginRes);
 						// 获取用户信息
 						uni.getUserInfo({
 							provider: 'qq',
@@ -72,7 +70,7 @@
 				uni.login({
 					provider: 'weixin',
 					success: function(loginRes) {
-						console.log(JSON.stringify(loginRes.authResult));
+						console.log(loginRes);
 						// 获取用户信息
 						uni.getUserInfo({
 							provider: 'weixin',
@@ -86,24 +84,14 @@
 								uni.reLaunch({
 									url: '../index/index'
 								});
+							},
+							fail(res) {
+								console.log(res)
 							}
 						});
 					}
 				});
-			},
-			getSystemInfo: function() {
-				var that = this;
-				//获取缓存中设备的基本信息
-				uni.getStorage({
-					key: "SystemInfo",
-					success(res) {
-						console.log(res)
-						console.log(res.data)
-						//设置页面的宽度
-						//that.$data.screenWidth = res.data.screenWidth,
-					}
-				})
-			},
+			}
 		},
 		mounted() {
 
@@ -116,10 +104,11 @@
 
 	.login-page {
 		position: fixed;
+		height: 100%;
 		width: 750upx;
 	}
 
-	.icon-box {
+	.icon-login-box {
 		width: 100%;
 		padding: 20% 0 5% 0;
 		background-color: whitesmoke;
