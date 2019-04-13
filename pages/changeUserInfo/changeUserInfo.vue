@@ -12,7 +12,7 @@
 
 			<view>
 				<view class="name">新的昵称:</view>
-				<input class="input-name" v-model="sendData.nickname" placeholder="请填写您的昵称" />
+				<input class="input-name" v-model="sendData.nickname" maxlength="7" placeholder="请填写您的昵称" />
 			</view>
 			<view>
 				<view class="name">选择性别:</view>
