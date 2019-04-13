@@ -123,6 +123,8 @@
 		font-size: 35upx;
 		font-weight: 700;
 		color: #707070;
+		background-color: #fff;
+		border-top: 1upx solid #eeeeee;
 	}
 
 	.comment-num {

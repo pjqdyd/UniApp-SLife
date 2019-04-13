@@ -266,6 +266,7 @@
 		box-sizing: border-box;
 		display: flex;
 		justify-content: space-between;
+		background-color: #fff;
 	}
 
 	.shop-icon {

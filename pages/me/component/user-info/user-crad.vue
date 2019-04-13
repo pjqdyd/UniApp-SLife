@@ -13,15 +13,15 @@
 
 					<view class="box-bd">
 						<view class="item" @click="goChat">
-							<image class="icon" src="../../static/user/chat.png"></image>
+							<image class="icon-me" src="../../static/user/chat.png"></image>
 							<view class="text">{{isMe ? "进入聊天" : "发起聊天"}}</view>
 						</view>
 						<view class="item" @click="clickFollow">
-							<image class="icon" src="../../static/user/follow.png"></image>
+							<image class="icon-me" src="../../static/user/follow.png"></image>
 							<view class="text">{{isMe ? "我的关注" : (userInfo.isFollow ? "取消关注" : "关注" + isIdStatus)}}</view>
 						</view>
 						<view class="item" @click="clickShopInfo" v-if="userInfo.idStatus == 1">
-							<image class="icon" src="../../static/user/shop.png"></image>
+							<image class="icon-me" src="../../static/user/shop.png"></image>
 							<view class="text">访问店铺</view>
 						</view>
 					</view>
@@ -204,12 +204,9 @@
 					border: none;
 				}
 
-				.icon {
+				.icon-me {
 					width: 50upx;
 					height: 50upx;
-					/*  #ifdef  APP-PLUS  */
-					margin-left: 10upx;
-					/* #endif */
 				}
 
 				.text {

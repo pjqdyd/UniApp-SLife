@@ -5,7 +5,7 @@
 				<view class="upload-face">上传新头像:</view>
 				<view class="face-box">
 					<image v-if="tempFilePath == ''" class="uploader-input" src="../../static/user/upload.png" @tap="chooseImg"></image>
-					<image v-if="tempFilePath != ''" class="uploader-input-face" :src="tempFilePath" @tap="chooseImg"></image>
+					<image v-if="tempFilePath != ''" class="uploader-input-face" mode="aspectFill" :src="tempFilePath" @tap="chooseImg"></image>
 				</view>
 
 			</view>
