@@ -48,15 +48,15 @@
 
 			<!-- 底部的点赞,评论,举报图标和时间 -->
 			<div class="icon-box">
-				<image class="icon" @click.stop="clickLike" :src="isLike? '../../static/news/click/like1.png': '../../static/news/like.png' ">
+				<image class="icon-bottom" @click.stop="clickLike" :src="isLike? '../../static/news/click/like1.png': '../../static/news/like.png' ">
 				</image>
 				<text class="count">{{likeCount}}</text>
 				
-				<image class="icon" @click.stop="clickComment" src="../../static/news/comment.png">
+				<image class="icon-bottom" @click.stop="clickComment" src="../../static/news/comment.png">
 				</image>
 				<text class="count">{{commentCount}}</text>
 
-				<image class="icon" @click.stop="clickMore" src="../../static/news/more.png"></image>
+				<image class="icon-bottom" @click.stop="clickMore" src="../../static/news/more.png"></image>
 				<text class="date">{{itemData.dateTime}}</text>
 			</div>
 
@@ -253,7 +253,7 @@
 		flex-direction: row;
 	}
 
-	.icon {
+	.icon-bottom {
 		width: 80upx;
 		height: 80upx;
 		border-width: 10upx;

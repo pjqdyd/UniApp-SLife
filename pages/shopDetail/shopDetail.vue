@@ -19,7 +19,7 @@
 		</view>
 
 		<!-- 位置信息 -->
-		<view class="local-info-box">
+		<view class="local-info-box" @click="showShopLocaltion">
 			<text class="iconfont addr-text">&#xe611; {{shopInfo.localAddr}}</text>
 			<text class="iconfont next-icon">&#xe618;</text>
 		</view>
@@ -114,6 +114,11 @@
 			//跳转到与店主聊天的界面
 			goChat() {
 				console.log("跳转到聊天界面")
+				let user = this.shopInfo.userInfo;
+				console.log('创建聊天界面' + user.userId)
+				uni.navigateTo({
+					url: "/pages/chatScreen/chatScreen?id=" + user.userId + "&faceUrl=" + user.faceImage + "&name=" + user.nickname
+				})
 			},
 			//跳转到动态, type标识是发布的动态还是点赞的动态
 			goNewsList(type) {
@@ -130,12 +135,30 @@
 					href: "http://uniapp.dcloud.io/", //点击跳转链接
 					title: "生活街分享",
 					summary: "我在生活街APP发现了优质店铺,赶紧跟我一起来体验吧！",
-					imageUrl:this.shopInfo.shopImageList[0].shopImage, //图片
+					imageUrl: this.shopInfo.shopImageList[0].shopImage, //图片
 					success: function(res) {
 						console.log("success:" + JSON.stringify(res));
 					},
 					fail: function(err) {
 						console.log("fail:" + JSON.stringify(err));
+					}
+				});
+			},
+			//显示店铺的位置信息
+			showShopLocaltion() {
+				uni.openLocation({
+					latitude: this.shopInfo.latitude,
+					longitude: this.shopInfo.longitude,
+					name: this.shopInfo.shopName,
+					address: this.shopInfo.localAddr,
+					success: function() {
+						console.log('success');
+					},
+					fail() {
+						uni.showToast({
+							title: "获取店铺位置失败",
+							icon: "error"
+						})
 					}
 				});
 			}

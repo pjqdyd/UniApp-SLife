@@ -1,4 +1,4 @@
-﻿<template>
+<template>
 	<view class="uni-collapse">
 		<slot></slot>
 	</view>
@@ -74,7 +74,7 @@
 			content: '';
 			-webkit-transform: scaleY(0.5);
 			transform: scaleY(0.5);
-			background-color: $uni-border-color;
+			background-color: #eeeeee;
 		}
 
 		&:before {
@@ -87,7 +87,7 @@
 			content: '';
 			-webkit-transform: scaleY(0.5);
 			transform: scaleY(0.5);
-			background-color: $uni-border-color;
+			background-color: #eeeeee;
 		}
 	}
 </style>

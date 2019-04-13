@@ -1,5 +1,7 @@
 <template>
 	<view class="page">
+		<image class="top-banner" mode="aspectFit" src="../../static/news/createNews.png"></image>
+
 		<view class='news-title'>
 			<text>动态描述</text>
 			<text class="news-quick" @tap="chooseMsg">{{sendDate.newsCategory == '生活街' ? '请选择动态分类' : sendDate.newsCategory}}</text>
@@ -87,7 +89,23 @@
             }
         },
 		//params为上个页面跳转过来的参数
-        onLoad(params) {		
+        onLoad(params) {
+			var that = this;
+			
+			//TODO读取VUE根实例属性用户信息并设置发布者id
+			
+			//读取并设置位置
+			uni.getStorage({
+				key: "localInfo",
+				success(res) {
+					var localInfo = res.data;
+					that.sendDate.newsLatitude = localInfo.latitude;
+					that.sendDate.newsLongitude = localInfo.longitude;
+				},
+				fail() {
+					console.log("未获取到位置信息")
+				}
+			})
         },
 		onShow() {
 			var that = this;
@@ -110,7 +128,6 @@
 		created() {	    
 		},
 		mounted() {
-			console.log(this.chooseShop)
 		},
         methods: {
 			handShopTap(){ //商铺盒子的点击事件
@@ -150,45 +167,58 @@
                     urls: this.imageList
                 });
             },
-            send() { //发送反馈
+            send() { //发布
                 console.log(JSON.stringify(this.sendDate));
-                let imgs = this.imageList.map((value, index) => {
-                    return {
-                        name: "image" + index,
-                        uri: value
-                    }
-                })
-                uni.uploadFile({
-                    url: "https://service.dcloud.net.cn/new",
-                    files: imgs,
-                    formData: this.sendDate,
-                    success: (res) => {
-                        if (res.statusCode === 200) {
-                            uni.showToast({
-                                title: "发布成功!"
-                            });
-                            this.imageList = [];
-                            this.sendDate = {
-                                score: 0,
-                                content: "",
-								newsLatitude: "",
-								newsLongitude: "",
-								newsCategory: "生活街", 
-								newsShopId: "",	
-								newsShopName: "",
-								newsShopAddr: "",
-								publisherId: ""
-                            }
-                        }
-                    },
-                    fail: (res) => {
-                        uni.showToast({
-                            title: "失败",
-                            icon:"none"
-                        });
-                        console.log(res)
-                    }
-                });
+				
+				//验证信息是否完整
+				var sendData = this.sendDate;
+				if(sendData.publisherId == '' || sendData.content == '' || this.imageList.length == 0){
+					uni.showToast({
+						title: "您还有动态信息未写哦",
+						icon: "none"
+					});
+					return;
+				}else{
+					let imgs = this.imageList.map((value, index) => {
+					    return {
+					        name: "image" + index,
+					        uri: value
+					    }
+					})
+					var url = this.server_Url;
+					uni.uploadFile({
+					    url: url + "/createNews",
+					    files: imgs,
+					    formData: this.sendDate,
+					    success: (res) => {
+					        if (res.statusCode === 200) {
+					            uni.showToast({
+					                title: "发布成功!"
+					            });
+					            this.imageList = [];
+					            this.sendDate = {
+					                score: 0,
+					                content: "",
+									newsLatitude: "",
+									newsLongitude: "",
+									newsCategory: "生活街", 
+									newsShopId: "",	
+									newsShopName: "",
+									newsShopAddr: "",
+									publisherId: ""
+					            };
+								//TODO返回跳转到动态页
+					        }
+					    },
+					    fail: (res) => {
+					        uni.showToast({
+					            title: "发布失败",
+					            icon:"none"
+					        });
+					        console.log(res)
+					    }
+					});
+				}           
             }
         }
     }
@@ -207,6 +237,10 @@
     view{
         font-size: 28upx;
     }
+	.top-banner{
+		width: 100%;
+		height: 190upx;
+	},
     .input-view {
         font-size: 28upx;
     }

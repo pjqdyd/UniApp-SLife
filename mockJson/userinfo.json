@@ -7,6 +7,7 @@
     "fans": 100,
     "createCounts": 110,
     "likeCounts": 120,
-    "faceImage": "https://upload-images.jianshu.io/upload_images/14511997-f98df143a7bb5a83.png"
+    "faceImage": "https://upload-images.jianshu.io/upload_images/14511997-f98df143a7bb5a83.png",
+		"isFollow": true
   }
 }

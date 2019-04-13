@@ -3,7 +3,6 @@
 
 		<!-- 自定义的顶部栏组件 已弃用-->
 		<!-- <top-bar topTitle="登录"></top-bar> -->
-
 		<view class="login-page">
 			<!-- 登录的图标区块 -->
 			<view class="icon-box">
@@ -30,7 +29,6 @@
 <script>
 	//导入使用顶部栏组件
 	//import TopBar from '../../components/topBar/topBar.vue'
-
 	export default {
 		onLoad() {
 			console.log("进入login页面")
@@ -56,10 +54,13 @@
 							provider: 'qq',
 							success: function(infoRes) {
 								console.log('用户昵称为：' + infoRes.userInfo.nickName);
-
+								uni.showToast({
+									title: "登录成功",
+									icon: "success"
+								})
 								//TODO 保存用户信息	
 								uni.reLaunch({
-									url: '../local/local'
+									url: '../index/index'
 								});
 							}
 						});
@@ -77,10 +78,13 @@
 							provider: 'weixin',
 							success: function(infoRes) {
 								console.log('用户昵称为：' + infoRes.userInfo.nickName);
-
+								uni.showToast({
+									title: "登录成功",
+									icon: "success"
+								})
 								//TODO 保存用户信息								
 								uni.reLaunch({
-									url: '../local/local'
+									url: '../index/index'
 								});
 							}
 						});

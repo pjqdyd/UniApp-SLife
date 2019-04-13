@@ -186,7 +186,7 @@
 			//点击了发布+按钮
 			handCreateCilck() {
 				uni.navigateTo({
-					url: '../create/create'
+					url: '../createNews/createNews'
 				});
 			},
 			goDetail(e,flag) {

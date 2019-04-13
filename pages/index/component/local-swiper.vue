@@ -19,9 +19,9 @@
 			return {
 				currentIndex: 0,
 				imgList:[
-				'https://upload-images.jianshu.io/upload_images/14511997-6b7bdd51ef601f2f.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240',
-				'https://upload-images.jianshu.io/upload_images/14511997-161603db93a6d5c4.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240',
-				'https://upload-images.jianshu.io/upload_images/14511997-a93407f6cf335716.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240'
+				'https://upload-images.jianshu.io/upload_images/14511997-6b7bdd51ef601f2f.jpg',
+				'https://upload-images.jianshu.io/upload_images/14511997-161603db93a6d5c4.jpg',
+				'https://upload-images.jianshu.io/upload_images/14511997-a93407f6cf335716.jpg'
 				]
 			}
 		},

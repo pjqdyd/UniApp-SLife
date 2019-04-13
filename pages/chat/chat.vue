@@ -164,7 +164,7 @@
 			};
 		},
 		onLoad(params) {
-			
+	
 		},
 		created() {},
 		onShow() {
@@ -205,7 +205,7 @@
 
 	.list {
 		width: 100%;
-		border-bottom: 8upx solid #f1f1f1;
+		border-bottom: 4upx solid #f1f1f1;
 		background: #fff;
 	}
 </style>

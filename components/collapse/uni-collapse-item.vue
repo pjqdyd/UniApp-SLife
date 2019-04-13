@@ -1,20 +1,17 @@
 <template>
 	<view :class="setCollapseCellClass" :hover-class="disabled === true || disabled === 'true' ? '' : 'uni-collapse-cell--hover'">
 		<view class="uni-collapse-cell__title" @click="onClick">
-			<!-- <view class="uni-collapse-cell__title-extra" v-if="thumb">
-				<image class="uni-collapse-cell__title-img" :src="thumb"></image>
-			</view> -->
 			<view class="iconfont uni-collapse-cell__title-inner">
-
 				<view class="uni-collapse-cell__title-text">
 					<image class="icon" :src="icon"></image>
 					{{title}}
 				</view>
-	
 			</view>
+			
 			<view class="uni-collapse-cell__title-arrow" :class="setActive">
 				<uni-icon color="#666" size="20" type="arrowright"></uni-icon>
 			</view>
+			
 		</view>
 		<view class="uni-collapse-cell__content" :class="animation==='outer' ? 'uni-collapse-cell--animation' : ''" :style="{height:isOpen==='true' || isOpen=== true ? height + 'px' : '0px'}">
 			<view :class="setContClass" :id="elId">
@@ -174,7 +171,7 @@
 		flex-shrink: 0;
 		width: 50upx;
 		height: 50upx;
-		margin-right: 15upx;
+		margin-right: 25upx;
 		image {
 			width: 50upx;
 			height: 50upx;
@@ -210,12 +207,12 @@
 			content: '';
 			-webkit-transform: scaleY(0.5);
 			transform: scaleY(0.5);
-			background-color: $uni-border-color;
+			background-color: #eeeeee;
 		}
 
 		&__title {
 			padding: 10upx 35upx 10upx 30upx;
-			height: 90upx;
+			height: 100upx;
 			width: 100%;
 			box-sizing: border-box;
 			flex: 1;
@@ -258,10 +255,10 @@
 			}
 
 			&-text {
-				font-size: 37upx;
+				font-size: 33upx;
 				text-overflow: ellipsis;
 				white-space: nowrap;
-				color: #666;
+				color: #707070;
 				line-height: 1.5;
 				overflow: hidden;
 				display: flex;

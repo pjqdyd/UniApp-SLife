@@ -86,7 +86,7 @@
 					success: (res) => {
 						console.log("请求/userinfo?userId=" + userId + "数据成功成功..")
 						//console.log(res.data.userInfo)
-						this.userInfo = res.data.userInfo
+						this.userInfo = res.data.userInfo;
 					}
 				});
 			},
@@ -111,7 +111,6 @@
 					return;
 				}
 			},
-
 			//点击了退出登录
 			loginOut() {
 				console.log("退出登录")
@@ -147,7 +146,7 @@
 		//监听导航栏的"<"的点击事件
 		onNavigationBarButtonTap(e) {
 			uni.switchTab({
-				url: '/pages/news/news'
+				url: '/pages/index/index'
 			});
 		},
 	}

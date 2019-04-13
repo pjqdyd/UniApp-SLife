@@ -16,9 +16,9 @@
 							<image class="icon" src="../../static/user/chat.png"></image>
 							<view class="text">{{isMe ? "进入聊天" : "发起聊天"}}</view>
 						</view>
-						<view class="item">
+						<view class="item" @click="clickFollow">
 							<image class="icon" src="../../static/user/follow.png"></image>
-							<view class="text">{{isMe ? "我的关注" : "关注"+isIdStatus}}</view>
+							<view class="text">{{isMe ? "我的关注" : (userInfo.isFollow ? "取消关注" : "关注" + isIdStatus)}}</view>
 						</view>
 						<view class="item" @click="clickShopInfo" v-if="userInfo.idStatus == 1">
 							<image class="icon" src="../../static/user/shop.png"></image>
@@ -38,10 +38,8 @@
 			userInfo: Object,
 			isMe: Boolean //是否是自己的个人信息
 		},
-		data() {
-			return {}
+		mounted() {
 		},
-		mounted() {},
 		methods: {
 			//点击了进入聊天(自己), 发起聊天(其他用户)
 			goChat() {
@@ -63,6 +61,19 @@
 				uni.navigateTo({
 					url: '/pages/shopDetail/shopDetail?shoperId=' + this.userInfo.userId
 				});
+			},
+			//在me页点击了我的关注 或在userInfo页点击了关注,取消关注用户
+			clickFollow() {
+				if(this.isMe){//如果是自己,就跳转到互动页展开我的关注
+					uni.switchTab({
+						url: "/pages/chat/chat"
+					})
+				}else{ //否则是好友, 就关注/取消关注
+					this.userInfo.isFollow = !this.userInfo.isFollow;
+					
+					//TODO请求后端,跟上userId, firentId,建立关注关系或取消关注
+				}
+				
 			}
 		},
 		computed: {
@@ -89,7 +100,7 @@
 				} else if (sex == 2) {
 					return "&#xe616;" //女
 				} else {
-					return
+					return ''
 				}
 			},
 			isFaceImage() {

@@ -178,7 +178,7 @@
 			//点击了发布按钮
 			handCreateCilck() {
 				uni.navigateTo({
-					url: '../create/create'
+					url: '../createNews/createNews'
 				});
 			},
 			//设置红点
