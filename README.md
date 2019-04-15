@@ -47,7 +47,7 @@
  
 #### 提示:
 
-> 1. 运行到真机测试HbuildeX会自动在你的手机上安装调试基座,并且微信QQ登录授权的appid/高德地图的appkey都是使用调试基座的, 所以如果需要自己配置,阅读[官方文档](https://uniapp.dcloud.io/collocation/manifest)后,可以在项目的manifest.json中有相关配置.
+> 1. 运行到真机测试HbuildeX会自动在你的手机上安装调试基座,并且微信QQ登录授权/高德地图SDK都是使用调试基座的, 所以如果需要自己配置,阅读[官方文档](https://uniapp.dcloud.io/collocation/manifest)后,可以在项目的manifest.json中有相关配置.
 > 2. 目前后端还未写,所以暂时使用了[模拟JSON数据](https://github.com/pjqdyd/UniApp-SLife/tree/master/mockJson), 因为这款App我打算是以安卓为主, 所以多是在安卓上测试开发, H5和小程序也能运行,但在安卓上有更完善的功能和体验. 
 > 3. 因为目前Master分支的项目代码只是初期完成测试的第一版本, 代码中仍有许多TODO,和需要优化的地方.   
 > 4. 当前Master分支的版本会一直作为模拟Json数据的测试版本, 后期联调后端的版本将可能push到dev分支或其他分支.   
