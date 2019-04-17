@@ -14,7 +14,6 @@
             "delay" : 0
         },
         "modules" : {
-            "OAuth" : {},
             "Maps" : {}
         },
         /* 模块配置 */
@@ -52,7 +51,8 @@
             "ios" : {},
             /* ios打包配置 */
             "sdkConfigs" : {
-                "maps" : {}
+                "maps" : {},
+                "oauth" : {}
             },
             "icons" : {
                 "ios" : {

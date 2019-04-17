@@ -46,11 +46,18 @@
 				uni.login({
 					provider: 'qq',
 					success: function(loginRes) {
-						console.log(loginRes);
+						console.log(JSON.stringify(loginRes));
+						
+						uni.showModal({
+							title: "测试",
+							content: loginRes.authResult.openid + "-" + loginRes.authResult.access_token
+						})
+						
 						// 获取用户信息
 						uni.getUserInfo({
 							provider: 'qq',
 							success: function(infoRes) {
+								console.log(JSON.stringify(infoRes));
 								console.log('用户昵称为：' + infoRes.userInfo.nickName);
 								uni.showToast({
 									title: "登录成功",
