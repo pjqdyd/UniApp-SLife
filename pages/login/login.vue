@@ -48,10 +48,7 @@
 					success: function(loginRes) {
 						console.log(JSON.stringify(loginRes));
 						
-						uni.showModal({
-							title: "测试",
-							content: loginRes.authResult.openid + "-" + loginRes.authResult.access_token
-						})
+						//TODO把loginRes.authResult.openid 和 loginRes.authResult.access_token传入后端验证用户的合法性
 						
 						// 获取用户信息
 						uni.getUserInfo({
