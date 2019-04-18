@@ -47,7 +47,7 @@
  
 #### 提示:
 
-> 1. 运行到真机测试HbuildeX会自动在你的手机上安装调试基座,并且微信QQ登录授权/高德地图SDK都是使用调试基座的, 所以如果需要自己配置第三方SDK,在编辑器中打开项目的manifest.json中可以通过可视化界面配置App SDK和App权限模块.
+> 1. 运行到真机测试HbuildeX会自动在你的手机上安装HBuilder调试基座,并且微信QQ登录授权/高德地图SDK都是使用官方调试基座的, 所以如果需要自己配置第三方SDK,在编辑器中打开项目的manifest.json通过可视化界面配置App SDK和App权限模块,之后可以通过自定义制作基座或App打包来使用自己的SDK.
 
 > 2. 目前后端还未完成,所以暂时使用了[模拟JSON数据](https://github.com/pjqdyd/UniApp-SLife/tree/master/mockJson), 因为这款App我打算是以安卓为主, 所以多是在安卓上测试开发, H5和小程序也能运行,但在安卓上有更完善的功能和体验. 
 >
