@@ -74,7 +74,7 @@
 		data() {
 			return {
 				amapPlugin: null,
-				key: '2c4146676963fc2442e9aeaf6dea6c97',
+				key: '2c4146676963fc2442e9aeaf6dea6c97', //如何获取参考http://ask.dcloud.net.cn/article/35070
 				//位置信息对象
 				localInfo: {
 					longitude: '',
