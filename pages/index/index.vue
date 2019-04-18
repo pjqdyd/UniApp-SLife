@@ -74,7 +74,7 @@
 		data() {
 			return {
 				amapPlugin: null,
-				key: '2c4146676963fc2442e9aeaf6dea6c97',
+				key: '2c4146676963fc2442e9aeaf6dea697',
 				//位置信息对象
 				localInfo: {
 					longitude: '',
