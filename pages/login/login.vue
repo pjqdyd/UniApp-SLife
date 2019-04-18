@@ -1,5 +1,8 @@
 <template>
 	<view>
+
+		<!-- 自定义的顶部栏组件 已弃用-->
+		<!-- <top-bar topTitle="登录"></top-bar> -->
 		<view class="login-page">
 			<!-- 登录的图标区块 -->
 			<view class="icon-login-box">
@@ -28,12 +31,11 @@
 			console.log("进入login页面")
 		},
 		data() {
-			return {
-			}
+			return {}
 		},
 		components: {
+			//TopBar: TopBar
 		},
-		//qq登录
 		methods: {
 			qqLogin: function() {
 				var that = this;
@@ -51,14 +53,18 @@
 							method: "POST",
 							success: (res) => {
 								var result = res.data;
-								console.log(JSON.stringify(result)) 
-								if (result.code == 200) {	
-									//保存用户信息到缓存
+								console.log(JSON.stringify(result))
+								if (result.code == 200) {
+									//保存用户信息到缓存,result.data表示是后端返回的用户信息
+									uni.setStorage({
+										key: "userInfo",
+										data: result.data
+									});
 									uni.showToast({
 										title: "登录成功",
 										icon: "success",
 										success() {
-											//跳转到主页	
+											//跳转到主页
 											setTimeout(() => {
 												uni.reLaunch({
 													url: '../index/index'
@@ -83,23 +89,22 @@
 					}
 				})
 			},
-			//微信登录
 			weixinLogin: function() {
 				console.log("微信登录")
 				uni.login({
 					provider: 'weixin',
 					success: function(loginRes) {
-						
+
 						//由于个人开发者无法申请微信appid,此方法无效
-						
+
 						// 获取用户信息
 						uni.showToast({
 							title: '微信登录暂未开放',
 							icon: "none",
 							duration: 2000
-						});		
+						});
 					},
-					fail: ()=>{
+					fail: () => {
 						uni.showToast({
 							title: '微信登录暂未开放',
 							icon: "none",
@@ -110,6 +115,7 @@
 			}
 		},
 		mounted() {
+
 		}
 	}
 </script>
