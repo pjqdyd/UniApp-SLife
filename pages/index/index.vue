@@ -140,7 +140,7 @@
 				key: this.key
 			});
 			//读取缓存中的位置信息localInfo
-			uni.getStorage({
+			uni.getStorage({ 
 				key: 'localInfo',
 				success(res) {
 					console.log("附近页的缓存的位置信息:" + JSON.stringify(res.data))

@@ -15,7 +15,11 @@
 					that.getAndSaveSysInfo(); //获取并保存设备信息
 				}
 			});
-
+		},
+		onLoad() {},
+		onShow: function() {
+			console.log('App Show')
+			var that = this;
 			//读取本地缓存的位置信息对象localInfo
 			uni.getStorage({
 				key: 'localInfo',
@@ -28,11 +32,7 @@
 					that.getAndSaveLocalInfo();
 				}
 			});
-
-		},
-		onLoad() {},
-		onShow: function() {
-			console.log('App Show')
+			
 		},
 		onHide: function() {
 			console.log('App Hide')

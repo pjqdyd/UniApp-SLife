@@ -51,7 +51,7 @@
 							method: "POST",
 							success: (res) => {
 								var result = res.data;
-								console.log(JSON.stringify(result))
+								console.log(JSON.stringify(result)) 
 								if (result.code == 200) {	
 									//保存用户信息到缓存
 									uni.showToast({
