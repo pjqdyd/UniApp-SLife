@@ -1,8 +1,5 @@
 <template>
 	<view>
-
-		<!-- 自定义的顶部栏组件 已弃用-->
-		<!-- <top-bar topTitle="登录"></top-bar> -->
 		<view class="login-page">
 			<!-- 登录的图标区块 -->
 			<view class="icon-login-box">
@@ -26,79 +23,93 @@
 </template>
 
 <script>
-	//导入使用顶部栏组件
-	//import TopBar from '../../components/topBar/topBar.vue'
 	export default {
 		onLoad() {
 			console.log("进入login页面")
 		},
 		data() {
 			return {
-				//screenWidth: "750"
 			}
 		},
 		components: {
-			//TopBar: TopBar
 		},
+		//qq登录
 		methods: {
 			qqLogin: function() {
+				var that = this;
 				console.log("QQ登录")
 				uni.login({
 					provider: 'qq',
 					success: function(loginRes) {
 						console.log(JSON.stringify(loginRes));
-						
-						//TODO把loginRes.authResult.openid 和 loginRes.authResult.access_token传入后端验证用户的合法性
-						
-						// 获取用户信息
-						uni.getUserInfo({
-							provider: 'qq',
-							success: function(infoRes) {
-								console.log(JSON.stringify(infoRes));
-								console.log('用户昵称为：' + infoRes.userInfo.nickName);
+						let url = that.server_Url;
+						let openid = loginRes.authResult.openid;
+						let access_token = loginRes.authResult.access_token;
+						//TODO把openid 和access_token传入后端验证用户的合法性
+						uni.request({
+							url: url + "/slife/user/login?openId=" + openid + "&access_token=" + access_token,
+							method: "POST",
+							success: (res) => {
+								var result = res.data;
+								console.log(JSON.stringify(result))
+								if (result.code == 200) {	
+									//保存用户信息到缓存
+									uni.showToast({
+										title: "登录成功",
+										icon: "success",
+										success() {
+											//跳转到主页	
+											setTimeout(() => {
+												uni.reLaunch({
+													url: '../index/index'
+												});
+											}, 1500)
+										}
+									});
+								} else {
+									uni.showToast({
+										title: '登录失败',
+										icon: "none"
+									});
+								}
+							},
+							fail: () => {
 								uni.showToast({
-									title: "登录成功",
-									icon: "success"
-								})
-								//TODO 保存用户信息	
-								uni.reLaunch({
-									url: '../index/index'
+									title: '请求登录失败',
+									icon: "none"
 								});
 							}
 						});
 					}
 				})
 			},
+			//微信登录
 			weixinLogin: function() {
 				console.log("微信登录")
 				uni.login({
 					provider: 'weixin',
 					success: function(loginRes) {
-						console.log(loginRes);
+						
+						//由于个人开发者无法申请微信appid,此方法无效
+						
 						// 获取用户信息
-						uni.getUserInfo({
-							provider: 'weixin',
-							success: function(infoRes) {
-								console.log('用户昵称为：' + infoRes.userInfo.nickName);
-								uni.showToast({
-									title: "登录成功",
-									icon: "success"
-								})
-								//TODO 保存用户信息								
-								uni.reLaunch({
-									url: '../index/index'
-								});
-							},
-							fail(res) {
-								console.log(res)
-							}
+						uni.showToast({
+							title: '微信登录暂未开放',
+							icon: "none",
+							duration: 2000
+						});		
+					},
+					fail: ()=>{
+						uni.showToast({
+							title: '微信登录暂未开放',
+							icon: "none",
+							duration: 2000
 						});
 					}
 				});
 			}
 		},
 		mounted() {
-
 		}
 	}
 </script>
