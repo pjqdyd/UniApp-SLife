@@ -34,7 +34,7 @@
 
 #### 如何运行:
 
- * 1.项目需要使用DCloud自家的编辑器[HBuilder X](https://www.dcloud.io/hbuilderx.html)打开, 请确保你的HbuildeX已经更新为最新版本,我目前的版本HBuilder X  Version 1.8.2.20190401
+ * 1.项目需要使用DCloud自家的编辑器[HBuilder X](https://www.dcloud.io/hbuilderx.html)打开, 请确保你的HbuildeX已经更新为最新版本,我目前的版本HBuilder X  Version 1.9.2.20190417
  
  * 2.在编辑器中将整个项目作为一个文件目录打开(不要作为子目录打开),且提前在菜单【工具】-【插件安装】中安装如scss,node.js,uniapp语法编译,app真机运行等插件,否则在编译时控制台会提示××插件未安装.
      
