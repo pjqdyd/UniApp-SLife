@@ -217,27 +217,28 @@
                 console.log(JSON.stringify(this.sendDate));
 				
 				//验证信息完整性
-				var sendDate = this.sendDate;
-				if(sendDate.applyerId == '' || sendDate.shopName == '' ||
-				   sendDate.mainInfo == '' || sendDate.shopAddr == '' ||
-				   sendDate.supportServer.length == 0 || this.imageList.length == 0){
-					   
-					   uni.showToast({
-					   	title: "您还有信息未填写完整哦",
-						icon: "none"
-					   });
-					   return;
-				   }
+// 				var sendDate = this.sendDate;
+// 				if(sendDate.applyerId == '' || sendDate.shopName == '' ||
+// 				   sendDate.mainInfo == '' || sendDate.shopAddr == '' ||
+// 				   sendDate.supportServer.length == 0 || this.imageList.length == 0){
+// 					   
+// 					   uni.showToast({
+// 					   	title: "您还有信息未填写完整哦",
+// 						icon: "none"
+// 					   });
+// 					   return;
+// 				   }
 				
                 let imgs = this.imageList.map((value, index) => {
                     return {
                         name: "image" + index,
                         uri: value
                     }
-                })
+                });
+				console.log(JSON.stringify(imgs[0]))
 				var url = this.server_Url;
                 uni.uploadFile({
-                    url: url + "/applyShop",
+                    url: url + "/slife/shop/applyShop",
                     files: imgs,
                     formData: this.sendDate,
                     success: (res) => {
