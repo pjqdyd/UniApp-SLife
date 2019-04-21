@@ -77,7 +77,7 @@
 				 <picker id="2" mode="time" :value="time2" start="00:00" end="24:00" @change="bindTimeChange">
 					{{time2}}
 				</picker>
-			</view>	   
+			</view>
        </view>
 	   
 	   <!-- 店铺的主营信息 -->
@@ -137,7 +137,7 @@
 					mainInfo: "",           //店铺的主营介绍信息
 					shopAddr: "",           //店铺的位置
 					openTime: "",			//营业时间 
-					supportServer: []		//支持的服务数组
+					supportServer: ""		//支持的服务字符串数组
                 }
             }
         },
@@ -199,7 +199,7 @@
 			handCheckBox(e){
 				//e.detail.value为选中的数组
 				console.log(e.detail.value)
-				this.sendDate.supportServer = e.detail.value;
+				this.sendDate.supportServer = JSON.stringify(e.detail.value).replace("[","").replace("]","").replace(/\"/g, "");
 			},
 			//选择了时间,设置营业时间
 			bindTimeChange(e) {
@@ -214,20 +214,22 @@
 				}
 			},
             send() { //发送反馈
-                console.log(JSON.stringify(this.sendDate));
-				
+			     uni.showLoading({
+			     	title: "上传信息中"
+			     });
+                console.log(JSON.stringify(this.sendDate));	
 				//验证信息完整性
-// 				var sendDate = this.sendDate;
-// 				if(sendDate.applyerId == '' || sendDate.shopName == '' ||
-// 				   sendDate.mainInfo == '' || sendDate.shopAddr == '' ||
-// 				   sendDate.supportServer.length == 0 || this.imageList.length == 0){
-// 					   
-// 					   uni.showToast({
-// 					   	title: "您还有信息未填写完整哦",
-// 						icon: "none"
-// 					   });
-// 					   return;
-// 				   }
+				var sendDate = this.sendDate;
+				if(sendDate.applyerId == '' || sendDate.shopName == '' ||
+				   sendDate.mainInfo == '' || sendDate.shopAddr == '' ||
+				   sendDate.supportServer == '' || this.imageList.length == 0){		
+					   uni.hideLoading();
+					   uni.showToast({
+					   	title: "您还有信息未填写完整哦",
+						icon: "none"
+					   });
+					   return;
+				   }
 				
                 let imgs = this.imageList.map((value, index) => {
                     return {
@@ -235,17 +237,18 @@
                         uri: value
                     }
                 });
-				console.log(JSON.stringify(imgs[0]))
-				var url = this.server_Url;
+				
+				console.log(JSON.stringify(imgs))
+				//var url = this.server_Url;
+				var url = "http://192.168.43.59:8081";
                 uni.uploadFile({
                     url: url + "/slife/shop/applyShop",
                     files: imgs,
                     formData: this.sendDate,
                     success: (res) => {
-                        if (res.statusCode === 200) {
-                            uni.showToast({
-                                title: "提交成功!"
-                            });
+						let result = JSON.parse(res.data);
+                        if (result.code === 200) {
+							uni.hideLoading();
                             this.imageList = [];
                             this.sendDate = {
                                applyerId: "",          
@@ -256,9 +259,22 @@
                                mainInfo: "",
                                shopAddr: "",
                                openTime: "",
-                               supportServer: []
-                            }
-                        }
+                               supportServer: ""
+                            },
+							uni.showToast({
+							    title: "提交成功!",
+								success() {
+									uni.reLaunch({
+										url: "/pages/index/index"
+									})
+								}
+							});
+                        }else{
+							uni.hideLoading();
+							uni.showToast({
+								title: result.messge
+							})
+						}
                     },
                     fail: (res) => {
                         uni.showToast({
