@@ -219,11 +219,12 @@
 			},
 			//请求后端数据,获取附近商店列表TODO
 			getLocalShopList() {
-				var url = this.server_Url; //读取在main.js中挂载的vue全局属性server_Url
-				console.log(url + "/locallist")
+				//var url = this.server_Url; //读取在main.js中挂载的vue全局属性server_Url
+				var url = "http://192.168.43.59:8081";
+				console.log(url + "/slife/shop/shopList")
 				//请求服务端数据
 				uni.request({
-					url: url + '/locallist',
+					url: url + '/slife/shopList/localShop?latitude=' + this.localInfo.latitude + "&longitude=" + this.localInfo.longitude + "&page=" + this.page,
 					success: (res) => {
 						setTimeout(() => {
 							uni.stopPullDownRefresh(); //停止下拉刷新
