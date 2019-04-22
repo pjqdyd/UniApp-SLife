@@ -91,7 +91,7 @@
 	   </view>
 	   
 	   <!-- 提交申请的按钮 -->
-        <button type="" class="shop-submit" @tap="send">提交申请</button>
+        <button type="" class="shop-submit" @tap="send">{{buttonText}}</button>
         <view class='shop-title'>
             <text>小提示: 已申请的店铺可以在系统通知中查看</text>
         </view>
@@ -106,6 +106,7 @@
         data() {
             return {
                 msgContents: ["超市购物", "美食饮品", "日常生活", "书店文具" , "电子产品", "其他"],
+				buttonText: "提交申请",
 				shopServers: [{
 					value: "wifi",
 					name: "Wifi",
@@ -142,9 +143,14 @@
             }
         },
 		//params为上个页面跳转过来的参数
-        onLoad(params) {	
+        onLoad(params) {
 			//TODO读取VUE根实例属性用户信息并设置申请者id
 			this.sendDate.applyerId = "0001";
+			
+			uni.showLoading({
+				title: "加载信息中"
+			});
+			this.queryShopInfo();//查询一次店铺信息
         },
 		onShow() {
 		},
@@ -213,7 +219,7 @@
 					return;
 				}
 			},
-            send() { //发送反馈
+            send() { //发送申请
 			     uni.showLoading({
 			     	title: "上传信息中"
 			     });
@@ -284,7 +290,43 @@
                         console.log(res)
                     }
                 });
-            }
+            },
+			//查询店铺信息, 如果查到了, 就是修改店铺信息
+			queryShopInfo: async function(){
+				var that = this;
+				//var url = this.server_Url;
+				var url = "http://192.168.43.59:8081";
+				uni.request({
+					url: url + "/slife/shop/queryShopInfo?applyerId=" + this.sendDate.applyerId,
+					success(res) {
+					    uni.hideLoading();
+						let result = res.data;
+						let resShopInfo = res.data.data; //已存在的店铺信息
+						if(result.code == 200){
+							
+							uni.setNavigationBarTitle({
+								title: "修改店铺信息"
+							});
+						    uni.showModal({
+						    	title: "提示",
+								content: "您已申请店铺,是否要修改店铺信息",
+								success(res) {
+									if (res.confirm){
+										that.sendDate = resShopInfo;
+										that.buttonText = "确认修改申请";
+									}else if(res.cancel){
+										uni.navigateBack({
+											  delta: 1
+										});
+									}
+								}
+						    })
+							
+						}
+					}
+				})
+				
+			}
         }
     }
 </script>
