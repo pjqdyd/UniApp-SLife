@@ -145,7 +145,7 @@
 		//params为上个页面跳转过来的参数
         onLoad(params) {
 			//TODO读取VUE根实例属性用户信息并设置申请者id
-			this.sendDate.applyerId = "0001";
+			this.sendDate.applyerId = "0005";
 			
 			uni.showLoading({
 				title: "加载信息中"

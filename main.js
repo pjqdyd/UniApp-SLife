@@ -16,3 +16,5 @@ app.$mount()
 //挂载vue组件的全局的server地址属性
 Vue.prototype.server_Url = conf.serverUrl; 
 //注意 Vue 上挂载属性，不能在 .nvue 中使用
+
+Vue.prototype.test_Url = conf.testUrl; //测试的模拟json数据地址

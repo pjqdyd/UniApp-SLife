@@ -14,7 +14,8 @@
             "delay" : 0
         },
         "modules" : {
-            "OAuth" : {}
+            "OAuth" : {},
+            "Maps" : {}
         },
         /* 模块配置 */
         "distribute" : {
@@ -48,7 +49,12 @@
             "ios" : {},
             /* ios打包配置 */
             "sdkConfigs" : {
-                "maps" : {},
+                "maps" : {
+                    "amap" : {
+                        "appkey_ios" : "a799d5e7fe41dc5d060b229f42f73640",
+                        "appkey_android" : "a799d5e7fe41dc5d060b229f42f73640"
+                    }
+                },
                 "oauth" : {}
             },
             "icons" : {

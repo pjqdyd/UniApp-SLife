@@ -78,7 +78,7 @@
 		methods: {	
 			//根据userId请求用户数据的方法
 			getUserInfo(userId) {
-				var url = this.server_Url; //读取在main.js中挂载的vue全局属性
+				var url = this.test_Url; //读取在main.js中挂载的vue全局属性
 				console.log(url + "/userinfo")
 				//请求服务端数据
 				uni.request({

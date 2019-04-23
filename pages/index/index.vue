@@ -140,30 +140,31 @@
 				key: this.key
 			});
 			//读取缓存中的位置信息localInfo
-			uni.getStorage({ 
+			uni.getStorage({
 				key: 'localInfo',
 				success(res) {
 					console.log("附近页的缓存的位置信息:" + JSON.stringify(res.data))
 					if (res.data == null || res.data == undefined || res.data == '') {
 						that.getRegeo(); //如果缓存没有位置信息,就获取并保存位置信息(高德)
 					} else {
-						that.getLocalShopList(); //TODO根据位置信息加载附近的店铺
+						that.localInfo = res.data;
+						//that.getLocalShopList(); //TODO根据位置信息加载附近的店铺
 					}
 				},
 				fail() {
 					that.getRegeo(); //获取并保存位置信息(高德)
 				}
 			});
-
 		},
 		created() {
+			//this.serverUrl = this.server_Url; //读取在main.js中挂载的vue全局属性server_Url
 			uni.startPullDownRefresh({});
 		},
 		//updated() {},
 		//页面下拉刷新
 		onPullDownRefresh() {
 			console.log('附近页refresh');
-
+			this.page = 1;
 			this.getLocalShopList(); //重新获取附近商铺列表数据
 		},
 		//页面上拉触底,加载更多(仅在H5有效)
@@ -219,27 +220,33 @@
 			},
 			//请求后端数据,获取附近商店列表TODO
 			getLocalShopList() {
-				//var url = this.server_Url; //读取在main.js中挂载的vue全局属性server_Url
-				var url = "http://192.168.43.59:8081";
-				console.log(url + "/slife/shop/shopList")
 				//请求服务端数据
+				var requestUrl = this.server_Url + '/slife/shopList/localShop?latitude=' + this.localInfo.latitude + "&longitude=" + this.localInfo.longitude + "&page=" + this.page;
 				uni.request({
-					url: url + '/slife/shopList/localShop?latitude=' + this.localInfo.latitude + "&longitude=" + this.localInfo.longitude + "&page=" + this.page,
+					url: requestUrl,
 					success: (res) => {
+						let result = res.data;
 						setTimeout(() => {
 							uni.stopPullDownRefresh(); //停止下拉刷新
-						}, 500)
-
+						}, 500);
+						console.log(JSON.stringify(res.data));
 						console.log("请求locallist数据成功成功..")
-						//判断当前page是否是第一页,如果是就设置localList为空
-						if (this.page == 1) {
-							this.localList = []
+						if(result.code == 200){
+							//判断当前page是否是第一页,如果是就设置localList为空
+							if (this.page == 1) {
+								this.localList = []
+							}
+							var list = result.data.localList; //新的数据列表	
+							
+							this.localList = this.localList.concat(list);
+							this.totalPage = result.data.totalPage;
+							this.total = result.data.total;
+						}else{
+							uni.showToast({
+								title: "加载失败",
+								icon: "none"
+							})
 						}
-						var list = res.data.localList; //新的数据列表	
-
-						this.localList = this.localList.concat(list);
-						this.totalPage = res.data.totalPage;
-						this.total = res.data.total;
 					}
 				});
 			},

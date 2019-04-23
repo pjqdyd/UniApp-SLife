@@ -3,7 +3,7 @@
 		<view class="list-item">
 			<!-- 商店图片 -->
 			<view class="image-box">
-				<image class="image-box" :src="shopItem.imageUrl"></image>
+				<image class="image-box" mode="aspectFill" :src="serverUrl + shopItem.imageUrl"></image>
 			</view>
 			<!-- 商店信息 -->
 			<view class="info-box">
@@ -31,13 +31,13 @@
 					
 					<view class="cate-box">
 						<!-- 所属类目标签 -->
-						<uni-badge type="warning" :text="shopItem.category"></uni-badge>
+						<uni-badge type="warning" :text="shopItem.shopCategory"></uni-badge>
 					</view>
 				</view>
 				<!-- 地址距离信息 -->
 				<view class="local-addr-box">
 					<view class="local-box">
-						<text class="iconfont text">&#xe611; {{shopItem.localAddr}} </text>
+						<text class="iconfont text">&#xe611; {{shopItem.shopAddr}} </text>
 					</view>
 					<view class="distance-box">距离: {{shopItem.distance}}</view>
 				</view>
@@ -64,10 +64,13 @@
 		},
 		data() {
 			return {
-				stars: [1, 2, 3, 4, 5]
+				stars: [1, 2, 3, 4, 5],
+				serverUrl: ''
 			}
 		},
-		created() {},
+		created() {
+			this.serverUrl = this.server_Url;//读取在main.js中挂载的vue全局属性server_Url
+		},
 		mounted() {}
 	}
 </script>
@@ -78,8 +81,9 @@
 		height: 170upx;
 		background-color: #fff;
 		border-bottom: 4upx solid #eeeeee;
-		padding: 5upx 10upx 5upx 10upx;
+		padding: 10upx 5upx 10upx 10upx;
 		box-sizing: border-box;
+		overflow: hidden;
 		display: flex;
 		justify-content: space-between;
 	}
@@ -89,8 +93,8 @@
 	}
 
 	.image-box {
-		width: 160upx;
-		height: 160upx;
+		width: 150upx;
+		height: 150upx;
 		border-radius: 10upx;
 	}
 
@@ -151,7 +155,7 @@
 	}
 
 	.local-addr-box {
-		width: 560upx;
+		width: 580upx;
 		height: 45upx;
 		display: flex;
 		justify-content: space-between;
@@ -161,7 +165,7 @@
 		display: flex;
 		flex-wrap: wrap;
 		flex-direction: row;
-		width: 370upx;
+		width: 380upx;
 		height: 45upx;
 		overflow: hidden;
 	}
@@ -177,7 +181,7 @@
 	}
 
 	.distance-box {
-		width: 160upx;
+		width: 180upx;
 		height: 45upx;
 		line-height: 45upx;
 		font-size: 26upx;
