@@ -29,58 +29,10 @@
 	import localItem from '@/components/local/local-item.vue'; //附近商铺列表item组件
 
 	export default {
-		onLoad(params) {
-			console.log(params.categoryName);
-			this.currentCateName = params.categoryName; //设置上个页面传入的分类
-			
-			//设置导航栏标题
-			uni.setNavigationBarTitle({
-				title: this.currentCateName
-			});
-			
-			var that = this;
-			//读取缓存中的位置信息localInfo
-			uni.getStorage({
-				key: 'localInfo',
-				success(res) {
-					console.log("附近页的缓存的位置信息:" + JSON.stringify(res.data))
-					if (res.data == null || res.data == undefined || res.data == '') {
-						 //如果缓存没有位置信息,就提示
-						 uni.showToast({
-						 	title: "未获取到位置信息"
-						 });
-					} else {
-						that.localInfo = res.data;
-						//that.getLocalShopList(); //TODO根据位置信息加载附近的店铺
-					}
-				},
-				fail() {
-					 //如果缓存没有位置信息,就提示
-					 uni.showToast({
-					 	title: "未获取到位置信息"
-					 });
-				}
-			});
-		},
 		components: {
 			uniCollapse,
 			uniCollapseItem,
 			localItem
-		},
-		updated() {
-		},
-		watch:{
-			//监听当前分类值的变化,根据分类查询符合该分类的店铺列表TODO
-			'currentCateName': function(value) {
-				
-				this.localList = [];
-				this.getCateShopList();//重新根据分类请求一次数据
-				
-				//重新设置导航栏标题
-				uni.setNavigationBarTitle({
-					title: this.currentCateName
-				});
-			}
 		},
 		data() {
 			return {
@@ -139,6 +91,54 @@
 				}]
 			}
 		},
+		onLoad(params) {
+			console.log(params.categoryName);
+			this.currentCateName = params.categoryName; //设置上个页面传入的分类
+			
+			//设置导航栏标题
+			uni.setNavigationBarTitle({
+				title: this.currentCateName
+			});
+			
+			var that = this;
+			//读取缓存中的位置信息localInfo
+			uni.getStorage({
+				key: 'localInfo',
+				success(res) {
+					console.log("附近页的缓存的位置信息:" + JSON.stringify(res.data))
+					if (res.data == null || res.data == undefined || res.data == '') {
+						 //如果缓存没有位置信息,就提示
+						 uni.showToast({
+						 	title: "未获取到位置信息"
+						 });
+					} else {
+						that.localInfo = res.data;
+						//that.getLocalShopList(); //TODO根据位置信息加载附近的店铺
+					}
+				},
+				fail() {
+					 //如果缓存没有位置信息,就提示
+					 uni.showToast({
+					 	title: "未获取到位置信息"
+					 });
+				}
+			});
+		},
+		updated() {
+		},
+		watch:{
+			//监听当前分类值的变化,根据分类查询符合该分类的店铺列表TODO
+			'currentCateName': function(value) {
+				
+				this.localList = [];
+				this.getCateShopList();//重新根据分类请求一次数据
+				
+				//重新设置导航栏标题
+				uni.setNavigationBarTitle({
+					title: this.currentCateName
+				});
+			}
+		},
 		methods: {
 			//监听子组件的点击展开收起事件(设置当前组件的isShowCate值,保证isShowCate的值与子组件的isOpen一致)
 			handIsOpen(isopen) {
@@ -156,17 +156,31 @@
 					url: '../shopDetail/shopDetail?shopId=' + shopId
 				});
 			},
-			//请求后端数据,获取分类的商店列表TODO
+			//请求后端数据,获取附近分类的商店列表TODO
 			getCateShopList() {
-				var url = this.server_Url; //读取在main.js中挂载的vue全局属性server_Url
-				console.log(url + "/locallist")
+				var url = this.server_Url;//读取在main.js中挂载的vue全局属性server_Url
+				var request = url + '/slife/shopList/localCateShop?category='  + this.currentCateName + "&latitude=" + this.localInfo.latitude + "&longitude=" +
+					this.localInfo.longitude;
 				//请求服务端数据
 				uni.request({
-					url: url + '/locallist?category='  + this.currentCateName,
+					url: request,
 					success: (res) => {
 						console.log("请求分类" + this.currentCateName +"的locallist数据成功..")
-						var list = res.data.localList; //新的数据列表	
-						this.localList = this.localList.concat(list);	
+						var result = res.data;
+						if(result.code == 200){
+							this.localList = this.localList.concat(result.data);	
+						}else{
+							uni.showToast({
+								title: "获取失败",
+								icon: "none"
+							})
+						}
+					},
+					fail() {
+						uni.showToast({
+							title: "获取失败",
+							icon: "none"
+						})
 					}
 				});
 			},
