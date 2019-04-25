@@ -44,7 +44,7 @@
 
 		<!-- 附近商铺列表 -->
 		<view v-for="(item, index) in localList" :key="index" @click="goShopInfo(item.shopId)">
-			<local-item :shopItem="item"></local-item>
+			<local-item :shopItem="item" :localInfo="localInfo"></local-item>
 		</view>
 
 		<!-- 底部的加载更多组件 -->
@@ -221,7 +221,8 @@
 			//请求后端数据,获取附近商店列表TODO
 			getLocalShopList() {
 				//请求服务端数据
-				var requestUrl = this.server_Url + '/slife/shopList/localShop?latitude=' + this.localInfo.latitude + "&longitude=" + this.localInfo.longitude + "&page=" + this.page;
+				var requestUrl = this.server_Url + '/slife/shopList/localShop?latitude=' + this.localInfo.latitude + "&longitude=" +
+					this.localInfo.longitude + "&page=" + this.page;
 				uni.request({
 					url: requestUrl,
 					success: (res) => {
@@ -229,24 +230,33 @@
 						setTimeout(() => {
 							uni.stopPullDownRefresh(); //停止下拉刷新
 						}, 500);
-						console.log(JSON.stringify(res.data));
 						console.log("请求locallist数据成功成功..")
-						if(result.code == 200){
-							//判断当前page是否是第一页,如果是就设置localList为空
-							if (this.page == 1) {
-								this.localList = []
-							}
+						if (result.code == 200) {
+							
 							var list = result.data.localList; //新的数据列表	
 							
+							if (this.page == 1) { //判断当前page是否是第一页,如果是就设置localList为空
+								this.localList = [];
+								list.sort(function(){return Math.random()>0.5?-1:1;}); //并且给第一页的数据随机排序
+							}
+
 							this.localList = this.localList.concat(list);
 							this.totalPage = result.data.totalPage;
 							this.total = result.data.total;
-						}else{
+						} else {
+							
 							uni.showToast({
 								title: "加载失败",
 								icon: "none"
 							})
 						}
+					},
+					fail() {
+						uni.stopPullDownRefresh(); //停止下拉刷新
+						uni.showToast({
+							title: "加载超时",
+							icon: "none"
+						})
 					}
 				});
 			},
@@ -323,7 +333,7 @@
 			},
 			// #ifdef MP-WEIXIN
 			//在微信上点击了展开
-			handWxOpenDrawer(){
+			handWxOpenDrawer() {
 				this.isShowDrawer = true
 			}
 			// #endif

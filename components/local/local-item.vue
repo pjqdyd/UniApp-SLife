@@ -39,7 +39,7 @@
 					<view class="local-box">
 						<text class="iconfont text">&#xe611; {{shopItem.shopAddr}} </text>
 					</view>
-					<view class="distance-box">距离: {{shopItem.distance}}</view>
+					<view class="distance-box">距离: {{distance}}</view>
 				</view>
 			</view>
 		</view>
@@ -47,11 +47,19 @@
 </template>
 
 <script>
+	import utils from "@/common/utils.js";  //常用的工具方法
+	
 	import uniBadge from "@/components/uni-badge/uni-badge.vue";
 	import uniRate from "@/components/rate/uni-rate.vue";
 	export default {
 		props: {
 			shopItem: {
+				type: Object,
+				default: function(e) {
+					return {}
+				}
+			},
+			localInfo: {
 				type: Object,
 				default: function(e) {
 					return {}
@@ -69,9 +77,16 @@
 			}
 		},
 		created() {
-			this.serverUrl = this.server_Url;//读取在main.js中挂载的vue全局属性server_Url
+			this.serverUrl = this.server_Url; //设置全局挂载的server_Url
 		},
-		mounted() {}
+		mounted() {},
+		computed:{
+			distance(){	
+				var dis = utils.getDistance(this.localInfo.latitude, this.localInfo.longitude,
+				this.shopItem.shopLatitude,this.shopItem.shopLongitude);		
+				return dis;			
+			}
+		}
 	}
 </script>
 

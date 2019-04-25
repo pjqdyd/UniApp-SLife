@@ -15,7 +15,7 @@
 
 		<!-- 附近分类商铺列表 -->
 		<view v-for="(item, index) in localList" :key="index" @click="goShopInfo(item.shopId)">
-			<local-item :shopItem="item"></local-item>
+			<local-item :shopItem="item" :localInfo="localInfo"></local-item>
 		</view>
 
 
@@ -36,6 +36,30 @@
 			//设置导航栏标题
 			uni.setNavigationBarTitle({
 				title: this.currentCateName
+			});
+			
+			var that = this;
+			//读取缓存中的位置信息localInfo
+			uni.getStorage({
+				key: 'localInfo',
+				success(res) {
+					console.log("附近页的缓存的位置信息:" + JSON.stringify(res.data))
+					if (res.data == null || res.data == undefined || res.data == '') {
+						 //如果缓存没有位置信息,就提示
+						 uni.showToast({
+						 	title: "未获取到位置信息"
+						 });
+					} else {
+						that.localInfo = res.data;
+						//that.getLocalShopList(); //TODO根据位置信息加载附近的店铺
+					}
+				},
+				fail() {
+					 //如果缓存没有位置信息,就提示
+					 uni.showToast({
+					 	title: "未获取到位置信息"
+					 });
+				}
 			});
 		},
 		components: {
@@ -65,7 +89,12 @@
 				currentCateName: '默认', //当前分类的名字
 				
 				localList: [], //附近商铺列表,用来存放每一页的list
-
+				//位置信息对象
+				localInfo: {
+					longitude: '',
+					latitude: '',
+					addressName: ''
+				},
 				categroyList: [{
 					id: "0",
 					cateName: "超市",

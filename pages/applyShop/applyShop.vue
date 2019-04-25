@@ -33,7 +33,7 @@
 			<text>店铺名称</text>
 		</view>
 		<view class="shop-body">
-			<textarea placeholder="请输入店铺名称..." v-model="sendDate.shopName" maxlength="7" class="shop-textare" />
+			<textarea placeholder="请输入店铺名称..." v-model="sendDate.shopName" maxlength="8" class="shop-textare" />
 			</view>
 		
 		<!-- 店铺分类选择 -->
@@ -145,16 +145,17 @@
 		//params为上个页面跳转过来的参数
         onLoad(params) {
 			//TODO读取VUE根实例属性用户信息并设置申请者id
-			this.sendDate.applyerId = "0005";
+			this.sendDate.applyerId = "0007";
 			
-			uni.showLoading({
-				title: "加载信息中"
-			});
+			
 			this.queryShopInfo();//查询一次店铺信息
         },
 		onShow() {
 		},
-		created() {	    
+		created() {
+			uni.showLoading({
+				title: "加载信息中"
+			});
 		},
 		mounted() {
 		},
@@ -245,8 +246,7 @@
                 });
 				
 				console.log(JSON.stringify(imgs))
-				//var url = this.server_Url;
-				var url = "http://192.168.43.59:8081";
+				var url = this.server_Url;
                 uni.uploadFile({
                     url: url + "/slife/shop/applyShop",
                     files: imgs,
@@ -294,8 +294,7 @@
 			//查询店铺信息, 如果查到了, 就是修改店铺信息
 			queryShopInfo: async function(){
 				var that = this;
-				//var url = this.server_Url;
-				var url = "http://192.168.43.59:8081";
+				var url = this.server_Url;
 				uni.request({
 					url: url + "/slife/shop/queryShopInfo?applyerId=" + this.sendDate.applyerId,
 					success(res) {

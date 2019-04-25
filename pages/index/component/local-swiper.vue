@@ -5,8 +5,10 @@
 			<swiper class="imageContainer" @change="handleChange" indicator-active-color="#ea5455" circular  autoplay indicator-dots>
 				<block v-for="(item,index) in imgList" :key="index">
 					<swiper-item class="swiperitem">
-						<image class="itemImg" :class="currentIndex == index ? 'swiperactive': ''" :src="item" mode="scaleToFill">
-						</image>
+						<view @click="handImageClick">
+							<image class="itemImg" :class="currentIndex == index ? 'swiperactive': ''" :src="serverUrl + item" mode="scaleToFill">
+							</image>
+						</view>
 					</swiper-item>
 				</block>
 			</swiper>
@@ -19,15 +21,30 @@
 			return {
 				currentIndex: 0,
 				imgList:[
-				'https://upload-images.jianshu.io/upload_images/14511997-6b7bdd51ef601f2f.jpg',
-				'https://upload-images.jianshu.io/upload_images/14511997-161603db93a6d5c4.jpg',
-				'https://upload-images.jianshu.io/upload_images/14511997-a93407f6cf335716.jpg'
-				]
+				'/hot-shop/shopImage/shop1.jpg',
+				'/hot-shop/shopImage/shop2.jpg',
+				'/hot-shop/shopImage/shop3.jpg'
+				],
+				hotShopId:[
+					"s-19042226064334",
+					"s-19042337283395",
+					"s-19042580607008"
+				],
+				serverUrl: ''
 			}
+		},
+		created() {
+			this.serverUrl = this.server_Url;
 		},
 		methods:{
 			handleChange(e){
 				this.currentIndex = e.detail.current
+			},
+			handImageClick(){
+				console.log(this.currentIndex);
+				uni.navigateTo({
+					url: "/pages/shopDetail/shopDetail?shopId=" + this.hotShopId[this.currentIndex]
+				})
 			}
 		}
 	}	
