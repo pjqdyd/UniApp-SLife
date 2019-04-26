@@ -4,7 +4,7 @@
 		<!-- 店铺的图片 -->
 		<swiper class="shopImge-swiper" indicator-dots autoplay indicator-active-color="#ea5455" interval="3000">
 			<swiper-item v-for="(item,index) of shopInfo.shopImageList" :key="index">
-				<image mode="aspectFill" class="shop-image" :src="item.shopImage"></image>
+				<image mode="aspectFill" class="shop-image" :src="serverUrl + item.imageUrl"></image>
 			</swiper-item>
 		</swiper>
 
@@ -20,13 +20,13 @@
 
 		<!-- 位置信息 -->
 		<view class="local-info-box" @click="showShopLocaltion">
-			<text class="iconfont addr-text">&#xe611; {{shopInfo.localAddr}}</text>
+			<text class="iconfont addr-text">&#xe611; {{shopInfo.shopAddr}}</text>
 			<text class="iconfont next-icon">&#xe618;</text>
 		</view>
 
 		<!-- 店主信息 -->
 		<view class="shoper-info-box">
-			<image class="shoper-face" :src="faceUrl" @click="goUserInfo"></image>
+			<image class="shoper-face" :src="serverUrl + faceUrl" @click="goUserInfo"></image>
 			<view class="shoper-info">
 				<view class="shop-title">欢迎光临店铺,我是店主</view>
 				<view class="shoper-name">{{nickname}}</view>
@@ -36,7 +36,7 @@
 
 		<!-- 店铺介绍 -->
 		<view class="shop-introduce">—店铺介绍—</view>
-		<view class="shop-info">
+		<view class="shop-info-x">
 			<view class="shop-icon">
 				<text class="iconfont icon" v-if="shopInfo.wifi">&#xe6b7; Wifi</text>
 				<text class="iconfont icon" v-if="shopInfo.cash">&#xe621; 支持现金</text>
@@ -69,19 +69,22 @@
 				shoperId: '', //店主Id
 				shopInfo: {},
 				faceUrl: '',
-				nickname: ''
+				nickname: '',
+
+				serverUrl: ''
 			}
 		},
 		//res为上个页面传入的参数
 		onLoad(res) {
 			var url = this.server_Url; //读取在main.js中挂载的vue全局属性server_Url
+			this.serverUrl = url;
 			if (res.shopId != undefined || res.shopId != null) {
 				this.shopId = res.shopId;
-				let requestUrl = url + "/shopinfo?shopId=" + res.shopId;
+				let requestUrl = url + "/slife/shopDetail/queryShopByShopId?shopId=" + res.shopId;
 				this.getShopInfo(requestUrl); //根据shopId获取店铺信息
 			} else if (res.shoperId != undefined || res.shoperId != null) {
 				this.shoperId = res.shoperId;
-				let requestUrl = url + "/shopinfo?shoperId=" + res.shoperId;
+				let requestUrl = url + "/slife/shopDetail/queryShopByShoperId?shoperId=" + res.shoperId;
 				this.getShopInfo(requestUrl); //根据shoperId获取店铺信息
 			} else {
 				return;
@@ -91,39 +94,77 @@
 			this.rate = 5;
 		},
 		methods: {
-			//获取店铺信息
+			//获取店铺详情信息
 			getShopInfo(requestUrl) {
 				console.log(requestUrl)
 				//请求服务端数据
 				uni.request({
 					url: requestUrl,
 					success: (res) => {
-						this.shopInfo = res.data;
-						this.faceUrl = res.data.userInfo.faceImage;
-						this.nickname = res.data.userInfo.nickname;
+						var result = res.data;
+						if (result.code == 200) {
+							this.shopInfo = result.data;
+							this.faceUrl = result.data.faceImage;
+							this.nickname = result.data.nickname;
+						} else {
+							uni.showToast({
+								title: "获取店铺详情失败",
+								icon: "none"
+							})
+						}
+					},
+					fail() {
+						uni.showToast({
+							title: "获取店铺详情失败",
+							icon: "none"
+						})
 					}
 				});
 			},
-			//跳转到用户详情页,将需要查询的userId存入缓存
+			//跳转到用户详情页
 			goUserInfo() {
 				//console.log(this.newsItem.userInfo.id)
-				uni.navigateTo({
-					url: "/pages/userInfo/userInfo?userId=" + this.shopInfo.userInfo.userId
+				var that = this;
+				var applyerId = this.shopInfo.applyerId;
+				if (applyerId == null || applyerId == undefined) {
+					return;
+				}
+				uni.getStorage({ //读取缓存的用户信息
+					key: "userInfo",
+					success(res) {
+						if (res.data.userId == applyerId) { //如果店主是自己
+							uni.switchTab({
+								url: "/pages/me/me"
+							})
+						} else {
+							uni.navigateTo({
+								//url: "/pages/userInfo/userInfo?userId=" + res.data.userId +"&applyerId=" + applyerId
+								url: "/pages/userInfo/userInfo?userId=" + "0001" +"&applyerId=" + applyerId
+							})
+						}
+					},
+					fail() {
+						//测试
+						uni.navigateTo({
+							//url: "/pages/userInfo/userInfo?userId=" + res.data.userId +"&applyerId=" + applyerId
+							url: "/pages/userInfo/userInfo?userId=" + "0001" +"&applyerId=" + applyerId
+						})
+					}
 				})
 			},
 			//跳转到与店主聊天的界面
 			goChat() {
 				console.log("跳转到聊天界面")
-				let user = this.shopInfo.userInfo;
 				console.log('创建聊天界面' + user.userId)
 				uni.navigateTo({
-					url: "/pages/chatScreen/chatScreen?id=" + user.userId + "&faceUrl=" + user.faceImage + "&name=" + user.nickname
+					url: "/pages/chatScreen/chatScreen?id=" + this.shopInfo.applyerId + "&faceUrl=" + this.shopInfo.faceImage +
+						"&name=" + this.shopInfo.nickname
 				})
 			},
 			//跳转到动态, type标识是发布的动态还是点赞的动态
 			goNewsList(type) {
 				uni.navigateTo({
-					url: "/pages/newsList/newsList?userId=" + this.shoperId + "&type=" + type
+					url: "/pages/newsList/newsList?userId=" + this.shopInfo.applyerId + "&type=" + type
 				})
 			},
 			//分享店铺到微信()
@@ -147,17 +188,17 @@
 			//显示店铺的位置信息
 			showShopLocaltion() {
 				uni.openLocation({
-					latitude: this.shopInfo.latitude,
-					longitude: this.shopInfo.longitude,
+					latitude: this.shopInfo.shopLatitude,
+					longitude: this.shopInfo.shopLongitude,
 					name: this.shopInfo.shopName,
-					address: this.shopInfo.localAddr,
+					address: this.shopInfo.shopAddr,
 					success: function() {
 						console.log('success');
 					},
 					fail() {
 						uni.showToast({
 							title: "获取店铺位置失败",
-							icon: "error"
+							icon: "none"
 						})
 					}
 				});
@@ -226,6 +267,7 @@
 		box-sizing: border-box;
 		justify-content: space-between;
 		background-color: #fff;
+
 		.addr-text {
 			line-height: 80upx;
 			font-size: 35upx;
@@ -259,6 +301,7 @@
 		color: #707070;
 		justify-content: space-between;
 		background-color: #fff;
+
 		.shoper-face {
 			width: 110upx;
 			height: 110upx;
@@ -309,13 +352,14 @@
 		background-color: #fff;
 	}
 
-	.shop-info {
+	.shop-info-x {
 		width: 100%;
-		height: 220upx;
+		height: 420upx;
 		box-sizing: border-box;
 		padding: 0 25upx 0 25upx;
 		color: #707070;
-		background-color: #fff;
+		background-color: #ffffff;
+
 		.shop-icon {
 			width: 100%;
 			height: 60upx;
@@ -338,7 +382,7 @@
 			width: 100%;
 			height: 300upx;
 			font-size: 28upx;
-			line-height: 80upx;
+			line-height: 40upx;
 		}
 	}
 

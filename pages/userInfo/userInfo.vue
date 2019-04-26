@@ -5,9 +5,9 @@
 
 		<!-- 用户的数据 -->
 		<view class="user-data-bar">
-			<view class="data-bar">粉丝:<text class="data-bar-num">{{userId == '' ? 0 :userInfo.fans}}</text></view>
-			<view class="data-bar">发布:<text class="data-bar-num">{{userId == '' ? 0 :userInfo.createCounts}}</text></view>
-			<view class="data-bar">获赞:<text class="data-bar-num">{{userId == '' ? 0 :userInfo.likeCounts}}</text></view>
+			<view class="data-bar">粉丝:<text class="data-bar-num">{{userId == '' || userId == null ? 0 :userInfo.fansCounts}}</text></view>
+			<view class="data-bar">发布:<text class="data-bar-num">{{userId == '' || userId == null ? 0 :userInfo.createCounts}}</text></view>
+			<view class="data-bar">获赞:<text class="data-bar-num">{{userId == '' || userId == null ? 0 :userInfo.likeCounts}}</text></view>
 		</view>
 
 		<!-- 选项 -->
@@ -74,38 +74,55 @@
 		data() {
 			return {
 				userInfo: {},
-				userId: ''
+				userId: '',
+				applyerId: ''
 			}
 		},
 		onLoad(params) {
 			//从跳转的params中获取用户id
-			//this.userInfo = {}//设置缓存的用户信息
 			this.userId = params.userId;
 
-			//根据跳转的userId查询用户信息
-			this.getUserInfo(params.userId); //这里测试,就手动请求一次数据
+			this.applyerId = params.applyerId; //获取要查询的店主id
+
+			//根据跳转的applyerId查询店主信息
+			this.getUserInfo(params.userId, params.applyerId); //这里测试,就手动请求一次数据
 		},
 		onShow() {},
 		created() {},
 		methods: {
-			//根据userId请求用户数据的方法
-			getUserInfo(userId) {
+			//根据applyerId请求店主数据的方法
+			getUserInfo(userId, applyerId) {
 				var url = this.server_Url; //读取在main.js中挂载的vue全局属性
 				console.log(url + "/userinfo")
 				//请求服务端数据
 				uni.request({
-					url: url + '/userinfo?userId=' + userId,
+					url: url + '/slife/user/userInfo?userId=' + userId + "&applyerId=" + applyerId,
 					success: (res) => {
-						console.log("请求/userinfo?userId=" + userId + "数据成功成功..")
-						//console.log(res.data.userInfo)
-						this.userInfo = res.data.userInfo
+						var result = res.data;
+						if(result.code == 200){
+							console.log("请用户数据成功成功..")
+							//console.log(res.data.userInfo)
+							this.userInfo = res.data.data;
+						}else{
+							uni.showToast({
+								title: "获取用户信息失败",
+								icon: "none"
+							})
+						}
+											
+					},
+					fail() {
+						uni.showToast({
+							title: "获取用户信息失败",
+							icon: "none"
+						})
 					}
 				});
 			},
 			//跳转到动态, type标识是发布的动态还是点赞的动态
 			goNewsList(type) {
 				uni.navigateTo({
-					url: "/pages/newsList/newsList?userId=" + this.userId + "&type=" + type
+					url: "/pages/newsList/newsList?userId=" + this.applyerId + "&type=" + type
 				})
 			},
 			//点击展开了用户的粉丝

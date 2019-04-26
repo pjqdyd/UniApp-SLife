@@ -38,7 +38,11 @@
 			userInfo: Object,
 			isMe: Boolean //是否是自己的个人信息
 		},
+		data:{
+			serverUrl: ''
+		},
 		mounted() {
+			this.serverUrl = this.server_Url;
 		},
 		methods: {
 			//点击了进入聊天(自己), 发起聊天(其他用户)
@@ -108,7 +112,7 @@
 				if (user == null || user.faceImage == undefined || user.faceImage == '') {
 					return "../../../../static/user/noface.png"
 				} else {
-					return user.faceImage
+					return this.serverUrl + user.faceImage;
 				}
 
 			}
