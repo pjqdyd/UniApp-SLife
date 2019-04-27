@@ -14,8 +14,9 @@
             "delay" : 0
         },
         "modules" : {
+            "Maps" : {},
             "OAuth" : {},
-            "Maps" : {}
+            "Share" : {}
         },
         /* 模块配置 */
         "distribute" : {
@@ -35,6 +36,7 @@
                     "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>",
                     "<uses-permission android:name=\"android.permission.INSTALL_LOCATION_PROVIDER\"/>",
                     "<uses-permission android:name=\"android.permission.INTERNET\"/>",
+                    "<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>",
                     "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
                     "<uses-permission android:name=\"android.permission.READ_CONTACTS\"/>",
                     "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
@@ -55,7 +57,11 @@
                         "appkey_android" : "a799d5e7fe41dc5d060b229f42f73640"
                     }
                 },
-                "oauth" : {}
+                "oauth" : {
+                    "qq" : {
+                        "appid" : "123456"
+                    }
+                }
             },
             "icons" : {
                 "ios" : {
