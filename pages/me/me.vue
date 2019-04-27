@@ -5,9 +5,9 @@
 
 		<!-- 用户的数据 -->
 		<view class="user-data-bar">
-			<view class="data-bar">粉丝:<text class="data-bar-num">{{userId == '' ? 0 :userInfo.fans}}</text></view>
-			<view class="data-bar">发布:<text class="data-bar-num">{{userId == '' ? 0 :userInfo.createCounts}}</text></view>
-			<view class="data-bar">获赞:<text class="data-bar-num">{{userId == '' ? 0 :userInfo.likeCounts}}</text></view>
+			<view class="data-bar">粉丝:<text class="data-bar-num">{{userId == '' || userId == undefined ? 0 :userInfo.fansCounts}}</text></view>
+			<view class="data-bar">发布:<text class="data-bar-num">{{userId == '' || userId == undefined ? 0 :userInfo.createCounts}}</text></view>
+			<view class="data-bar">获赞:<text class="data-bar-num">{{userId == '' || userId == undefined ? 0 :userInfo.likeCounts}}</text></view>
 		</view>
 
 		<!-- 选项 -->
@@ -65,43 +65,88 @@
 			}
 		},
 		onLoad(params) {
-			//从缓存中读取用户信息TODO
-			//缓存中存在,已登录
-			//this.userInfo = {}//设置缓存的用户信息
-			this.userId = "0001";
-			//不存在就提示用户登录,跳转到登录界面TODO
-			this.getUserInfo("0001");  //这里测试,就手动请求一次数据
+			//从缓存中读取用户Id信息
+			var that = this;
+			uni.getStorage({
+				key: "userInfo",
+				success(res) {
+					console.log(JSON.stringify(res.data));
+					if (res.data != null || res.data != undefined) {
+						that.userId = res.data.userId;
+						that.getUserInfo(res.data.userId); //更新用户信息
+					} else {
+						that.showIsLogin();
+					}
+				},
+				fail() {
+					that.showIsLogin();
+				}
+			});
 		},
 		onShow() {
+			var that = this;
+			uni.getStorage({
+				key: "isUserUpdate",
+				success(res) {
+					if(res.data == true){ //表明用户修改了用户信息
+						that.getUserInfo(that.userId); //更新用户信息
+					}
+				}
+			})
 		},
 		created() {},
-		methods: {	
+		methods: {
 			//根据userId请求用户数据的方法
 			getUserInfo(userId) {
-				var url = this.test_Url; //读取在main.js中挂载的vue全局属性
+				var url = this.server_Url; //读取在main.js中挂载的vue全局属性
 				console.log(url + "/userinfo")
 				//请求服务端数据
 				uni.request({
-					url: url + '/userinfo?userId=' + userId,
+					url: url + '/slife/user/userInfo?id=' + userId,
 					success: (res) => {
-						console.log("请求/userinfo?userId=" + userId + "数据成功成功..")
-						//console.log(res.data.userInfo)
-						this.userInfo = res.data.userInfo;
+						var result = res.data;
+						if (result.code == 200) {
+							console.log("请求/userInfo?id=" + userId + "数据成功成功..")
+							this.userInfo = result.data;
+							uni.setStorage({
+								key: "userInfo",
+								data: result.data,
+								success() {
+									console.log("更新用户信息成功")
+								}
+							});
+							uni.setStorage({
+								key: "isUserUpdate",
+								data: "false"
+							});
+						} else {
+							uni.showToast({
+								title: "获取个人信息失败",
+								icon: "none"
+							})
+						}
+
+					},
+					fail() {
+						uni.showToast({
+							title: "获取个人信息失败",
+							icon: "none"
+						})
 					}
 				});
 			},
 			//跳转到动态, type标识是发布的动态还是点赞的动态
-			goNewsList(type){
+			goNewsList(type) {
 				uni.navigateTo({
 					url: "/pages/newsList/newsList?userId=" + this.userId + "&type=" + type
 				})
 			},
-			
+
 			//点击了选项,index为选项在option[]的位置
 			clickOption(index) {
-				if(index == 0){ //点击了点赞的店铺
+				if (index == 0) { //点击了点赞的店铺
 					this.goNewsList(1);
-				}else if (index == 1) { //点击了申请店铺
+				} else if (index == 1) { //点击了申请店铺
 					console.log("申请店铺")
 					//TODO 判断用户是否有店铺在申请中, 是就跳转到申请店铺状态页,否就申请店铺
 					uni.navigateTo({
@@ -121,6 +166,24 @@
 						if (res.confirm) {
 							console.log('用户点击确定');
 							//TODO清除用户信息,跳转到登录页
+							uni.reLaunch({
+								url: '../login/login'
+							});
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
+				});
+			},
+			
+			//弹窗提示登录
+			showIsLogin(){
+				uni.showModal({
+					title: '未登录',
+					content: '是否需要登录',
+					success: function(res) {
+						if (res.confirm) {
+							console.log('用户点击确定');
 							uni.reLaunch({
 								url: '../login/login'
 							});

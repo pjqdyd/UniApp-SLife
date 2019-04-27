@@ -131,6 +131,7 @@
 			'currentCateName': function(value) {
 				
 				this.localList = [];
+				
 				this.getCateShopList();//重新根据分类请求一次数据
 				
 				//重新设置导航栏标题

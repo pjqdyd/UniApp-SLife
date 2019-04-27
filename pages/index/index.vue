@@ -3,7 +3,7 @@
 		<!-- 使用侧边栏组件 -->
 		<uni-drawer :visible="isShowDrawer" :mask="true" @close="handDrawerClose">
 			<view style="padding:20upx;">
-				<drawer-list></drawer-list>
+				<drawer-list :nickname="nickname" :faceImage="faceImage" :serverUrl="serverUrl"></drawer-list>
 			</view>
 		</uni-drawer>
 
@@ -75,6 +75,11 @@
 			return {
 				amapPlugin: null,
 				key: '2c4146676963fc2442e9aeaf6dea6c97', //如何获取参考http://ask.dcloud.net.cn/article/35070
+				
+				nickname: '', //用户昵称'
+				faceImage: '',//用户头像
+				serverUrl: "",
+				
 				//位置信息对象
 				localInfo: {
 					longitude: '',
@@ -155,6 +160,8 @@
 					that.getRegeo(); //获取并保存位置信息(高德)
 				}
 			});
+			
+			this.serverUrl = this.server_Url; //设置全局的服务url
 		},
 		created() {
 			//this.serverUrl = this.server_Url; //读取在main.js中挂载的vue全局属性server_Url
@@ -340,9 +347,19 @@
 		},
 		//监听导航栏的"三"或"O"的点击事件(展开/关闭侧边栏)(手动定位)
 		onNavigationBarButtonTap(e) {
+			var that = this;
 			if (e.index == 1) {
 				if (this.isShowDrawer == false) {
-					this.isShowDrawer = true
+					uni.getStorage({ //获取用户的昵称头像,传给侧边栏
+						key: "userInfo",
+						success(res) {
+							if(res.data  != null || res.data != undefined){
+								that.nickname = res.data.nickname;
+								that.faceImage = res.data.faceImage;
+							}
+						}
+					});					
+					this.isShowDrawer = true;
 					console.log("展开侧边栏")
 				} else {
 					this.isShowDrawer = false

@@ -42,9 +42,24 @@
 				}
 			}
 		},
-		onLoad() {
+		onLoad() {	
+		},
+		onShow() {
 			//TODO读取挂载根实例的用户信息,设置用户id
-			this.sendData.userId = "0001";
+			var that = this;
+			uni.getStorage({
+				key: "userInfo",
+				success(res) {
+					if (res.data != null || res.data != undefined) {
+						that.sendData.userId = res.data.userId;
+					} else {
+						that.showIsLogin();
+					}
+				},
+				fail() {
+					that.showIsLogin();
+				}
+			});
 		},
 		methods: {
 			//选择图片
@@ -74,22 +89,36 @@
 					});
 					return;
 				} else {
-					console.log(JSON.stringify(this.sendData));	
+					console.log(JSON.stringify(sendData));	
 					uni.uploadFile({
-						url: url + "/update/userInfo", //仅为示例，非真实的接口地址
+						url: url + "/slife/user/update",
 						filePath: this.tempFilePath,
 						name: 'file',
-						formData: this.sendData,
-						success: (uploadFileRes) => {
-							console.log(uploadFileRes.data);
-							// if(uploadFileRes.data.status == 200){
+						formData: sendData,
+						success: (res) => {
+							let result = JSON.parse(res.data);
+							 if(result.code == 200){
 								uni.showToast({
 								    title: "修改成功!",
 									success() {
-										//TODO 延时跳转回主页
+										//TODO 延时跳转到个人信息页
+										uni.setStorage({ //设置缓存,标志用户更新
+											key: "isUserUpdate",
+											data: "true"
+										});
+										setTimeout(()=>{
+											uni.reLaunch({
+												url: '/pages/me/me'
+											});
+										},1500);
 									}
 								});
-							//}	
+							}else{
+								uni.showToast({
+									title: "修改失败",
+									icon: "error"
+								});
+							}
 						},
 						fail() {
 							uni.showToast({
@@ -109,6 +138,23 @@
 					nickname: "",
 					sex: 3
 				}
+			},
+			//弹窗提示登录
+			showIsLogin(){
+				uni.showModal({
+					title: '未登录',
+					content: '是否需要登录',
+					success: function(res) {
+						if (res.confirm) {
+							console.log('用户点击确定');
+							uni.reLaunch({
+								url: '../login/login'
+							});
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
+				});
 			}
 		}
 	}

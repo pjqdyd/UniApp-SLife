@@ -96,7 +96,7 @@
 				console.log(url + "/userinfo")
 				//请求服务端数据
 				uni.request({
-					url: url + '/slife/user/userInfo?userId=' + userId + "&applyerId=" + applyerId,
+					url: url + '/slife/user/userInfo?userId=' + userId + "&id=" + applyerId,
 					success: (res) => {
 						var result = res.data;
 						if(result.code == 200){

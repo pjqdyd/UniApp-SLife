@@ -3,8 +3,8 @@
 
 		<!-- 用户头像昵称盒子 -->
 		<view class="user-box" @click.stop="goUserInfo">
-			<image class="face-dr" src="https://upload-images.jianshu.io/upload_images/14511997-f98df143a7bb5a83.png"></image>
-			<view class="nickname-text">刺猬的拥抱</view>
+			<image class="face-dr" :src="isFaceImage"></image>
+			<view class="nickname-text">{{nickname == null || nickname == '' ? "未登录": nickname}}</view>
 		</view>
 
 		<!-- 选项 -->
@@ -30,8 +30,10 @@
 
 <script>
 	export default {
-		props: {
-			userInfo: Object //接收用户信息展示头像和昵称
+		props:{
+			nickname: String,
+			faceImage: String,
+			serverUrl: String
 		},
 		data() {
 			return {
@@ -59,9 +61,26 @@
 		methods: {
 			//点击了头像/昵称
 			goUserInfo() {
-				uni.switchTab({
-					url: "/pages/me/me"
-				})
+				if(this.nickname == '' || this.nickname == undefined){
+					uni.showModal({
+						title: '未登录',
+						content: '是否需要登录',
+						success: function(res) {
+							if (res.confirm) {
+								console.log('用户点击确定');
+								uni.reLaunch({
+									url: '../login/login'
+								});
+							} else if (res.cancel) {
+								console.log('用户点击取消');
+							}
+						}
+					});
+				}else{
+					uni.switchTab({
+						url: "/pages/me/me"
+					})
+				}
 			},
 			//点击了选项
 			clickOption(index) {
@@ -117,6 +136,16 @@
 						}
 					}
 				});
+			}
+		},
+		computed:{
+			isFaceImage() {
+				let face = this.faceImage;
+				if (face == null || face == undefined || face == '') {
+					return "/static/user/noface.png"
+				} else {
+					return this.serverUrl + face;
+				}
 			}
 		}
 	}

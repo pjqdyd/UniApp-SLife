@@ -110,7 +110,7 @@
 			isFaceImage() {
 				let user = this.userInfo;
 				if (user == null || user.faceImage == undefined || user.faceImage == '') {
-					return "../../../../static/user/noface.png"
+					return "/static/user/noface.png"
 				} else {
 					return this.serverUrl + user.faceImage;
 				}
