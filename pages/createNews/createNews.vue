@@ -44,13 +44,13 @@
 		<!-- 选中的商铺 -->
 		<view v-if="isShowShop">
 			<view class="shop-box" @click="handShopTap"></view> <!-- 覆盖在商铺上,阻止商铺的点击事件 -->
-			<local-item :shopItem="chooseShop"></local-item> <!-- 商铺 -->
+			<local-item :shopItem="chooseShop" :localInfo="localInfo"></local-item> <!-- 商铺 -->
 		</view>
 			
         <view class='news-title news-star-view' v-show="isShowShop">
             <text>店铺评分</text>
             <view class="news-star-view">
-                <text class="news-star" v-for="(value,key) in stars" :key="key" :class="key < sendDate.score ? 'active' : ''" @tap="chooseStar(value)"></text>
+                <text class="news-star" v-for="(value,key) in stars" :key="key" :class="key < sendDate.newsShopScore ? 'active' : ''" @tap="chooseStar(value)"></text>
             </view>
         </view>
         <button type="" class="news-submit" @tap="send">发布</button>
@@ -73,6 +73,14 @@
                 msgContents: ["超市购物", "美食饮品", "日常生活", "书店文具" , "电子产品", "其他"],
                 stars: [1, 2, 3, 4, 5],
 				isShowShop: false,
+				
+				//位置信息对象
+				localInfo: {
+					longitude: '',
+					latitude: '',
+					addressName: ''
+				},
+				
                 imageList: [],
                 sendDate: {
 					publisherId: "",        //发布者id
@@ -80,7 +88,7 @@
 					newsLatitude: "",		//动态发布的纬度
 					newsLongitude: "",		//动态发布的经度
 					newsCategory: "生活街", //动态分类,默认是生活街
-                    score: 0,				//动态有关店铺的评分
+                    newsShopScore: 5,		//动态有关店铺的评分
 					newsShopId: "",			//动态有关店铺的id
 					newsShopName: "",       //动态有关店铺的名字
 					newsShopAddr: ""        //动态有关店铺的位置
@@ -93,17 +101,29 @@
 			var that = this;
 			
 			//TODO读取VUE根实例属性用户信息并设置发布者id
+			that.sendDate.publisherId = "0001";
 			
 			//读取并设置位置
 			uni.getStorage({
 				key: "localInfo",
-				success(res) {
-					var localInfo = res.data;
-					that.sendDate.newsLatitude = localInfo.latitude;
-					that.sendDate.newsLongitude = localInfo.longitude;
+				success(res) {			
+					if (res.data == null || res.data == undefined || res.data == '') {
+						uni.showToast({
+							title: "未获取到位置信息",
+							icon: "none"
+						});
+					} else {
+						var localInfo = res.data;
+						that.localInfo = localInfo;
+						that.sendDate.newsLatitude = localInfo.latitude;
+						that.sendDate.newsLongitude = localInfo.longitude;
+					}				
 				},
 				fail() {
-					console.log("未获取到位置信息")
+					uni.showToast({
+						title: "未获取到位置信息",
+						icon: "none"
+					});
 				}
 			})
         },
@@ -114,6 +134,9 @@
 				key: 'chooseShop',
 				success: function (res) {
 					that.chooseShop = res.data;
+					that.sendDate.newsShopId = res.data.shopId;
+					that.sendDate.newsShopName = res.data.shopName;
+					that.sendDate.newsShopAddr = res.data.shopAddr;
 					that.isShowShop = true;
 					//获取数据后清除缓存
 					uni.removeStorage({
@@ -160,7 +183,7 @@
 				});
 			},
             chooseStar(e) { //点击评星
-                this.sendDate.score = e;
+                this.sendDate.newsShopScore = e;
             },
             previewImage() { //预览图片
                 uni.previewImage({
@@ -187,7 +210,7 @@
 					})
 					var url = this.server_Url;
 					uni.uploadFile({
-					    url: url + "/createNews",
+					    url: url + "/slife/news/createNews",
 					    files: imgs,
 					    formData: this.sendDate,
 					    success: (res) => {
@@ -197,18 +220,28 @@
 					            });
 					            this.imageList = [];
 					            this.sendDate = {
-					                score: 0,
 					                content: "",
 									newsLatitude: "",
 									newsLongitude: "",
 									newsCategory: "生活街", 
 									newsShopId: "",	
 									newsShopName: "",
+									newsShopScore: 5,
 									newsShopAddr: "",
 									publisherId: ""
 					            };
 								//TODO返回跳转到动态页
-					        }
+								setTimeout(()=>{
+									uni.switchTab({
+										url: "/pages/news/news"
+									})
+								},1500)
+					        }else{
+								uni.showToast({
+								    title: "发布失败",
+								    icon:"none"
+								});
+							}
 					    },
 					    fail: (res) => {
 					        uni.showToast({

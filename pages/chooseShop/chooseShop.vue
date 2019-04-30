@@ -21,16 +21,17 @@
 
 				<!-- 单个选框 -->
 				<view class="local-shop-box">
-					<image class="shop-image" :src="item.imageUrl"></image>
+					<image class="shop-image" :src="serverUrl + item.imageUrl"></image>
 					<view class="shop-info">
 						<!-- 商店名称 -->
 						<view class="name-box">{{item.shopName}}</view>
 						<!-- 地址距离信息 -->
 						<view class="local-addr-box">
 							<view class="local-box">
-								<text class="iconfont text">&#xe611; {{item.localAddr}} </text>
+								<text class="iconfont text">&#xe611; {{item.shopAddr}} </text>
 							</view>
-							<view class="distance-box">距离: {{item.distance}}</view>
+							<!-- <view class="distance-box">距离: {{item.distance}}</view> -->
+							<shop-distance :shopLat="item.shopLatitude" :shopLon="item.shopLongitude" :localInfo="localInfo"></shop-distance>
 						</view>
 					</view>
 					<view class="shop-radio">
@@ -57,24 +58,26 @@
 
 	import uniCollapse from '@/components/collapse/uni-collapse.vue';
 	import uniCollapseItem from '@/components/collapse/uni-collapse-item.vue';
+	import shopDistance from './distance/shop-distance.vue';
 
 	export default {
 		components: {
 			uniCollapse,
-			uniCollapseItem
+			uniCollapseItem,
+			shopDistance
 		},
 		data() {
 			return {
-				amapPlugin: null,
-				key: '2c4146676963fc2442e9aeaf6dea6c97',
-
 				localList: [],
 
-				addressName: '',
-				weather: {
-					hasData: false,
-					data: []
+				serverUrl: '',
+				//位置信息对象
+				localInfo: {
+					longitude: '',
+					latitude: '',
+					addressName: ''
 				},
+
 				cateIcon: "../../static/local/category.png", //分类图标
 				isShowCate: false, //是否显示分类
 				currentCateName: '默认', //当前分类的名字
@@ -126,43 +129,65 @@
 		},
 
 		onLoad() {
-			//高德小程序 SDK 的实例对象
-			this.amapPlugin = new amap.AMapWX({
-				key: this.key
-			});
-		},
-		created() {
-			var url = this.server_Url; //读取在main.js中挂载的vue全局属性server_Url
-			console.log(url + "/locallist")
-			//请求服务端数据
-			uni.request({
-				url: url + '/locallist',
-				success: (res) => {
-					console.log("请求locallist数据成功成功..")
-					let list = res.data.localList
-					this.localList = this.localList.concat(list);
-				}
-			});
-
-			//获取经纬度
-			uni.getLocation({
-				type: 'wgs84',
-				success: function(res) {
-					console.log('当前位置的经度：' + res.longitude);
-					console.log('当前位置的纬度：' + res.latitude);
+			var that = this;
+			//读取缓存中的位置信息localInfo
+			uni.getStorage({
+				key: 'localInfo',
+				success(res) {
+					console.log("附近页的缓存的位置信息:" + JSON.stringify(res.data))
+					if (res.data == null || res.data == undefined || res.data == '') {
+						//如果缓存没有位置信息
+						uni.showToast({
+							title: "未获取到您的位置信息",
+							icon: "none"
+						})
+					} else {
+						that.localInfo = res.data;
+						that.getAllLocalShop(); //TODO根据位置信息加载附近的店铺
+					}
 				},
-				fail: function() {
-					console.log("uni.getLocation获取位置信息失败")
+				fail() {
+					uni.showToast({
+						title: "未获取到您的位置信息",
+						icon: "none"
+					})
 				}
 			});
+			
+			this.serverUrl = this.server_Url; //设置全局的服务url
 		},
-		onReachBottom() {
-			//TODO
-		},
-		mounted() {
-			this.getRegeo()
-		},
+		created() {},
+		onReachBottom() {},
+		mounted() {},
 		methods: {
+			//请求后端获取所有附近的店铺
+			getAllLocalShop() {
+				var url = this.server_Url;
+				var that = this;
+				//请求服务端数据
+				uni.request({
+					url: url + '/slife/shopList/allLocalShop?latitude=' + this.localInfo.latitude + "&longitude=" + this.localInfo.longitude,
+					success: (res) => {
+						let result = res.data;
+						if(result.code == 200){
+							console.log("请求locallist数据成功成功..")
+							that.localList = [];
+							that.localList = that.localList.concat(result.data);
+						}else{
+							uni.showToast({
+								title: "加载数据失败",
+								icon: "none"
+							})
+						}
+					},
+					fail() {
+						uni.showToast({
+							title: "加载数据失败",
+							icon: "none"
+						})
+					}
+				});
+			},
 			//点击了确定,将选中的shop对象保存到缓存
 			handConfim() {
 				let shopId = this.chooseShop.shopId;
@@ -199,30 +224,6 @@
 			//监听子组件的点击展开收起事件(设置当前组件的isShowCate值,保证isShowCate的值与子组件的isOpen一致)
 			handIsOpen(isopen) {
 				this.isShowCate = isopen
-			},
-			//获取位置信息
-			getRegeo() {
-				this.amapPlugin.getRegeo({
-					success: (data) => {
-						console.log(data)
-						this.addressName = data[0].name;
-						console.log(this.addressName)
-					},
-					fail: function() {
-						console.log("this.amapPlugin获取位置信息失败")
-					}
-				});
-			},
-			//选择位置信息
-			getLocationInfo() {
-				uni.chooseLocation({
-					success: function(res) {
-						console.log('位置名称：' + res.name);
-						console.log('详细地址：' + res.address);
-						console.log('纬度：' + res.latitude);
-						console.log('经度：' + res.longitude);
-					}
-				});
 			}
 		},
 		//监听导航栏的"<"或"O"的点击事件
@@ -304,7 +305,7 @@
 
 	.shop-radio {
 		text-align: center;
-		width: 130upx;
+		width: 110upx;
 		height: 100%;
 		box-sizing: border-box;
 		padding: 50upx;
@@ -339,7 +340,7 @@
 	}
 
 	.local-addr-box {
-		width: 400upx;
+		width: 420upx;
 		height: 45upx;
 		display: flex;
 		justify-content: space-between;
@@ -349,7 +350,7 @@
 		display: flex;
 		flex-wrap: wrap;
 		flex-direction: row;
-		width: 260upx;
+		width: 280upx;
 		height: 40upx;
 		overflow: hidden;
 	}
@@ -362,13 +363,5 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
-	}
-
-	.distance-box {
-		width: 150upx;
-		height: 45upx;
-		line-height: 45upx;
-		font-size: 26upx;
-		text-align: left;
 	}
 </style>

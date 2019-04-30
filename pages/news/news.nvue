@@ -146,7 +146,7 @@
 		methods: {
 			//获取对应分类tabbar的动态数据(index为动态的分类下标)
 			getNewsList(page, index) {
-				var url = conf.serverUrl; //读取属性serverUrl
+				var url = conf.testUrl; //读取属性serverUrl
 				var objectItem = this.homeList[index]; //要操作的分类的数据对象
 				console.log(url)
 				//请求服务端数据
