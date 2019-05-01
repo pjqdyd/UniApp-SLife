@@ -7,7 +7,7 @@
 
 目前使用的各个的链接json数据:<br>
 
- >1. [主页动态列表newsdata.json](https://www.easy-mock.com/mock/5c8dd97d6fe7c7611499c703/test/newsdata)<br>
+ >1. [动态列表newsdata.json](https://www.easy-mock.com/mock/5c8dd97d6fe7c7611499c703/test/newsdata)<br>
  >2. [附近商铺列表locallist.json](https://www.easy-mock.com/mock/5c8dd97d6fe7c7611499c703/test/locallist)<br>
  >3. [用户信息userinfo.json](https://www.easy-mock.com/mock/5c8dd97d6fe7c7611499c703/test/userinfo)<br>
  >4. [店铺详情信息shopinfo.json](https://www.easy-mock.com/mock/5c8dd97d6fe7c7611499c703/test/shopinfo)<br>
