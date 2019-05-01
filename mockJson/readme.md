@@ -1,7 +1,7 @@
 
 #### 生活街测试版使用在线模拟json数据
 
----使用的在线模拟数据工具: [Mock Json](https://www.easy-mock.com), 你也可以自己在线创建模拟json数据接口,然后在项目目录的comment/config.js中修改全局连接服务数据的serverUrl为模拟接口的Base URL, 最后在每个页面的uni.request方法中拼接完整的url来获取模拟json数据.
+---使用的在线模拟数据工具: [Easy Mock](https://www.easy-mock.com), 你也可以自己在线创建模拟json数据接口,然后在项目目录的common/config.js中修改全局连接服务数据的serverUrl为模拟接口的Base URL, 最后在每个页面的uni.request方法中拼接完整的url来获取模拟json数据.
 
 (注意目前的数据只是完成展示, 具体的动态请求后端数据展示,等后端写了再修改页面数据的请求逻辑)
 
