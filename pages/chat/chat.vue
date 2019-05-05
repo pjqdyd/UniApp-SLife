@@ -184,7 +184,20 @@
 				})
 				
 				msgObj.count = 0; //设置未读消息数为0
-			}
+			},
+			
+			//设置红点
+			setTabbarReddot() {
+				//延时获取uni的api,防止调用不到,设置红点
+				setTimeout(() => {
+					uni.showTabBarRedDot({
+						index: 2,
+					})
+				}, 200)
+			},
+		},
+		onHide() {
+			this.setTabbarReddot();//设置红点
 		},
 		
 		//监听导航栏的"<"的点击事件
