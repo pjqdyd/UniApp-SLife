@@ -94,6 +94,8 @@
  
    当前项目如果发现可优化,欢迎大家提issue改进.
  
+   生活街App联调后端的版本在当前仓库的[dev分支](https://github.com/pjqdyd/UniApp-SLife/tree/dev).
+ 
    后端目前正在开发中: [生活街App后端](https://github.com/pjqdyd/SLife-Dev).
 
    
