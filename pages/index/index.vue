@@ -54,7 +54,7 @@
 </template>
 
 <script>
-	import amap from '../../common/amap-wx.js'; //地图工具
+	import amap from '@/common/amap-wx.js'; //地图工具
 
 	import uniDrawer from "./component/uni-drawer/uni-drawer.vue"; //导入侧边抽屉组件
 	import drawerList from "./component/drawer-list/drawer-list.vue"; //导入侧边栏的列表内容

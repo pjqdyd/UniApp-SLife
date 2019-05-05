@@ -33,7 +33,7 @@
 	import uniMediaList from "./component/uni-media-list/uni-media-list.vue";
 	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"
 
-	import utils from '../../common/utils.js'; //一些工具方法
+	import utils from '@/common/utils.js'; //一些工具方法
 
 	export default {
 		components: {
@@ -53,6 +53,8 @@
 					latitude: '',
 					addressName: ''
 				},
+				userId: '', //用户id
+				serverUrl: '', //后端服务地址
 				
 				//用来存储动态页的3个tab分类页list数据对象
 				homeList: [
@@ -79,7 +81,6 @@
 		},
 		onLoad() {
 			console.log("动态页面加载");
-			this.setTabbarReddot(); //设置红点
 		},
 		created() {
 			//查询默认的推荐分类的第1页数据
@@ -180,15 +181,6 @@
 				uni.navigateTo({
 					url: '../createNews/createNews'
 				});
-			},
-			//设置红点
-			setTabbarReddot() {
-				//延时获取uni的api,防止调用不到,设置红点
-				setTimeout(() => {
-					uni.showTabBarRedDot({
-						index: 2,
-					})
-				}, 200)
 			},
 			//跳转到详情页
 			goDetail(e, flag) {
