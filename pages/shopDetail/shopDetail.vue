@@ -138,16 +138,14 @@
 							})
 						} else {
 							uni.navigateTo({
-								//url: "/pages/userInfo/userInfo?userId=" + res.data.userId +"&applyerId=" + applyerId
-								url: "/pages/userInfo/userInfo?userId=" + "0001" +"&applyerId=" + applyerId
+								url: "/pages/userInfo/userInfo?userId=" + res.data.userId +"&id=" + applyerId
 							})
 						}
 					},
 					fail() {
 						//测试
 						uni.navigateTo({
-							//url: "/pages/userInfo/userInfo?userId=" + res.data.userId +"&applyerId=" + applyerId
-							url: "/pages/userInfo/userInfo?userId=" + "0001" +"&applyerId=" + applyerId
+							url: "/pages/userInfo/userInfo?userId=0&id=" + applyerId
 						})
 					}
 				})
