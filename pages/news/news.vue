@@ -14,7 +14,7 @@
 			<swiper-item v-for="i in [0,1,2]" :key="i">
 				<view :id="'swiperList' + i" style="background-color: #eeeeee; overflow: hidden;">
 					<view v-for="(item,index1) in homeList[i].list" :key="index1">
-						<uni-media-list :itemData="item" @click="goDetail(item , 0)" @clickComment="goDetail(item, 1)"></uni-media-list>
+						<uni-media-list :itemData="item" :serverUrl="serverUrl" @click="goDetail(item , 0)" @clickComment="goDetail(item, 1)"></uni-media-list>
 					</view>
 				</view>
 				<uni-load-more :status="loadingStatus"></uni-load-more>
@@ -45,7 +45,16 @@
 				loadingStatus: "more", //加载状态
 				isShowDrawer: false,
 				currentItem: 1, //当前的分类序号
-				categoryList: ["最新", "推荐", "热门"],
+				categoryList: [{
+					name: '最新',
+					id: 'latestList'
+				}, {
+					name: '推荐',
+					id: 'recommendList'
+				}, {
+					name: '热门',
+					id: 'hotList'
+				}],
 
 				//位置信息对象
 				localInfo: {
@@ -81,18 +90,39 @@
 		},
 		onLoad() {
 			console.log("动态页面加载");
+			uni.showLoading({
+				title: "加载中.."
+			});
+			var that = this;
+			//读取缓存中的位置信息localInfo
+			uni.getStorage({
+				key: 'localInfo',
+				success(res) {
+					var localInfo = res.data;
+					if (localInfo == null || localInfo == undefined || localInfo == '') { //如果缓存没有位置信息,就提示手动获取位置信息
+					   uni.hideLoading();
+					   uni.showModal({
+					   	title: "提示",
+					   	content: "未获取到位置信息,请右上角手动定位"
+					   });
+					} else {
+						that.localInfo = localInfo;
+						that.getNewsList(1, that.currentItem); //查询默认的推荐分类的第1页数据
+					}
+				},
+				fail() {
+					uni.hideLoading();
+					uni.showModal({
+						title: "提示",
+						content: "未获取到位置信息,请右上角手动定位"
+					});
+				}
+			});
+			
+			that.serverUrl = this.server_Url; //读取挂载的全局服务属性
 		},
-		created() {
-			//查询默认的推荐分类的第1页数据
-			this.getNewsList(1, this.currentItem);
-		},
-		mounted() {
-			//获取并设置列表的高度信息(延迟是防止微信小程序节点还未挂载)
-			//this.currentItem用于区分设置3个中哪个列表页的高度
-			setTimeout(() => {
-				this.getListHeight(this.currentItem);
-			}, 200);
-		},
+		created() {},
+		mounted() {},
 		updated() {},
 		//页面下拉刷新
 		onPullDownRefresh() {
@@ -102,9 +132,6 @@
 			this.homeList[currentItem].list = []; //清空数据	
 			//重新获取当前分类的第1页数据
 			this.getNewsList(1, currentItem);
-			setTimeout(()=>{
-				this.getListHeight(currentItem); //重新设置当前分类页面高度
-			},200)
 		},
 		//页面上拉触底
 		onReachBottom() {
@@ -118,10 +145,7 @@
 				return;
 			}else{
 				//加一页后,重新获取当前分类的数据
-				this.getNewsList(page, currentItem);
-				setTimeout(()=>{
-					this.getListHeight(currentItem); //重新设置当前分类页面高度
-				},200)		
+				this.getNewsList(page, currentItem);		
 			}		
 		},
 		methods: {
@@ -129,21 +153,38 @@
 			getNewsList(page, index) {
 				var url = this.server_Url; //读取在main.js中挂载的vue全局属性server_Url
 				var objectItem = this.homeList[index]; //要操作的分类的数据对象
-				console.log(url)
 				//请求服务端数据
 				uni.request({
-					url: url + '/newsdata?category=' + this.categoryList[index] + "&page=" + page,
+					url: url + "/slife/newsList/" + this.categoryList[index].id + "?latitude=" + this.localInfo.latitude + "&longitude=" + this.localInfo.longitude + "&userId=" + this.userId + "&page=" + page,
 					success: (res) => {
-						console.log("请求分类" + this.categoryList[index] + "的第" + page + "页数据");
+						uni.hideLoading();
+						console.log("请求分类" + this.categoryList[index].name + "的第" + page + "页数据");
 						let result = res.data;
-						//拼接数据到对应分类的list中,且设置分页信息
-						objectItem.list = objectItem.list.concat(result.newsList);
-						//objectItem.page = result.page;
-						objectItem.page = page;
-						objectItem.total = result.total;
-						objectItem.totalPage = result.totalPage;
-						//覆盖原有的数据
-						this.homeList[index] = objectItem; 	
+						
+						if(result.code == 200){
+							//拼接数据到对应分类的list中,且设置分页信息
+							objectItem.list = objectItem.list.concat(result.data.newsList);
+							objectItem.page = page;
+							objectItem.total = result.data.total;
+							objectItem.totalPage = result.data.totalPage;
+							//覆盖原有的数据
+							this.homeList[index] = objectItem; 	
+						}else{
+							uni.showToast({
+								title: "未获取附近动态哦",
+								icon: "none"
+							});
+						}
+						uni.stopPullDownRefresh();
+						setTimeout(()=>{
+							this.getListHeight(index); //重新设置当前分类页面高度
+						},200);
+					},
+					fail() {
+						uni.showToast({
+							title: "未获取附近动态哦",
+							icon: "none"
+						});
 						uni.stopPullDownRefresh();
 					}
 				});

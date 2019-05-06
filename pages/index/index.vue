@@ -238,6 +238,7 @@
 							uni.stopPullDownRefresh(); //停止下拉刷新
 						}, 500);
 						console.log("请求locallist数据成功成功..")
+						console.log(res)
 						if (result.code == 200) {
 							
 							var list = result.data.localList; //新的数据列表	

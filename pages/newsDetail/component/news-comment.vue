@@ -4,40 +4,44 @@
 		<view class="comment-count">评论<text class="comment-num">{{commentCount}}</text></view>
 
 		<view class="comment-list-box">
-			
-			<block v-for="(item, index) in commentList" :key="index">
-				<view class='container-comments'>
-					<!-- <image class="face-comments" src='{{serverUrl}}{{item.faceImage}}'></image> -->
-					<image class="face-comments" :src='item.fromUserFace'></image>
-					
-					<!-- 评论者昵称, 和是否是回复 -->
-					<view class='nickname-comments'>
-						<view class='nickname-lbl'>{{item.fromUserName}}
-							<text class="nickname-reply" v-if="item.toUserName == null ? false : true">回复 {{item.toUserName}}</text>
-						</view>
-						
-						<!-- 评论/回复的内容 -->
-						<view class='comments-content'>{{item.comment}}</view>
-						
-						<!-- 回复按钮, 日期信息 -->
-						<view class="date-comment">
-							<text class="reply" @click="clickReply(item)">回复</text><!-- 回复按钮 -->
-							<text class='date-lbl'>{{item.dateTime}}
-								<text>{{item.toUserId == null ? " 留言" : " 回复"}}</text>
-							</text>
+
+			<view v-if="commentCount != 0 && commentCount != undefined">
+				<block v-for="(item, index) in commentList" :key="index">
+					<view class='container-comments'>
+						<!-- <image class="face-comments" src='{{serverUrl}}{{item.faceImage}}'></image> -->
+						<image class="face-comments" :src='item.fromUserFace'></image>
+
+						<!-- 评论者昵称, 和是否是回复 -->
+						<view class='nickname-comments'>
+							<view class='nickname-lbl'>{{item.fromUserName}}
+								<text class="nickname-reply" v-if="item.toUserName == null ? false : true">回复 {{item.toUserName}}</text>
+							</view>
+
+							<!-- 评论/回复的内容 -->
+							<view class='comments-content'>{{item.comment}}</view>
+
+							<!-- 回复按钮, 日期信息 -->
+							<view class="date-comment">
+								<text class="reply" @click="clickReply(item)">回复</text><!-- 回复按钮 -->
+								<text class='date-lbl'>{{item.dateTime}}
+									<text>{{item.toUserId == null ? " 留言" : " 回复"}}</text>
+								</text>
+							</view>
+
 						</view>
 
 					</view>
-
-				</view>
-			</block>
+				</block>
+			</view>
+			
 			<view style="height: 200upx;">
-				<uni-load-more  status="noMore"></uni-load-more>
+				<uni-load-more status="noMore"></uni-load-more>
 			</view>
 		</view>
 
 		<view class="comment-input-box">
-			<input class="comment-input" :placeholder="placeholderText"  :focus="isFocus" :value="inputValue" @input="onInput" @blur="loseFoucs" @focus="inputFocus" />
+			<input class="comment-input" :placeholder="placeholderText" :focus="isFocus" :value="inputValue" @input="onInput"
+			 @blur="loseFoucs" @focus="inputFocus" />
 			<view class="iconfont comment-button" @click="createComment">&#xe634; 发表</view>
 		</view>
 
@@ -46,38 +50,37 @@
 
 <script>
 	import conf from '@/common/config.js'; //全局的一些配置信息
-	
+
 	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue";
-	
+
 	export default {
-		components:{
+		components: {
 			uniLoadMore
-		},	
+		},
 		data() {
 			return {
 				commentCount: 0, //评论的数量
 				commentList: [], //评论的数据
-				
+
 				isFocus: false,
 				placeholderText: "请输入评论",
 				inputValue: ""
 			}
 		},
 		created() {
-			var url = conf.serverUrl;
-			var list = [];	
+			var url = conf.testUrl;
+			var list = [];
 			uni.request({
-				url: url + '/commentlist',
+				url: url + '/commentlis',
 				success: (res) => {
 					console.log("请求评论commentList数据成功..")
 					list = res.data.commentList;
 					this.commentCount = res.data.commentCount;
 					this.commentList = this.commentList.concat(list);
 				}
-			})		
+			})
 		},
-		mounted() {
-		},
+		mounted() {},
 		methods: {
 			clickReply(e) {
 				//参数e为需要回复的评论对象
@@ -87,31 +90,30 @@
 				console.log("回复...")
 			},
 			//输入框获取焦点
-			inputFocus(){
+			inputFocus() {
 				this.$emit('inputFocus'); //向外触发输入框激活事件
 			},
 			//输入框失去焦点
-			loseFoucs(){
+			loseFoucs() {
 				this.isFocus = false
 			},
 			//正在输入
-			onInput(e){
+			onInput(e) {
 				this.inputValue = e.detail.value
 			},
 			//点击了发表评论
-			createComment(){
+			createComment() {
 				//TODO
 				//TODO 保存成功后,重新加载最新评论
 				console.log("发布评论" + this.inputValue)
 				this.inputValue = ""
 			},
-			
-			loadMoreComment(){
+
+			loadMoreComment() {
 				console.log("加载更多评论")
 			}
 		},
-		computed:{
-		}
+		computed: {}
 	}
 </script>
 
@@ -131,8 +133,8 @@
 		font-size: 32upx;
 		margin-left: 10upx;
 	}
-	
-	.comment-list-box{
+
+	.comment-list-box {
 		margin-bottom: 120upx;
 		background-color: whitesmoke;
 	}
@@ -207,8 +209,8 @@
 		padding: 20upx;
 		box-sizing: border-box;
 	}
-	
-	.comment-input{
+
+	.comment-input {
 		width: 500upx;
 		height: 80upx;
 		line-height: 80upx;
@@ -216,7 +218,8 @@
 		background-color: #eeeeee;
 		border-radius: 10upx;
 	}
-	.comment-button{
+
+	.comment-button {
 		width: 200upx;
 		height: 80upx;
 		line-height: 80upx;
