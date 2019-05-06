@@ -143,7 +143,7 @@
 						})
 					} else {
 						that.localInfo = res.data;
-						that.getAllLocalShop(); //TODO根据位置信息加载附近的店铺
+						that.getAllLocalShop(that.currentCateName); //TODO根据位置信息加载附近的店铺
 					}
 				},
 				fail() {
@@ -161,12 +161,20 @@
 		mounted() {},
 		methods: {
 			//请求后端获取所有附近的店铺
-			getAllLocalShop() {
+			getAllLocalShop(currentCateName) {
 				var url = this.server_Url;
 				var that = this;
+				var requestUrl = '';
+				
+				//根据当前店铺分类查询
+				if(currentCateName == "默认"){
+					requestUrl = url + '/slife/shopList/allLocalShop?latitude=' + this.localInfo.latitude + "&longitude=" + this.localInfo.longitude;
+				}else{
+					requestUrl = url + '/slife/shopList/localCateShop?latitude=' + this.localInfo.latitude + "&longitude=" + this.localInfo.longitude +"&category=" + currentCateName;
+				}
 				//请求服务端数据
 				uni.request({
-					url: url + '/slife/shopList/allLocalShop?latitude=' + this.localInfo.latitude + "&longitude=" + this.localInfo.longitude,
+					url: requestUrl,
 					success: (res) => {
 						let result = res.data;
 						if(result.code == 200){
@@ -220,6 +228,8 @@
 			changeCategory(index) {
 				this.currentCateName = this.categroyList[index].cateName;
 				this.isShowCate = false //点击后收起分类栏
+				
+				this.getAllLocalShop(this.currentCateName); //请求该分类的店铺
 			},
 			//监听子组件的点击展开收起事件(设置当前组件的isShowCate值,保证isShowCate的值与子组件的isOpen一致)
 			handIsOpen(isopen) {
