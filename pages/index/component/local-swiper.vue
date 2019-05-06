@@ -6,8 +6,8 @@
 				<block v-for="(item,index) in imgList" :key="index">
 					<swiper-item class="swiperitem">
 						<view @click="handImageClick">
-							<image class="itemImg" :class="currentIndex == index ? 'swiperactive': ''" :src="serverUrl + item" mode="scaleToFill">
-							</image>
+							<!-- <image class="itemImg" :class="currentIndex == index ? 'swiperactive': ''" :src="serverUrl + item" mode="scaleToFill"></image> -->
+							<image class="itemImg" :class="currentIndex == index ? 'swiperactive': ''" :src="item" mode="scaleToFill"></image>
 						</view>
 					</swiper-item>
 				</block>
@@ -20,12 +20,20 @@
 		data(){
 			return {
 				currentIndex: 0,
+				//这里就使用后端的静态图片作为轮播图, serverUrl + imgList[0] 即为图片的网络绝对路径
+				// imgList:[
+				// '/hot-shop/shopImage/shop1.jpg',
+				// '/hot-shop/shopImage/shop2.jpg',
+				// '/hot-shop/shopImage/shop3.jpg'
+				// ],
+				
+				//直接使用静态图片
 				imgList:[
-				'/hot-shop/shopImage/shop1.jpg',
-				'/hot-shop/shopImage/shop2.jpg',
-				'/hot-shop/shopImage/shop3.jpg'
+				'../../static/hotShop/shop1.jpg',
+				'../../static/hotShop/shop2.jpg',
+				'../../static/hotShop/shop3.jpg'
 				],
-				hotShopId:[
+				hotShopId:[ //对应数据库的几个店铺id, 方便展示店铺详情
 					"s-19042226064334",
 					"s-19042337283395",
 					"s-19042580607008"

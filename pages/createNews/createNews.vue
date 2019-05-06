@@ -101,7 +101,7 @@
 			var that = this;
 			
 			//TODO读取VUE根实例属性用户信息并设置发布者id
-			that.sendDate.publisherId = "0001";
+			that.sendDate.publisherId = "0008";
 			
 			//读取并设置位置
 			uni.getStorage({

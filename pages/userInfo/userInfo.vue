@@ -74,34 +74,32 @@
 		data() {
 			return {
 				userInfo: {},
-				userId: '',
-				applyerId: ''
+				userId: '', //用户id
+				id: ''      //要查询信息的好友id
 			}
 		},
 		onLoad(params) {
 			//从跳转的params中获取用户id
 			this.userId = params.userId;
 
-			this.applyerId = params.applyerId; //获取要查询的店主id
+			this.id = params.id; //获取要查询的好友id
 
-			//根据跳转的applyerId查询店主信息
-			this.getUserInfo(params.userId, params.applyerId); //这里测试,就手动请求一次数据
+			//根据跳转的id查询好友信息
+			this.getUserInfo(params.userId, params.id); //这里测试,就手动请求一次数据
 		},
 		onShow() {},
 		created() {},
 		methods: {
-			//根据applyerId请求店主数据的方法
-			getUserInfo(userId, applyerId) {
+			//根据id请求好友数据的方法
+			getUserInfo(userId, id) {
 				var url = this.server_Url; //读取在main.js中挂载的vue全局属性
-				console.log(url + "/userinfo")
 				//请求服务端数据
 				uni.request({
-					url: url + '/slife/user/userInfo?userId=' + userId + "&id=" + applyerId,
+					url: url + '/slife/user/userInfo?userId=' + userId + "&id=" + id,
 					success: (res) => {
 						var result = res.data;
 						if(result.code == 200){
 							console.log("请用户数据成功成功..")
-							//console.log(res.data.userInfo)
 							this.userInfo = res.data.data;
 						}else{
 							uni.showToast({
@@ -122,7 +120,7 @@
 			//跳转到动态, type标识是发布的动态还是点赞的动态
 			goNewsList(type) {
 				uni.navigateTo({
-					url: "/pages/newsList/newsList?userId=" + this.applyerId + "&type=" + type
+					url: "/pages/newsList/newsList?userId=" + this.id + "&type=" + type
 				})
 			},
 			//点击展开了用户的粉丝

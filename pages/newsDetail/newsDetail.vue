@@ -3,11 +3,11 @@
 		<view class="page-box">
 			<!-- 动态的顶部用户信息, 头像,昵称,动态标题  280upx-->
 			<view class="userInfo-box">
-				<image class="face" :src="userInfo.faceUrl" @click.stop="goUserInfo"></image> <!-- 用户头像 -->
+				<image class="face" :src="serverUrl + newsItem.faceUrl" @click.stop="goUserInfo"></image> <!-- 用户头像 -->
 
 				<!-- 用户昵称,性别, 身份 -->
 				<view class="nickname-sex-idStatus-box">
-					<text class="nickname">{{userInfo.nickname}}</text> <!-- 用户昵称 -->
+					<text class="nickname">{{newsItem.nickname}}</text> <!-- 用户昵称 -->
 					<!-- 身份 -->
 					<text class="id-status-text">-{{isIdStatus}}-</text>
 				</view>
@@ -16,7 +16,7 @@
 			</view>
 
 			<!-- 动态有关的店铺的信息 -->
-			<view class="shop-info" @click="goShopDetail">
+			<view class="shop-info" v-if="newsItem.newsShopId != '' && newsItem.newsShopId != undefined" @click="goShopDetail">
 
 				<image class="shop-icon" src="../../static/news/shop.png"></image>
 				<view class="shop-name-local">
@@ -31,8 +31,8 @@
 			</view>
 
 			<!-- 动态图片 -->
-			<view v-for="(item, index) in newsItem.newsImage" :key="index" style="background-color: #fff;">
-				<image class="news-image" mode="widthFix" :src="item.imageUrl"></image>
+			<view v-for="(item, index) in newsItem.newsImageList" :key="index" style="background-color: #fff;">
+				<image class="news-image" mode="widthFix" :src="serverUrl + item.imageUrl"></image>
 			</view>
 
 			<!-- 底部的点赞,举报图标和时间 -->
@@ -55,7 +55,7 @@
 </template>
 
 <script>
-	import conf from '../../common/config.js'; //全局的一些配置信息
+	import conf from '@/common/config.js'; //全局的一些配置信息
 
 	import newsComment from "./component/news-comment.vue"; //导入评论组件
 
@@ -66,15 +66,11 @@
 		data() {
 			return {
 				newsItem: {}, //动态数据对象
-				userInfo: { //用户信息对象
-					id: '',
-					faceUrl: '',
-					nickname: '',
-					sex: 0,
-					idStatus: 0
-				},
  				likeCount: 0, //点赞的数量
-				isLike: 0
+				isLike: 0,
+				
+				userId: '',
+				serverUrl: ''
 			}
 		},
 		onLoad(params) {
@@ -88,9 +84,19 @@
 					//如果拿到的是json字符串,说明是从index.nvue跳转的, 否则是从index.vue跳转的,无需转换
 					let newsItem = typeof res.data == 'string' ? JSON.parse(res.data) : res.data;
 					that.newsItem = newsItem;
-					that.userInfo = newsItem.userInfo;
 					that.isLike = newsItem.isLike;
-					that.likeCount = newsItem.likeCount;
+					that.likeCount = newsItem.newsLikeCounts;
+				}
+			});
+			this.serverUrl = this.server_Url; //读取挂载的全局服务地址
+			
+			uni.getStorage({ //读取用户id
+				key: "userInfo",
+				success(res) {
+					let userId = res.data.userId;
+					if(userId != undefined || userId != ''){
+						that.userId = userId;
+					}
 				}
 			});
 			
@@ -104,8 +110,7 @@
 		},
 		onShow() {},
 		created() {},
-		mounted() {
-		},
+		mounted() {},
 		//页面下拉刷新
 		onPullDownRefresh() {
 			console.log('refresh刷新动态详情');
@@ -119,14 +124,18 @@
 		},
 		methods: {
 			//跳转到用户详情页,带入要查询的userId
-			goUserInfo() {
-				
+			goUserInfo() {		
 				//判断是不是自己的id,是就跳转到个人信息页TODO
+				if(this.newsItem.publisherId == this.userId){
+					uni.switchTab({
+						url: "/pages/me/me"
+					});
+				}else{
+					uni.navigateTo({
+						url: "/pages/userInfo/userInfo?id=" + this.newsItem.publisherId
+					})
+				}
 				
-				//console.log(this.newsItem.userInfo.id)
-				uni.navigateTo({
-					url: "/pages/userInfo/userInfo?userId=" + this.newsItem.userInfo.id
-				})
 			},
 			//跳转到店铺详情页
 			goShopDetail() {
@@ -176,7 +185,7 @@
 		},
 		computed: {
 			isIdStatus() {
-				let idStatus = this.userInfo.idStatus;
+				let idStatus = this.newsItem.idStatus;
 				if (idStatus == 1) {
 					return "店主"
 				} else if (idStatus == 0) {

@@ -5,11 +5,11 @@
 			<!-- 动态的顶部用户信息, 头像,昵称,性别,动态标题  280upx-->
 			<div class="info-box">
 				<div class="userInfo-box">
-					<image class="face" :src="itemData.userInfo.faceUrl" @click.stop="goUserInfo"></image> <!-- 用户头像 -->
+					<image class="face" :src="serverUrl + itemData.faceUrl" @click.stop="goUserInfo"></image> <!-- 用户头像 -->
 
 					<!-- 用户昵称,性别, 身份 -->
 					<div class="nickname-sex-idStatus-box">
-						<text class="nickname">{{itemData.userInfo.nickname}}</text> <!-- 用户昵称 -->
+						<text class="nickname">{{itemData.nickname}}</text> <!-- 用户昵称 -->
 						<!-- 性别 -->
 						<image class="sex-box" v-if="isBoy == 1" src="../../static/sex/boy.png"></image>
 						<image class="sex-box" v-if="isBoy == 2" src="../../static/sex/girl.png"></image>
@@ -21,28 +21,28 @@
 				</div>
 				<!-- 动态描述标题 -->
 				<div class="text-box">
-					<div class="text">{{itemData.newsTitle}}</div>
+					<div class="text">{{itemData.content}}</div>
 				</div>
 			</div>
 
 			<!-- 动态的图片 盒子高度分别为 400 340 500 660 upx-->
-			<image  class="image-1" v-if="imgListSize == 1" mode="aspectFill" :src="imageList[0].imageUrl"></image>
+			<image  class="image-1" v-if="imgListSize == 1" mode="aspectFill" :src="serverUrl + imageList[0].imageUrl"></image>
 
 			<div class="image-2-box" v-if="imgListSize == 2">
-				<image class="image-2" mode="aspectFill" :src="imageList[0].imageUrl"></image>
-				<image class="image-2" mode="aspectFill" :src="imageList[1].imageUrl"></image>
+				<image class="image-2" mode="aspectFill" :src="serverUrl + imageList[0].imageUrl"></image>
+				<image class="image-2" mode="aspectFill" :src="serverUrl + imageList[1].imageUrl"></image>
 			</div>
 
 			<div class="image-3-box" v-if="imgListSize == 3">
-				<image class="image-3-0" mode="aspectFill" :src="imageList[0].imageUrl"></image>
-				<image class="image-3-1" mode="aspectFill" :src="imageList[1].imageUrl"></image>
-				<image class="image-3-2" mode="aspectFill" :src="imageList[2].imageUrl"></image>
+				<image class="image-3-0" mode="aspectFill" :src="serverUrl + imageList[0].imageUrl"></image>
+				<image class="image-3-1" mode="aspectFill" :src="serverUrl + imageList[1].imageUrl"></image>
+				<image class="image-3-2" mode="aspectFill" :src="serverUrl + imageList[2].imageUrl"></image>
 			</div>
 
 			<div class="image-4-box" v-if="imgListSize == 4">
-				<image class="image-1" mode="aspectFill" :src="imageList[0].imageUrl"></image>
+				<image class="image-1" mode="aspectFill" :src="serverUrl + imageList[0].imageUrl"></image>
 				<div class="image4">
-					<image v-for="(i, index) in [1,2,3]" class="image-4" mode="aspectFill" :src="imageList[i].imageUrl" :key="index"></image>
+					<image v-for="(i, index) in [1,2,3]" class="image-4" mode="aspectFill" :src="serverUrl + imageList[i].imageUrl" :key="index"></image>
 				</div>
 			</div>
 
@@ -73,7 +73,8 @@
 				default: function(e) {
 					return {}
 				}
-			}
+			},
+			serverUrl: String
 		},
 		data() {
 			return {
@@ -85,18 +86,17 @@
 		},
 		created() {
 			var data = this.itemData;
-			//console.log(JSON.stringify(this.itemData.newsImage[0].imageUrl))
-			this.imageList = data.newsImage; //主页动态的图片列表
+			this.imageList = data.newsImageList; //主页动态的图片列表
 			this.isLike = data.isLike;
-			this.likeCount = data.likeCount;
-			this.commentCount = data.commentCount;
+			this.likeCount = data.newsLikeCounts;
+			this.commentCount = data.newsCommentCounts;
 		},
 		computed: {
 			isBoy() {
-				return this.itemData.userInfo.sex;
+				return this.itemData.sex;
 			},
 			isIdStatus() {
-				let idStatus = this.itemData.userInfo.idStatus;
+				let idStatus = this.itemData.idStatus;
 				if (idStatus == 1) {
 					return "店主"
 				} else if (idStatus == 0) {
@@ -117,7 +117,7 @@
 			//跳转到用户详情页,将需要查询的userId带入
 			goUserInfo() {
 				uni.navigateTo({
-					url: "/pages/userInfo/userInfo?userId=" + this.itemData.userInfo.id
+					url: "/pages/userInfo/userInfo?id=" + this.itemData.publisherId
 				})
 			},
 			//点击了点赞/取消点赞
@@ -325,9 +325,8 @@
 	}
 
 	.image-4-box {
-		position: relative;
 		width: 750upx;
-		height: 655upx;
+		height: 650upx;
 	}
 
 	.image4 {
@@ -339,7 +338,7 @@
 	}
 
 	.image-4 {
-		width: 246upx;
+		width: 247upx;
 		height: 240upx;
 	}
 </style>

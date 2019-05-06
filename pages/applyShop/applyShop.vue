@@ -137,7 +137,7 @@
 					shopCategory: "生活街",  //店铺分类,默认是生活街
 					mainInfo: "",           //店铺的主营介绍信息
 					shopAddr: "",           //店铺的位置
-					openTime: "",			//营业时间 
+					openTime: "08:00-23:00",//营业时间 
 					supportServer: ""		//支持的服务字符串数组
                 }
             }
@@ -145,7 +145,7 @@
 		//params为上个页面跳转过来的参数
         onLoad(params) {
 			//TODO读取VUE根实例属性用户信息并设置申请者id
-			this.sendDate.applyerId = "0007";
+			this.sendDate.applyerId = "0012";
 			
 			
 			this.queryShopInfo();//查询一次店铺信息

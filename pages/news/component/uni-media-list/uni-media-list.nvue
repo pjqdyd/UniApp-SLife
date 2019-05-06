@@ -27,7 +27,7 @@
 
 			<!-- 动态的图片 -->
 
-			<image class="image-1" v-if="imgListSize == 1" resize="cover" :src="imageList[0].imageUrl" @click="bindClick"></image>
+			<image class="image-1" v-if="imgListSize == 1" resize="cover" :src="serverUrl + imageList[0].imageUrl" @click="bindClick"></image>
 
 			<div class="image-2-box" v-if="imgListSize == 2" @click="bindClick">
 				<image class="image-2" resize="cover" :src="serverUrl + imageList[0].imageUrl"></image>
@@ -111,11 +111,11 @@
 			}
 		},
 		methods: {
-			//跳转到用户详情页,将需要查询的userId存入缓存
+			//跳转到用户详情页
 			goUserInfo() {
 				//console.log(this.newsItem.userInfo.id)
 				uni.navigateTo({
-					url: "/pages/userInfo/userInfo?userId=" + this.itemData.publisherId
+					url: "/pages/userInfo/userInfo?id=" + this.itemData.publisherId
 				})
 			},
 			bindClick() {
@@ -238,8 +238,9 @@
 
 	.icon-box {
 		width: 750px;
-		height: 80px;
+		height: 100px;
 		margin-top: 5px;
+		padding: 10px 0 10px 0;
 		background-color: #fff;
 		display: flex;
 		flex-direction: row;
@@ -268,7 +269,7 @@
 		color: #999999;
 		position: absolute;
 		right: 30px;
-		line-height: 80px;
+		line-height: 100px;
 	}
 
 	.image-1 {
