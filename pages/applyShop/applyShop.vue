@@ -125,6 +125,9 @@
 					icon: "&#xe61d; "
 				}],
 				
+				userId: '',
+				userToken: '',
+				
 				time1: '08:00', //营业起始时间
 				time2: '23:00', //营业结束时间
 				
@@ -143,12 +146,26 @@
             }
         },
 		//params为上个页面跳转过来的参数
-        onLoad(params) {
-			//TODO读取VUE根实例属性用户信息并设置申请者id
-			this.sendDate.applyerId = "0012";
-			
-			
-			this.queryShopInfo();//查询一次店铺信息
+        onLoad(params) {		
+			var that = this;	
+			//读取用户信息
+			uni.getStorage({
+				key: "userInfo",
+				success(res) {
+					if (res.data == null || res.data == undefined || res.data == '') {
+						that.showIsLogin(); //提示登录
+					} else {
+						var userInfo = res.data;
+						that.sendDate.applyerId = userInfo.userId;
+						that.userId = userInfo.userId;
+						that.userToken = userInfo.userToken;
+						that.queryShopInfo();//查询一次店铺信息
+					}
+				},
+				fail() {
+					that.showIsLogin(); //提示登录
+				}
+			});
         },
 		onShow() {
 		},
@@ -224,11 +241,12 @@
 			     uni.showLoading({
 			     	title: "上传信息中"
 			     });
-                console.log(JSON.stringify(this.sendDate));	
 				//验证信息完整性
+				if(this.userId == '' || this.userToken == ''){
+					this.showIsLogin(); //提示登录
+				}
 				var sendDate = this.sendDate;
-				if(sendDate.applyerId == '' || sendDate.shopName == '' ||
-				   sendDate.mainInfo == '' || sendDate.shopAddr == '' ||
+				if(sendDate.shopName == '' ||sendDate.mainInfo == '' || sendDate.shopAddr == '' ||
 				   sendDate.supportServer == '' || this.imageList.length == 0){		
 					   uni.hideLoading();
 					   uni.showToast({
@@ -245,16 +263,19 @@
                     }
                 });
 				
-				console.log(JSON.stringify(imgs))
 				var url = this.server_Url;
                 uni.uploadFile({
                     url: url + "/slife/shop/applyShop",
                     files: imgs,
                     formData: this.sendDate,
+					header: {
+						userId: this.userId,
+						userToken: this.userToken
+					},
                     success: (res) => {
+						uni.hideLoading();
 						let result = JSON.parse(res.data);
                         if (result.code === 200) {
-							uni.hideLoading();
                             this.imageList = [];
                             this.sendDate = {
                                applyerId: "",          
@@ -275,8 +296,9 @@
 									})
 								}
 							});
-                        }else{
-							uni.hideLoading();
+                        }else if(result.code == 204){
+								this.showIsLogin(); //提示登录
+						}else{
 							uni.showToast({
 								title: result.messge
 							})
@@ -325,6 +347,23 @@
 					}
 				})
 				
+			},
+			//提示登录
+			showIsLogin(){
+				uni.showModal({
+					title: '提示',
+					content: '您还未登录,是否需要登录',
+					success: function(res) {
+						if (res.confirm) {
+							console.log('用户点击确定');
+							uni.reLaunch({
+								url: '../login/login'
+							});
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
+				});
 			}
         }
     }
