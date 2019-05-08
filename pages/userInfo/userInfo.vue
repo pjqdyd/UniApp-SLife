@@ -120,7 +120,7 @@
 			//跳转到动态, type标识是发布的动态还是点赞的动态
 			goNewsList(type) {
 				uni.navigateTo({
-					url: "/pages/newsList/newsList?userId=" + this.id + "&type=" + type
+					url: "/pages/newsList/newsList?publisherId=" + this.id + "&type=" + type
 				})
 			},
 			//点击展开了用户的粉丝

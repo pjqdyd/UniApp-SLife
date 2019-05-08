@@ -50,7 +50,7 @@
 		<!-- 底部的店铺按钮 -->
 		<view class="shop-button">
 			<view class="iconfont icon-butt" @click="shareShop" style="border-right: 1upx solid #707070;">&#xe613; 分享微信</view>
-			<view class="iconfont icon-butt" @click="goNewsList(0)">&#xe64b; 店铺动态</view>
+			<view class="iconfont icon-butt" @click="goNewsList(2)">&#xe64b; 店铺动态</view>
 		</view>
 
 	</view>
@@ -159,10 +159,10 @@
 						"&name=" + this.shopInfo.nickname
 				})
 			},
-			//跳转到动态, type标识是发布的动态还是点赞的动态
+			//跳转到动态, type标识是发布的动态还是点赞的动态,或者是店铺有关的动态
 			goNewsList(type) {
 				uni.navigateTo({
-					url: "/pages/newsList/newsList?userId=" + this.shopInfo.applyerId + "&type=" + type
+					url: "/pages/newsList/newsList?newsShopId=" + this.shopInfo.shopId + "&type=" + type
 				})
 			},
 			//分享店铺到微信()

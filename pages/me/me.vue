@@ -138,7 +138,7 @@
 			//跳转到动态, type标识是发布的动态还是点赞的动态
 			goNewsList(type) {
 				uni.navigateTo({
-					url: "/pages/newsList/newsList?userId=" + this.userId + "&type=" + type
+					url: "/pages/newsList/newsList?publisherId=" + this.userId + "&firendId=" + this.userId + "&type=" + type
 				})
 			},
 
