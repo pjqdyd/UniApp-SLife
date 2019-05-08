@@ -30,6 +30,7 @@
 				userFaceUrl: '', //用户头像
 				friendFaceUrl: '', //好友头像
 				
+				isLogin: false,
 				chatObject: {} //新聊天对象
 			};
 		},
@@ -41,6 +42,7 @@
 			//注意: messageDate.messagelist是用户和单个好友的历史消息数据集合
 			//	而messageList是存放所有的好友聊天对象集合
 			
+			var that = this;
 			console.log(params.id) //id为聊天好友的单个对象id
 			//根据id读取缓存中的消息字符串列表,设置给messageData,值类似messageDate.messagelist, 所以在保存聊天消息到缓存时, key为好友id, data是消息数据字符串列表
 			this.messageData = messageDate.messagelist; //测试设置默认的历史消息
@@ -58,9 +60,25 @@
 			// 						disabled: true
 			// 					}
 
-			//TODO读取挂载在vue实例上的全局用户对象属性
-			//设置自己的聊天头像
-			this.userFaceUrl = "https://upload-images.jianshu.io/upload_images/14511997-f98df143a7bb5a83.png";
+			//全局用户对象属性
+			var url = this.server_Url;
+			uni.getStorage({
+				key: "userInfo",
+				success(res) {
+					if(res.data.userId != undefined && res.data.userId != null){
+						that.isLogin = true;
+						that.userFaceUrl = url + res.data.faceImage;
+					}else{
+						//设置自己的聊天头像
+						this.userFaceUrl = "../../static/user/noface.png";
+					}
+				},
+				fail() {
+					//设置自己的聊天头像
+					this.userFaceUrl = "../../static/user/noface.png";
+				}
+			});
+			
 			//设置好友的头像
 			this.friendFaceUrl = params.faceUrl;
 			//设置标题为好友的昵称
@@ -88,6 +106,15 @@
 			},
 			//消息发送,e为单条消息对象
 			handMessageSend(e) {
+				if(e.message == '' || e.message == undefined){
+					return;
+				}
+				
+				if(!this.isLogin){
+					this.showIsLogin();
+					return;
+				}
+				
 
 				var msgData = this.messageData; //原消息数组
 				//this.messageData = [].concat(JSON.parse(JSON.stringify(msgData.concat(e))));
@@ -102,6 +129,23 @@
 					this.setScrollPosition(); //重新设置页面滚动到底部的位置
 				}, 200)
 				console.log(e)
+			},
+			//提示是否登录
+			showIsLogin() {
+				uni.showModal({
+					title: '提示',
+					content: '您还未登录,是否需要登录',
+					success: function(res) {
+						if (res.confirm) {
+							console.log('用户点击确定');
+							uni.reLaunch({
+								url: '../login/login'
+							});
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
+				});
 			}
 		},
 		//聊天页面隐藏了,(关闭了聊天/或者返回了chat页)
@@ -113,6 +157,7 @@
 </script>
 
 <style lang="scss" scoped="true">
+
 	.page {
 		box-sizing: border-box;
 		width: 100%;

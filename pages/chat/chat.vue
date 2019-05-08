@@ -16,13 +16,13 @@
 			<!-- 好友消息 -->
 			<uni-collapse-item title="好友消息" open="true" icon="../../static/chat/firend.png">
 				<!-- 好友消息列表 -->
-				<view class="content">
+				<view class="content" v-if="isLogin">
 					<uni-swipe-action :options="options" :messagesList="messageList" @clickMessage="handMessageClick"></uni-swipe-action>
 				</view>
-				<!-- 如果messageList.length = 0, 就暂无信息-->
-				<view v-if="messageList.length == 0">
+				<!-- 如果messageList.length = 0, 或未登录,就暂无信息-->
+				<view v-if="messageList.length == 0 || !isLogin">
 					<cmd-result-page text="暂无数据"></cmd-result-page>
-				</view>	
+				</view>
 			</uni-collapse-item>
 
 		</uni-collapse>
@@ -48,7 +48,7 @@
 		},
 		data() {
 			return {
-				
+				isLogin: false,
 				msgCategory: [{
 					icon: "../../static/chat/follow.png",
 					name: "我的关注",
@@ -79,27 +79,7 @@
 					}
 				}],
 				//将来是从缓存中读取消息集合对象的
-				messageList: [{
-						title: "马云",
-						id: "0001",
-						faceUrl: "https://upload-images.jianshu.io/upload_images/14511997-86c6328ddd428b32.jpg",
-						message: "你好我是马云",
-						time: "15:15",
-						count: 5,
-						stick: false, //是否为置顶状态
-						disabled: true //是否禁止滑动
-					},
-					{
-						title: "马化腾",
-						id: "0002",
-						faceUrl: "https://upload-images.jianshu.io/upload_images/14511997-09fad1551c6f968f.jpg",
-						message: "今天你氪金了吗😎",
-						time: "15:15",
-						count: 22,
-						stick: true,
-						disabled: false
-
-					},
+				messageList: [
 					{
 						title: "小猪佩奇",
 						id: "0003",
@@ -109,14 +89,13 @@
 						count: 1,
 						stick: false,
 						disabled: false
-					},
-					{
-						title: "雷军",
+					},{
+						title: "吴彦祖",
 						id: "0004",
-						faceUrl: "https://upload-images.jianshu.io/upload_images/14511997-2fa42113e3e3d285.jpg",
-						message: "小米,超级能打",
-						time: "12:11",
-						count: 0,
+						faceUrl: "https://upload-images.jianshu.io/upload_images/14511997-3b2b5602699ee5b8.jpg",
+						message: "我是吴彦祖,你呢",
+						time: "10:13",
+						count: 1,
 						stick: false,
 						disabled: false
 					},
@@ -141,10 +120,10 @@
 						disabled: false
 					},
 					{
-						title: "美工",
+						title: "小林",
 						id: "0007",
 						faceUrl: "https://upload-images.jianshu.io/upload_images/14511997-12de3a6a1e55a2c6.jpg",
-						message: "你丫的才美工",
+						message: "太好了",
 						time: "03:21",
 						count: 5,
 						stick: false,
@@ -164,7 +143,15 @@
 			};
 		},
 		onLoad(params) {
-	
+			var that = this;
+			uni.getStorage({
+				key: "userInfo",
+				success(res) {
+					if(res.data.userId != null && res.data.userId != undefined){
+						that.isLogin = true;
+					}
+				}
+			});
 		},
 		created() {},
 		onShow() {

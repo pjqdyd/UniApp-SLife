@@ -71,7 +71,7 @@
 			var url = conf.testUrl;
 			var list = [];
 			uni.request({
-				url: url + '/commentlis',
+				url: url + '/commentlist',
 				success: (res) => {
 					console.log("请求评论commentList数据成功..")
 					list = res.data.commentList;

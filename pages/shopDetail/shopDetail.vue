@@ -153,10 +153,9 @@
 			//跳转到与店主聊天的界面
 			goChat() {
 				console.log("跳转到聊天界面")
-				console.log('创建聊天界面' + user.userId)
 				uni.navigateTo({
-					url: "/pages/chatScreen/chatScreen?id=" + this.shopInfo.applyerId + "&faceUrl=" + this.shopInfo.faceImage +
-						"&name=" + this.shopInfo.nickname
+					url: "/pages/chatScreen/chatScreen?id=" + this.shopInfo.applyerId + "&faceUrl=" + this.serverUrl + this.faceUrl +
+						"&name=" + this.nickname
 				})
 			},
 			//跳转到动态, type标识是发布的动态还是点赞的动态,或者是店铺有关的动态
@@ -333,10 +332,6 @@
 			font-size: 50upx;
 			text-align: center;
 		}
-	}
-
-	.shoper-info-box:active {
-		background-color: #eeeeee;
 	}
 
 	.shop-introduce {
