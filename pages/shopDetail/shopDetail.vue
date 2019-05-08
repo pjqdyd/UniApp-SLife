@@ -78,11 +78,11 @@
 		onLoad(res) {
 			var url = this.server_Url; //读取在main.js中挂载的vue全局属性server_Url
 			this.serverUrl = url;
-			if (res.shopId != undefined || res.shopId != null) {
+			if (res.shopId != undefined && res.shopId != null && res.shopId != '') {
 				this.shopId = res.shopId;
 				let requestUrl = url + "/slife/shopDetail/queryShopByShopId?shopId=" + res.shopId;
 				this.getShopInfo(requestUrl); //根据shopId获取店铺信息
-			} else if (res.shoperId != undefined || res.shoperId != null) {
+			} else if (res.shoperId != undefined && res.shoperId != null && res.shoperId != '') {
 				this.shoperId = res.shoperId;
 				let requestUrl = url + "/slife/shopDetail/queryShopByShoperId?shoperId=" + res.shoperId;
 				this.getShopInfo(requestUrl); //根据shoperId获取店铺信息

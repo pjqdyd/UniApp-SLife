@@ -52,11 +52,12 @@
 		},
 		onLoad(params) {
 			//设置用户id
+			var that = this;
 			uni.getStorage({
 				key: "userInfo",
 				success(res) {
 					if (res.data.userId != undefined) {
-						this.userId = res.data.userId;
+						that.userId = res.data.userId;
 					}
 				}
 			});
@@ -68,23 +69,22 @@
 			if (params.type == 0) { //查询发布者的动态
 				requestParams = "&publisherId=" + params.publisherId;
 			} else if (params.type == 1) { //查询好友点赞的动态
-				requestParams = "&firendId=" + params.firendId;
+				requestParams = "&friendId=" + params.friendId;
 			} else if (params.type == 2) {
 				requestParams = "&newsShopId=" + params.newsShopId;
 			} else {}
 			this.requestParams = requestParams;
+			
 			this.getNewsList(requestParams, 1); //请求后端获取动态列表数据
 		},
 		methods: {
 			//查询动态
 			getNewsList(requestParams, page) {
 				let url = this.server_Url;
-				console.log(url + "/slife/newsList/" + this.typeName[this.type].id + "?page=" + page + requestParams + "&userId=" +
-					this.userId)
+				console.log(url + "/slife/newsList/" + this.typeName[this.type].id + "?page=" + page + requestParams + "&userId=" + this.userId)
 				//请求服务端数据
 				uni.request({
-					url: url + "/slife/newsList/" + this.typeName[this.type].id + "?page=" + page + requestParams + "&userId=" +
-						this.userId,
+					url: url + "/slife/newsList/" + this.typeName[this.type].id + "?page=" + page + requestParams + "&userId=" + this.userId,
 					success: (res) => {
 						uni.stopPullDownRefresh();
 						let result = res.data;
@@ -139,7 +139,7 @@
 			console.log('refresh');
 			this.page = 1;
 			//重新获取当前的第1页数据
-			this.getNewsList(this.requestParams, 1);
+			this.getNewsList(this.requestParams ,1);
 		},
 
 		//页面上拉触底

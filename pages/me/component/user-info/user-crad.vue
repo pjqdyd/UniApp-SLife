@@ -55,7 +55,7 @@
 					let user = this.userInfo;
 					console.log('创建聊天界面' + user.userId)
 					uni.navigateTo({
-						url: "/pages/chatScreen/chatScreen?id=" + user.userId + "&faceUrl=" + user.faceImage + "&name=" + user.nickname
+						url: "/pages/chatScreen/chatScreen?id=" + user.userId + "&faceUrl=" + this.serverUrl + user.faceImage + "&name=" + user.nickname
 					})
 				}
 			},
