@@ -49,7 +49,7 @@
 
 		<!-- 底部的店铺按钮 -->
 		<view class="shop-button">
-			<view class="iconfont icon-butt" @click="shareShop" style="border-right: 1upx solid #707070;">&#xe613; 分享微信</view>
+			<view class="iconfont icon-butt" @click="shareShop" style="border-right: 1upx solid #707070;">&#xe613; 分享QQ</view>
 			<view class="iconfont icon-butt" @click="goNewsList(2)">&#xe64b; 店铺动态</view>
 		</view>
 
@@ -164,12 +164,11 @@
 					url: "/pages/newsList/newsList?newsShopId=" + this.shopInfo.shopId + "&type=" + type
 				})
 			},
-			//分享店铺到微信()
+			//分享店铺到qq
 			shareShop() {
 				uni.share({
-					provider: "weixin",
-					scene: "WXSceneSession",
-					type: 0,
+					provider: "qq",
+					type: 1,
 					href: "http://uniapp.dcloud.io/", //点击跳转链接
 					title: "生活街分享",
 					summary: "我在生活街APP发现了优质店铺,赶紧跟我一起来体验吧！",

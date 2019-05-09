@@ -103,7 +103,6 @@
 			},
 			//点击了发表评论
 			createComment() {
-				//TODO
 				//TODO 保存成功后,重新加载最新评论
 				console.log("发布评论" + this.inputValue)
 				this.inputValue = ""

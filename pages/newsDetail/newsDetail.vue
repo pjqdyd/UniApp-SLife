@@ -70,7 +70,8 @@
 				isLike: 0,
 				
 				userId: '',
-				serverUrl: ''
+				serverUrl: '',
+				userToken: ''
 			}
 		},
 		onLoad(params) {
@@ -96,6 +97,7 @@
 					let userId = res.data.userId;
 					if(userId != undefined || userId != ''){
 						that.userId = userId;
+						that.userToken = res.data.userToken;
 					}
 				}
 			});
@@ -145,14 +147,61 @@
 			},
 			//点击了点赞/取消点赞
 			clickLike() {
-				if (this.isLike == 0) {
-					//TODO
-					this.isLike = 1
-					this.likeCount++;
-				} else {
-					//TODO	
-					this.isLike = 0
-					this.likeCount--;
+				var that = this;
+				if (that.userId == '' || that.userId == undefined || that.userId == null) {
+					that.showIsLogin();
+					return;
+				}else{
+					if (that.isLike == 0) { //点赞
+						uni.request({
+							url: that.serverUrl + "/slife/news/userLikeNews?userId=" + this.userId + "&newsId=" + this.newsItem.newsId +
+								"&publisherId=" + that.newsItem.publisherId,
+							method: "POST",
+							header: {
+								userId: that.userId,
+								userToken: that.userToken
+							},
+							success(res) {
+								if(res.data.code == 200) {
+									that.isLike = 1
+									that.likeCount++;
+								}else if(res.data.code == 204){
+									that.showIsLogin();
+								}else{
+									uni.showToast({
+										title: "点赞失败",
+										icon: "none"
+									})
+								}
+							}
+						});
+					} else if (that.isLike == 1) { //取消点赞
+						//TODO	
+						uni.request({
+							url: that.serverUrl + "/slife/news/userCancelLikeNews?userId=" + that.userId + "&newsId=" + that.newsItem.newsId +
+								"&publisherId=" + this.newsItem.publisherId,
+							method: "POST",
+							header: {
+								userId: that.userId,
+								userToken: that.userToken
+							},
+							success(res) {
+								if(res.data.code == 200) {
+									that.isLike = 0
+									that.likeCount--;
+								}else if(res.data.code == 204){
+									that.showIsLogin();
+								}else{
+									uni.showToast({
+										title: "取消点赞失败",
+										icon: "none"
+									})
+								}
+							}
+						});
+					} else {
+						return;
+					}
 				}
 			},
 			//点击了更多
@@ -181,6 +230,23 @@
 						duration: 1000
 					});
 				}).exec();
+			},
+			//提示是否登录
+			showIsLogin() {
+				uni.showModal({
+					title: '提示',
+					content: '您还未登录,是否需要登录',
+					success: function(res) {
+						if (res.confirm) {
+							console.log('用户点击确定');
+							uni.reLaunch({
+								url: '../login/login'
+							});
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
+				});
 			}
 		},
 		computed: {
