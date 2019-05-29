@@ -35,6 +35,10 @@
 		data() {
 			return {
 				tempFilePath: '',
+				
+				userId: '',
+				userToken: '',
+				
 				sendData: {
 					userId: '',
 					nickname: '',
@@ -42,16 +46,17 @@
 				}
 			}
 		},
-		onLoad() {	
-		},
+		onLoad() {},
 		onShow() {
-			//TODO读取挂载根实例的用户信息,设置用户id
+			//TODO读取用户信息,设置用户id
 			var that = this;
 			uni.getStorage({
 				key: "userInfo",
 				success(res) {
 					if (res.data != null || res.data != undefined) {
 						that.sendData.userId = res.data.userId;
+						that.userId = res.data.userId;
+						that.userToken = res.data.userToken;
 					} else {
 						that.showIsLogin();
 					}
@@ -82,19 +87,27 @@
 			send() {
 				var sendData = this.sendData;
 				var url = this.server_Url; //读取vue根实例属性
-				if (sendData.userId == '' || sendData.nickname == '' || this.tempFilePath == '') {
+				
+				if(this.userId == '' || this.userToken == ''){
+					this.showIsLogin(); //提示登录
+				}
+				
+				if (sendData.nickname == '' || this.tempFilePath == '') {
 					uni.showToast({
 						title: "您还有信息未填写完哦",
 						icon: "none"
 					});
 					return;
 				} else {
-					console.log(JSON.stringify(sendData));	
 					uni.uploadFile({
 						url: url + "/slife/user/update",
 						filePath: this.tempFilePath,
 						name: 'file',
 						formData: sendData,
+						header: {
+							userId: this.userId,
+							userToken: this.userToken
+						},
 						success: (res) => {
 							let result = JSON.parse(res.data);
 							 if(result.code == 200){
@@ -113,7 +126,9 @@
 										},1500);
 									}
 								});
-							}else{
+							}else if(result.code == 204){
+								this.showIsLogin(); //提示登录
+						    }else{
 								uni.showToast({
 									title: "修改失败",
 									icon: "error"

@@ -1,6 +1,7 @@
 <template>
 	<view>
 		<!-- 顶部分类栏 -->
+		<!-- #ifdef H5 || MP-WEIXIN -->
 		<view class='category-box'>
 			<view class="category-item" :class="[currentItem==0 ? 'active' : '']" data-item='0' @click='handTapItem'>最新</view>
 			<view class="category-item" :class="[currentItem==1 ? 'active' : '']" data-item='1' @click='handTapItem'>推荐</view>
@@ -26,10 +27,12 @@
 		<div>
 			<image class="create-icon" src="../../static/news/create.png" @click="handCreateCilck"></image>
 		</div>
+		<!-- #endif -->
 	</view>
 </template>
 
 <script>
+	//#ifdef H5 || MP-WEIXIN
 	import uniMediaList from "./component/uni-media-list/uni-media-list.vue";
 	import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue"
 
@@ -300,9 +303,11 @@
 			}
 		}
 	}
+	//#endif
 </script>
 
 <style>
+	/*#ifdef H5 || MP-WEIXIN*/
 	.swiper-box {
 		width: 100%;
 		margin-top: 50upx;
@@ -380,4 +385,5 @@
 		opacity: .9;
 		box-shadow: 0 5upx 7upx 0 #707070;
 	}
+	/*#endif*/
 </style>

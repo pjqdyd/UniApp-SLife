@@ -81,6 +81,9 @@
 					addressName: ''
 				},
 				
+				userId: '',
+				userToken: '',
+				
                 imageList: [],
                 sendDate: {
 					publisherId: "",        //发布者id
@@ -100,8 +103,23 @@
         onLoad(params) {
 			var that = this;
 			
-			//TODO读取VUE根实例属性用户信息并设置发布者id
-			that.sendDate.publisherId = "0008";
+			//读取用户信息
+			uni.getStorage({
+				key: "userInfo",
+				success(res) {
+					if (res.data == null || res.data == undefined || res.data == '') {
+						that.showIsLogin(); //提示登录
+					} else {
+						var userInfo = res.data;
+						that.sendDate.publisherId = userInfo.userId;
+						that.userId = userInfo.userId;
+						that.userToken = userInfo.userToken;
+					}
+				},
+				fail() {
+					that.showIsLogin(); //提示登录
+				}
+			});
 			
 			//读取并设置位置
 			uni.getStorage({
@@ -190,12 +208,16 @@
                     urls: this.imageList
                 });
             },
-            send() { //发布
-                console.log(JSON.stringify(this.sendDate));
-				
+            send() { //发布	
 				//验证信息是否完整
 				var sendData = this.sendDate;
-				if(sendData.publisherId == '' || sendData.content == '' || this.imageList.length == 0){
+				
+				if(this.userId == '' || this.userToken == ''){
+					this.showIsLogin(); //提示登录
+				}
+				
+				if(sendData.content == '' || this.imageList.length == 0 ||
+				   sendData.newsLatitude == '' || sendData.newsLongitude == ''){
 					uni.showToast({
 						title: "您还有动态信息未写哦",
 						icon: "none"
@@ -213,8 +235,13 @@
 					    url: url + "/slife/news/createNews",
 					    files: imgs,
 					    formData: this.sendDate,
+						header: {
+							userId: this.userId,
+							userToken: this.userToken
+						},
 					    success: (res) => {
-					        if (res.statusCode === 200) {
+							let result = JSON.parse(res.data);
+					        if (result.code == 200) {
 					            uni.showToast({
 					                title: "发布成功!"
 					            });
@@ -236,7 +263,9 @@
 										url: "/pages/news/news"
 									})
 								},1500)
-					        }else{
+					        }else if(result.code == 204){
+								this.showIsLogin(); //提示登录
+							}else{
 								uni.showToast({
 								    title: "发布失败",
 								    icon:"none"
@@ -252,7 +281,24 @@
 					    }
 					});
 				}           
-            }
+            },
+			//提示登录
+			showIsLogin(){
+				uni.showModal({
+					title: '提示',
+					content: '您还未登录,是否需要登录',
+					success: function(res) {
+						if (res.confirm) {
+							console.log('用户点击确定');
+							uni.reLaunch({
+								url: '../login/login'
+							});
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
+				});
+			}
         }
     }
 </script>

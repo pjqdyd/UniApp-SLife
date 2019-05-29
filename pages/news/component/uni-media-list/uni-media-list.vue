@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<!--#ifdef H5 || MP-WEIXIN-->
 		<div class="list-cell" @click="bindClick">
 
 			<!-- 动态的顶部用户信息, 头像,昵称,性别,动态标题  280upx-->
@@ -26,7 +27,7 @@
 			</div>
 
 			<!-- 动态的图片 盒子高度分别为 400 340 500 660 upx-->
-			<image  class="image-1" v-if="imgListSize == 1" mode="aspectFill" :src="serverUrl + imageList[0].imageUrl"></image>
+			<image class="image-1" v-if="imgListSize == 1" mode="aspectFill" :src="serverUrl + imageList[0].imageUrl"></image>
 
 			<div class="image-2-box" v-if="imgListSize == 2">
 				<image class="image-2" mode="aspectFill" :src="serverUrl + imageList[0].imageUrl"></image>
@@ -42,7 +43,8 @@
 			<div class="image-4-box" v-if="imgListSize == 4">
 				<image class="image-1" mode="aspectFill" :src="serverUrl + imageList[0].imageUrl"></image>
 				<div class="image4">
-					<image v-for="(i, index) in [1,2,3]" class="image-4" mode="aspectFill" :src="serverUrl + imageList[i].imageUrl" :key="index"></image>
+					<image v-for="(i, index) in [1,2,3]" class="image-4" mode="aspectFill" :src="serverUrl + imageList[i].imageUrl"
+					 :key="index"></image>
 				</div>
 			</div>
 
@@ -51,7 +53,7 @@
 				<image class="icon-bottom" @click.stop="clickLike" :src="isLike? '../../static/news/click/like1.png': '../../static/news/like.png' ">
 				</image>
 				<text class="count">{{likeCount}}</text>
-				
+
 				<image class="icon-bottom" @click.stop="clickComment" src="../../static/news/comment.png">
 				</image>
 				<text class="count">{{commentCount}}</text>
@@ -61,10 +63,12 @@
 			</div>
 
 		</div>
+		<!--#endif-->
 	</div>
 </template>
 
 <script>
+	//#ifdef H5 || MP-WEIXIN
 	export default {
 		//这里的itemData属性是接收父组件传过来的 单条动态数据对象
 		props: {
@@ -74,13 +78,15 @@
 					return {}
 				}
 			},
-			serverUrl: String
+			serverUrl: String,
+			userId: String,
+			userToken: String
 		},
 		data() {
 			return {
 				imageList: [], //主页动态的图片列表
 				isLike: 0, //是否点赞 1表示点赞了,0表示未点赞
-				likeCount: 0 ,//点赞数
+				likeCount: 0, //点赞数
 				commentCount: 0 //评论数
 			}
 		},
@@ -122,14 +128,61 @@
 			},
 			//点击了点赞/取消点赞
 			clickLike() {
-				if (this.isLike == 0) {
-					//TODO
-					this.isLike = 1
-					this.likeCount++;				
-				} else {
-					//TODO	
-					this.isLike = 0
-					this.likeCount--;
+				var that = this;
+				if (that.userId == '' || that.userId == undefined || that.userId == null) {
+					that.showIsLogin();
+					return;
+				}else{
+					if (that.isLike == 0) { //点赞
+						uni.request({
+							url: that.serverUrl + "/slife/news/userLikeNews?userId=" + this.userId + "&newsId=" + this.itemData.newsId +
+								"&publisherId=" + that.itemData.publisherId,
+							method: "POST",
+							header: {
+								userId: that.userId,
+								userToken: that.userToken
+							},
+							success(res) {
+								if(res.data.code == 200) {
+									that.isLike = 1
+									that.likeCount++;
+								}else if(res.data.code == 204){
+									that.showIsLogin();
+								}else{
+									uni.showToast({
+										title: "点赞失败",
+										icon: "none"
+									})
+								}
+							}
+						});
+					} else if (that.isLike == 1) { //取消点赞
+						//TODO	
+						uni.request({
+							url: that.serverUrl + "/slife/news/userCancelLikeNews?userId=" + that.userId + "&newsId=" + that.itemData.newsId +
+								"&publisherId=" + this.itemData.publisherId,
+							method: "POST",
+							header: {
+								userId: that.userId,
+								userToken: that.userToken
+							},
+							success(res) {
+								if(res.data.code == 200) {
+									that.isLike = 0
+									that.likeCount--;
+								}else if(res.data.code == 204){
+									that.showIsLogin();
+								}else{
+									uni.showToast({
+										title: "取消点赞失败",
+										icon: "none"
+									})
+								}
+							}
+						});
+					} else {
+						return;
+					}
 				}
 			},
 			//点击了评论按钮
@@ -138,20 +191,39 @@
 				console.log("评论")
 			},
 			//点击了...
-			clickMore(){
+			clickMore() {
 				uni.showActionSheet({
-				    itemList: ["举报"],
-				    success: (res) => {
+					itemList: ["举报"],
+					success: (res) => {
 						//TODO
-				        console.log("举报动态: Id = " + this.itemData.newsId)
-				    }
+						console.log("举报动态: Id = " + this.itemData.newsId)
+					}
 				})
+			},
+			//提示是否登录
+			showIsLogin() {
+				uni.showModal({
+					title: '提示',
+					content: '您还未登录,是否需要登录',
+					success: function(res) {
+						if (res.confirm) {
+							console.log('用户点击确定');
+							uni.reLaunch({
+								url: '../login/login'
+							});
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
+				});
 			}
 		}
 	}
+	//#endif
 </script>
 
 <style>
+	/* #ifdef H5 || MP-WEIXIN */
 	.list-cell {
 		width: 750upx;
 		height: 100%;
@@ -264,11 +336,13 @@
 	.icon:active {
 		background-color: #eeeeee;
 	}
-	.count{
+
+	.count {
 		font-size: 22upx;
 		color: #707070;
 		margin-top: 40upx;
 	}
+
 	.date {
 		font-size: 30upx;
 		color: #999999;
@@ -341,4 +415,5 @@
 		width: 247upx;
 		height: 240upx;
 	}
+	/* #endif */
 </style>

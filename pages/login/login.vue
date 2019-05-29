@@ -28,7 +28,20 @@
 <script>
 	export default {
 		onLoad() {
-			console.log("进入login页面")
+			console.log("进入login页面");
+			//#ifdef H5 || MP-WEIXIN
+			uni.showModal({
+				title: '提示',
+				content: 'H5和小程序暂不支持登录,请下载安卓App体验更多功能',
+				success: function(res) {
+					if (res.confirm) {
+						console.log('用户点击确定');
+					} else if (res.cancel) {
+						console.log('用户点击取消');
+					}
+				}
+			});
+			//#endif
 		},
 		data() {
 			return {}

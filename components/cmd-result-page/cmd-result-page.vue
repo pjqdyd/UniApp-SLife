@@ -77,7 +77,7 @@
          */
         typeSubText: {
           // 点击屏幕，重新加载
-          network: '\u70b9\u51fb\u5c4f\u5e55\uff0c\u91cd\u65b0\u52a0\u8f7d',
+          network: '\u4e0b\u62c9\u5c4f\u5e55\uff0c\u91cd\u65b0\u52a0\u8f7d',
           // 您要访问的页面已丢失
           lost: '\u60a8\u8981\u8bbf\u95ee\u7684\u9875\u9762\u5df2\u4e22\u5931'
         }
@@ -129,7 +129,6 @@
     height: 100%;
     text-align: center;
     padding: 40upx 0;
-
     &-image {
       width: 280upx;
       height: 280upx;

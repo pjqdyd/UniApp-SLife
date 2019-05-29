@@ -1,6 +1,5 @@
 <template>
-	<div>
-
+	<div style="position: fixed; top: 0px;">
 		<uni-tabs @change="changeTab" :index="tabIndex">
 			<!-- 顶部分类栏 -->
 			<uni-tab-bar :drag="false" :tab-bars="tabBars" :tab-index="tabIndex" v-if="isShowTab"></uni-tab-bar>
@@ -22,7 +21,7 @@
 
 					<!-- 内容列表组件, homeList[tabNum].list表示当前页的动态数据列表,这里的item就是每条动态数据, index表示这条动态数据的序号-->
 					<cell v-for="(item,index) in homeList[tabNum].list" :key="index" style="background-color: #eeeeee">
-						<uni-media-list :itemData="item" :serverUrl="serverUrl" @click="goDetail(item, 0)" @clickComment="goDetail(item , 1)"></uni-media-list>
+						<uni-media-list :itemData="item" :serverUrl="serverUrl" :userId="userId" :userToken="userToken" @click="goDetail(item, 0)" @clickComment="goDetail(item , 1)"></uni-media-list>
 					</cell>
 					<!-- 底部加载更多组件 -->
 					<cell class="loadmore">
@@ -69,25 +68,23 @@
 				tabIndex: 1,
 
 				//用来存储动态页的3个tab分类页list数据对象
-				homeList: [
-					{	//最新页的数据
-						page: 1,
-						total: 0,
-						totalPage: 0,
-						list: []
-					},{	//推荐页的数据
-						page: 1,
-						total: 0,
-						totalPage: 0,
-						list: []
-					},{	//热门页的数据
-						page: 1,
-						total: 0,
-						totalPage: 0,
-						list: []
-					}
-				],
-				
+				homeList: [{ //最新页的数据
+					page: 1,
+					total: 0,
+					totalPage: 0,
+					list: []
+				}, { //推荐页的数据
+					page: 1,
+					total: 0,
+					totalPage: 0,
+					list: []
+				}, { //热门页的数据
+					page: 1,
+					total: 0,
+					totalPage: 0,
+					list: []
+				}],
+
 				//位置信息对象
 				localInfo: {
 					longitude: '',
@@ -95,6 +92,7 @@
 					addressName: ''
 				},
 				userId: '', //用户id
+				userToken: '', //用户的token
 				serverUrl: '', //后端服务地址
 				//三个动态分类
 				tabBars: [{
@@ -117,10 +115,10 @@
 				success(res) {
 					var localInfo = JSON.parse(res.data);
 					if (localInfo == null || localInfo == undefined || localInfo == '') { //如果缓存没有位置信息,就提示手动获取位置信息
-					   uni.showModal({
-					   	title: "提示",
-					   	content: "未获取到位置信息,请右上角手动定位"
-					   });
+						uni.showModal({
+							title: "提示",
+							content: "未获取到位置信息,请右上角手动定位"
+						});
 					} else {
 						that.localInfo = localInfo;
 						that.getNewsList(1, that.tabIndex); //查询默认的推荐分类的第1页数据
@@ -133,9 +131,24 @@
 					});
 				}
 			});
-			
+			//获取用户信息
+			uni.getStorage({
+				key: 'userInfo',
+				success(res) {
+					var userInfo = JSON.parse(res.data);
+					let userId = userInfo.userId;
+					let userToken = userInfo.userToken;
+					if (userId != '' && userId != undefined) {
+						that.userId = userId; //设置用户id
+					}
+					if (userToken != null || userToken != undefined) {
+						that.userToken = userToken; //设置token
+					}
+				}
+			});
+
 			this.serverUrl = conf.serverUrl; //读取属性serverUrl
-			
+
 			//监听导航栏的"<"或"O"的点击事件(返回,手动定位)
 			uni.onNavigationBarButtonTap((e) => {
 				console.log("监听到原生标题栏按钮点击事件");
@@ -153,24 +166,11 @@
 			})
 		},
 		mounted() {},
-		beforeUpdate(){
-			var that = this;
-			if(that.userId == '' || that.userId == undefined){
-				uni.getStorage({ //获取用户信息
-					key: 'userInfo',
-					success(res){
-						let userId = res.data.userId;
-						if(userId != null && userId != undefined){
-							that.userId = userId; //设置用户id
-						}
-					}
-				});
-			}
-		},
+		beforeUpdate() {},
 		updated() {},
-		watch:{
+		watch: {
 			//监听当前分类的切换
-			'tabIndex': function(val){
+			'tabIndex': function(val) {
 				let objectItem = this.homeList[val];
 				//如果当前分类页没有数据,就加载第一页数据
 				if (objectItem.list.length == 0) {
@@ -187,19 +187,20 @@
 				console.log(url)
 				//请求服务端数据
 				uni.request({
-					url: url + "/slife/newsList/" + this.tabBars[index].id + "?latitude=" + this.localInfo.latitude + "&longitude=" + this.localInfo.longitude + "&userId=" + this.userId + "&page=" + page,
+					url: url + "/slife/newsList/" + this.tabBars[index].id + "?latitude=" + this.localInfo.latitude + "&longitude=" +
+						this.localInfo.longitude + "&userId=" + this.userId + "&page=" + page,
 					success: (res) => {
 						console.log("请求分类" + this.tabBars[index].name + "的第" + page + "页数据");
 						let result = res.data;
-						if(result.code == 200){
+						if (result.code == 200) {
 							//拼接数据到对应分类的list中,且设置分页信息
 							objectItem.list = objectItem.list.concat(result.data.newsList);
 							objectItem.page = page;
 							objectItem.total = result.data.total;
 							objectItem.totalPage = result.data.totalPage;
 							//覆盖原有的数据
-							this.homeList[index] = objectItem; 	
-						}else{
+							this.homeList[index] = objectItem;
+						} else {
 							uni.showToast({
 								title: "未找到附近的动态哦",
 								icon: "none"
@@ -228,10 +229,10 @@
 					url: '../createNews/createNews'
 				});
 			},
-			goDetail(e,flag) {
+			goDetail(e, flag) {
 				//这里的e是,单条动态数据对象, 我们在跳转前保存e进缓存,方便在详情页获取
 				//flag是标识是否点击了评论才跳转到详情页, 0和1
-				
+
 				//由于在APP端,getStorage取不到在nvue页面设置的js对象data,所以就转换为json保存
 				var item = JSON.stringify(e)
 				uni.setStorage({
@@ -260,10 +261,10 @@
 				this.refreshText = "正在刷新...";
 				this.refreshing = true;
 				this.loadingText = ''; //设置底部的加载更多为空
-				let index = this.tabIndex;//当前分类tab的下标
+				let index = this.tabIndex; //当前分类tab的下标
 				this.homeList[index].page = 1;
 				this.homeList[index].list = []; //清空数据
-				
+
 				//重新获取当前分类的第1页数据
 				this.getNewsList(1, index);
 			},
@@ -282,13 +283,13 @@
 				let index = this.tabIndex; //当前分类tab的下标
 				let page = this.homeList[index].page + 1; //下一页
 				let totalPage = this.homeList[index].totalPage;
-				if(page > totalPage){ //没有更多数据了
+				if (page > totalPage) { //没有更多数据了
 					this.loadingText = "没有更多了"
 					return;
-				}else{
+				} else {
 					//加载下一页的数据
 					this.getNewsList(page, index);
-				}		
+				}
 			},
 			//监听页面的滚动,判断滑动的位移差,如果是上滑,就隐藏分类栏
 			handScroll(event) {
