@@ -1,5 +1,5 @@
 <template>
-	<div style="position: fixed; top: 0;">
+	<div style="position: fixed; top: 0px;">
 		<uni-tabs @change="changeTab" :index="tabIndex">
 			<!-- 顶部分类栏 -->
 			<uni-tab-bar :drag="false" :tab-bars="tabBars" :tab-index="tabIndex" v-if="isShowTab"></uni-tab-bar>

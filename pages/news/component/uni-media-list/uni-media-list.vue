@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<!--#ifdef H5 || MP-WEIXIN-->
 		<div class="list-cell" @click="bindClick">
 
 			<!-- 动态的顶部用户信息, 头像,昵称,性别,动态标题  280upx-->
@@ -62,10 +63,12 @@
 			</div>
 
 		</div>
+		<!--#endif-->
 	</div>
 </template>
 
 <script>
+	//#ifdef H5 || MP-WEIXIN
 	export default {
 		//这里的itemData属性是接收父组件传过来的 单条动态数据对象
 		props: {
@@ -216,9 +219,11 @@
 			}
 		}
 	}
+	//#endif
 </script>
 
 <style>
+	/* #ifdef H5 || MP-WEIXIN */
 	.list-cell {
 		width: 750upx;
 		height: 100%;
@@ -410,4 +415,5 @@
 		width: 247upx;
 		height: 240upx;
 	}
+	/* #endif */
 </style>
