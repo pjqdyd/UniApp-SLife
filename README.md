@@ -1,3 +1,7 @@
+### [2021.03编辑]：由于种种原因本项目已经搁置2年了，可能本人也跑不起来了o_o .... 最近仓库才设置公开，所以大家逛逛就行，不要尝试clone运行不然可能会影响你一天的好心情!!!
+### [2021.03编辑]：后端地址：[SLife Dev](https://github.com/pjqdyd/SLife-Dev) (也停止更新了T_T).
+### [2021.03编辑]：以下是原README内容:
+
 # _![app](https://github.com/pjqdyd/UniApp-SLife/blob/dev/appInfo/appIcon/icon40.png)_ UniApp-SLife  生活街(Street Life App)
 
 ### 简介: 
@@ -19,16 +23,20 @@
 ```
 #### APP平台适配:
 
- |       选项 \ 平台     |      ![](https://github.com/pjqdyd/UniApp-SLife/blob/master/appInfo/demoIcon/android.png) Android 安卓    |   
-                               ![](https://github.com/pjqdyd/UniApp-SLife/blob/master/appInfo/demoIcon/wx.png) WxApp 小程序          |
-                               ![](https://github.com/pjqdyd/UniApp-SLife/blob/master/appInfo/demoIcon/H5.png) H5 网页版             | 
-                               ![](https://github.com/pjqdyd/UniApp-SLife/blob/master/appInfo/demoIcon/IOS.png) Ios 苹果             |
+ | 选项 \ 平台   |  ![](https://github.com/pjqdyd/UniApp-SLife/blob/master/appInfo/demoIcon/android.png) Android 安卓 |   ![](https://github.com/pjqdyd/UniApp-SLife/blob/master/appInfo/demoIcon/wx.png) WxApp 小程序      | ![](https://github.com/pjqdyd/UniApp-SLife/blob/master/appInfo/demoIcon/H5.png) H5 网页版          | ![](https://github.com/pjqdyd/UniApp-SLife/blob/master/appInfo/demoIcon/IOS.png) Ios 苹果          |
+                               
  |:-------------------- |:--------------------:|:-------------------:|:----------------------:|:-------------------:|
+ 
  |        编译     |      √通过            |    √通过                                            |       √通过     |   （未测试)    |
+ 
  |        运行     |      √通过            |    √通过                                            |       √通过     |   （未测试)    |
+ 
  |    流畅性能     |      较流畅           |     一般                                             |       较流畅    |   （未测试)    |
+ 
  |    登录功能     |  可用微信/QQ弹窗授权   | 不支持授权弹窗[详情](http://ask.dcloud.net.cn/question/59833)| 不支持   |  （未测试)     |
+ 
  |    定位功能     |      支持             |    支持                                              |   需要手动定位  |  （未测试)     |
+ 
  |   功能完善性    |     较完善             |    不完善                                        |       不完善 |(--------未测试--------)|
 
 
@@ -85,8 +93,6 @@
    
    3. 不要一个人开发.
    
-   
-   (文档持续更新中...)
    
    
    
